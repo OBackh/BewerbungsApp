@@ -1,0 +1,77 @@
+.applyCard {
+    border: 1px solid #000;
+    border-radius: 8px;
+    margin: 3px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.statusTypo {
+    font-weight: bold;
+}
+
+.statusTypo.ACTIVE {
+    color: #00cc00;
+}
+
+.statusTypo.SUCCESSFUL {
+    color: #0000cc;
+}
+
+.statusTypo.REJECTED {
+    color: #cc0000;
+}
+
+.reloadButton {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reloadButton img.rotate {
+    animation: rotate 0.25s ease-in-out;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    background-color: #535bf2;
+    width: 100%;
+}
+
+.applicationList {
+    position: relative;
+    top: 50px;
+}
+
+.navbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.orderedList {
+    padding-left: 20px;
+    list-style-type: decimal;
+    list-style-position: inside;
+    color: #000;
+    width: 50vw;
+}
