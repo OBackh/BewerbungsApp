@@ -7,19 +7,17 @@ import Applications from "./components/Applications/Applications.tsx";
 export default function App() {
 
   return (
-    <>
-        <Header/>
 
         <Router>
+            <Header/>
 
             <Routes>
                 <Route path="/" element={<Applications />} />
             </Routes>
+            <Navbar/>
 
         </Router>
-        <Navbar/>
 
-    </>
   )
 }
 
