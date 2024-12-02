@@ -20,7 +20,7 @@
 }
 
 .loadingInfoBox {
-    z-index: 10;
+    z-index: 50;
     width: 200px;
     height: 100px;
     border: 2px solid #000;
@@ -35,12 +35,50 @@
 }
 
 .reloadButton {
+    position: fixed;
+    bottom: 35px;
+    left: 20%;
     border: none;
-    background: transparent;
+    background: #fff;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    padding: 6px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
 .reloadButton img.rotate {
+    animation: rotate 0.25s ease-in-out;
+}
+
+.addButton {
+    position: fixed;
+    bottom: 35px;
+    right: 20%;
+    border: none;
+    background: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    padding: 6px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+}
+.reloadButton, .addButton {
+
+    z-index: 20;
+}
+
+.addButton img.rotate {
     animation: rotate 0.25s ease-in-out;
 }
 
@@ -54,19 +92,34 @@
 }
 
 .header {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     color: #fff;
     background-color: #535bf2;
     width: 100%;
+    z-index: 5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    position: relative;
+    top: 120px;
+    bottom: 80px;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    width: 100%;
 }
 
 .navbar {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
+    background-color: #535bf2;
+    color: #fff;
+    z-index: 10;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .orderedList {
@@ -105,7 +158,7 @@ td button {
 
 thead {
     font-weight: bold;
-    background-color: #535bf2;
+    background-color: rgba(91, 121, 213, 0.79);
     color: #fff;
 }
 
