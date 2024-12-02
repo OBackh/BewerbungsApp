@@ -2,7 +2,7 @@
     position: relative;
     width: 60vw;
     height: 35vh;
-    background-color: rgb(123, 153, 253);
+    background-color: #7B99FD;
     z-index: 30;
     border: 2px solid #fff;
     box-shadow: 0 0 10px #1a1a1a;
@@ -40,11 +40,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Schwarzer, halbtransparenter Hintergrund */
-    z-index: 20; /* Unterhalb der Formular-Box */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 20;
     display: flex;
     align-items: center;
-    justify-content: center; /* Formular zentrieren */
+    justify-content: center;
 }
 
 .closeButton {

@@ -1,0 +1,18 @@
+.application-details {
+    background-color: #7B99FD;
+    width: 80vw;
+    height: 50vh;
+    padding: 1rem;
+    z-index: 30;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.details-buttons {
+    display: flex;
+    justify-content: flex-end;
+}

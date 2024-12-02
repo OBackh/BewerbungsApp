@@ -5,6 +5,7 @@ import './applications.css';
 import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
 import CreateForm from "../CreateForm/CreateForm.tsx";
+import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 
 export default function Applications() {
     const [applications, setApplications] = useState<Application[]>([]);
@@ -13,6 +14,7 @@ export default function Applications() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
     const [showForm, setShowForm] = useState<boolean>(false);
+    const [showDetails, setShowDetails] = useState<boolean>(false);
 
     function fetchApplications() {
         setLoading(true);
@@ -60,17 +62,23 @@ export default function Applications() {
         setShowForm(false); // Formular und Overlay schließen
     };
 
+    const handleToggleDetails = () => {
+        setShowDetails(!showDetails);
+        console.log("Toggled Details: " + showDetails)
+    }
+
+
     return (
         <>
             <div className="content">
                 <table className="tableApplicationList">
                     <thead>
-                        <tr>
-                            <th><span>Status</span></th>
-                            <th><span>Firmenname</span></th>
-                            <th><span>Bewerbungs-ID</span></th>
-                            <th className="function"><span>Funktion</span></th>
-                        </tr>
+                    <tr>
+                        <th><span>Status</span></th>
+                        <th><span>Firmenname</span></th>
+                        <th><span>Bewerbungs-ID</span></th>
+                        <th className="function"><span>Funktion</span></th>
+                    </tr>
                     </thead>
                     <tbody>
                     {applications.map((application) => (
@@ -89,7 +97,7 @@ export default function Applications() {
                             </td>
 
                             <td className="function">
-                                <button>Details</button>
+                                <button onClick={handleToggleDetails}>Details</button>
                             </td>
 
                         </tr>
@@ -127,6 +135,26 @@ export default function Applications() {
                     <div className="overlay">
                         <div>
                             <CreateForm closeForm={closeForm} onApplicationCreated={handleReload}/>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div>
+                {showDetails && (
+                    <div className="overlay"
+                         onClick={handleToggleDetails}
+                         role="presentation" // beschreibt, dass es visuell, aber nicht semantisch interaktiv ist
+                         aria-label="Close details" // beschreibt die Funktion für Screenreader
+                         onKeyDown={(e) => {
+                            if (e.key === "Escape") {
+                                handleToggleDetails();
+                                }
+                        }}>
+                        <div className="application-details-container"
+                             onClick={(e) => e.stopPropagation()}
+                             role="presentation"
+                             aria-hidden="true">
+                            <ApplicationDetails toggleDetails={handleToggleDetails} />
                         </div>
                     </div>
                 )}
