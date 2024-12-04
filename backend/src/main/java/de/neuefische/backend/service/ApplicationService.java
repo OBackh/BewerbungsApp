@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,11 @@ public class ApplicationService {
         );
         applicationRepo.save(newApplication);
         return applicationRepo.findById(newApplication.id()).orElseThrow();
+    }
+
+    public ApplicationModel getApplicationById(String id) {
+        return applicationRepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Application not found with ID: " + id));
     }
 
 }

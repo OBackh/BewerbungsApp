@@ -14,7 +14,7 @@ export default function Applications() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
     const [showForm, setShowForm] = useState<boolean>(false);
-    const [showDetails, setShowDetails] = useState<boolean>(false);
+    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
 
     function fetchApplications() {
         setLoading(true);
@@ -62,14 +62,12 @@ export default function Applications() {
         setShowForm(false); // Formular und Overlay schließen
     };
 
-    const handleToggleDetails = () => {
-        setShowDetails(!showDetails);
-        console.log("Toggled Details: " + showDetails)
+    function handleToggleDetails(selectedApplication: Application) {
+        setSelectedApplication(selectedApplication);
     }
 
 
     return (
-        <>
             <div className="content">
                 <table className="tableApplicationList">
                     <thead>
@@ -97,7 +95,7 @@ export default function Applications() {
                             </td>
 
                             <td className="function">
-                                <button onClick={handleToggleDetails}>Details</button>
+                                <button onClick={() => handleToggleDetails(application)}>Details</button>
                             </td>
 
                         </tr>
@@ -105,7 +103,6 @@ export default function Applications() {
                     }
                     </tbody>
                 </table>
-            </div>
 
             <div>
 <span>
@@ -140,25 +137,25 @@ export default function Applications() {
                 )}
             </div>
             <div>
-                {showDetails && (
+                {selectedApplication && (
                     <div className="overlay"
-                         onClick={handleToggleDetails}
+                         onClick={() => setSelectedApplication(null)}
                          role="presentation" // beschreibt, dass es visuell, aber nicht semantisch interaktiv ist
                          aria-label="Close details" // beschreibt die Funktion für Screenreader
                          onKeyDown={(e) => {
                             if (e.key === "Escape") {
-                                handleToggleDetails();
+                                setSelectedApplication(null);
                                 }
                         }}>
                         <div className="application-details-container"
                              onClick={(e) => e.stopPropagation()}
                              role="presentation"
                              aria-hidden="true">
-                            <ApplicationDetails toggleDetails={handleToggleDetails} />
+                            <ApplicationDetails toggleDetails={() => setSelectedApplication(null)} selectedApplication={selectedApplication}/>
                         </div>
                     </div>
                 )}
             </div>
-        </>
+            </div>
     );
 }
