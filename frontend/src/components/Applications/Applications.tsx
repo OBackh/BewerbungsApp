@@ -27,7 +27,7 @@ export default function Applications() {
 
         // Lade Daten und verzögere gleichzeitig um mindestens 2 Sekunden
         await Promise.all([
-            wait(2000), // Wartezeit von mindestens 2 Sekunden
+            wait(1500), // Wartezeit von mindestens 2 Sekunden
             axios.get<Application[]>("api/application")
                 .then((response) => {
                     setApplications(response.data); // Daten setzen
@@ -113,7 +113,6 @@ export default function Applications() {
                     }
                     </tbody>
                 </table>
-
             <div>
 <span>
                 <button className="reload-button" onClick={handleReload}>

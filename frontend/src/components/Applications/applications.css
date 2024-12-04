@@ -114,11 +114,16 @@
 .content {
     position: relative;
     top: 120px;
-    bottom: 80px;
-    height: calc(100vh - 120px);
-    overflow-y: auto;
     width: 100%;
-    margin-bottom: 100px;
+    padding-bottom: 80px;
+}
+
+.table-application-list {
+    border-collapse: collapse;
+    position: relative;
+    width: 60vw;
+    _height: 100%;
+    overflow: hidden;
 }
 
 .navbar {
@@ -153,17 +158,13 @@
     width: 50vw;
 }
 
-.table-application-list {
-    border-collapse: collapse;
-    position: relative;
-    width: 60vw;
-}
-
 .table-application-list th,
 .table-application-list td {
     border: 1px solid #000;
     padding-left: 10px;
     padding-right: 10px;
+    word-wrap: break-word;
+    text-align: left;
 }
 
 td {
@@ -192,4 +193,8 @@ body {
 
 .loading-spinner {
     z-index: 9999;
+}
+
+table, tbody {
+    height: auto;
 }
