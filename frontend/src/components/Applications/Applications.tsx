@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Application } from "./Application.ts";
 import './applications.css';
@@ -6,6 +6,12 @@ import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
 import CreateForm from "../CreateForm/CreateForm.tsx";
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
+
+// Hilfsfunktion, um eine Verzögerung zu erzeugen
+function wait(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export default function Applications() {
     const [applications, setApplications] = useState<Application[]>([]);
@@ -16,26 +22,30 @@ export default function Applications() {
     const [showForm, setShowForm] = useState<boolean>(false);
     const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
 
-    function fetchApplications() {
+    async function fetchApplications() {
         setLoading(true);
-        axios.get<Application[]>("api/application")
-            .then((response) => {
-                setApplications(response.data);
-                setLoading(false);
 
-            })
-            .catch((error) => {
-                console.error("Error fetching applications:", error);
-                setLoading(false);
-            });
+        // Lade Daten und verzögere gleichzeitig um mindestens 2 Sekunden
+        await Promise.all([
+            wait(2000), // Wartezeit von mindestens 2 Sekunden
+            axios.get<Application[]>("api/application")
+                .then((response) => {
+                    setApplications(response.data); // Daten setzen
+                })
+                .catch((error) => {
+                    console.error("Error fetching applications:", error);
+                })
+        ]);
+
+        setLoading(false); // Spinner ausblenden
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         fetchApplications();
     }, [reloadKey]);
 
     if (loading) {
-        return <div className="loadingInfoBox">Loading Data...</div>;
+        return <LoadingSpinner />;
     }
 
     function handleReload(){
