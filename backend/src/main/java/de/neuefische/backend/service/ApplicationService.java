@@ -38,7 +38,12 @@ public class ApplicationService {
     public ApplicationModel updateApplication(String id, ApplicationDTO updatedApplicationDTO) {
         ApplicationModel existingApplication = getApplicationById(id);
 
-        existingApplication.
+        ApplicationModel updatedApplication = new ApplicationModel(
+                existingApplication.id(),
+                updatedApplicationDTO.getCompanyName(),
+                updatedApplicationDTO.getStatus()
+        );
+        return applicationRepo.save(updatedApplication);
     }
 
 }

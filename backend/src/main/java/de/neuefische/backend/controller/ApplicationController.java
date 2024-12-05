@@ -34,9 +34,10 @@ public class ApplicationController {
         return ResponseEntity.ok(application);
         }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ApplicationModel> updateApplication(@PathVariable String id, @RequestBody ApplicationDTO updatedApplicationDTO) {
-        ApplicationModel updateApplication = applicationService.updateApplication(id, updatedApplicationDTO);
+        ApplicationModel updatedApplication = applicationService.updateApplication(id, updatedApplicationDTO);
+        return ResponseEntity.ok(updatedApplication);
     }
 
 }
