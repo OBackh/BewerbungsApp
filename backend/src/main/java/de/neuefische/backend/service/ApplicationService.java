@@ -35,4 +35,10 @@ public class ApplicationService {
                 .orElseThrow(() -> new NoSuchElementException("Application not found with ID: " + id));
     }
 
+    public ApplicationModel updateApplication(String id, ApplicationDTO updatedApplicationDTO) {
+        ApplicationModel existingApplication = getApplicationById(id);
+
+        existingApplication.
+    }
+
 }
