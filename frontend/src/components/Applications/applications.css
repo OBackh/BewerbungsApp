@@ -1,14 +1,26 @@
 .apply-card {
-    background-color: #ddd;
+    _background-color: #ddd;
+    _border: 2px solid black;
+    cursor: pointer;
+}
 
+.apply-card:hover {
+    _border: 2px solid #f00;
+    background-color: #535bf2;
 }
 
 .apply-card:nth-child(even) {
     background-color: #f2f2f2;
 }
+.apply-card:nth-child(even):hover {
+    background-color: #c6c6c6;
+}
 
 .apply-card:nth-child(odd) {
     background-color: #ffffff;
+}
+.apply-card:nth-child(odd):hover {
+    background-color: #c6c6c6;
 }
 
 .status-typo {

@@ -85,12 +85,12 @@ export default function Applications() {
                         <th><span>Status</span></th>
                         <th><span>Firmenname</span></th>
                         <th><span>Bewerbungs-ID</span></th>
-                        <th className="function"><span>Funktion</span></th>
+                        {/*<th className="function"><span>Funktion</span></th>*/}
                     </tr>
                     </thead>
                     <tbody>
                     {applications.map((application) => (
-                        <tr className="apply-card" key={application.id}>
+                        <tr className="apply-card" key={application.id} onClick={() => handleToggleDetails(application)}>
                             <td>
                                 <span className={`status-typo ${application.status}`}>{application.status}</span>
                             </td>
@@ -104,9 +104,9 @@ export default function Applications() {
                                 <span>{application.id}</span>
                             </td>
 
-                            <td className="function">
-                                <button onClick={() => handleToggleDetails(application)}>Details</button>
-                            </td>
+                            {/*<td className="function">*/}
+                            {/*    <button onClick={() => handleToggleDetails(application)}>Details</button>*/}
+                            {/*</td>*/}
 
                         </tr>
                     ))
