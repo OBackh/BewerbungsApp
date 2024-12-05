@@ -3,12 +3,16 @@ import axios from "axios";
 import { Application } from "./Application.ts";
 import './applications.css';
 import reloadIcon from '../../assets/reload.svg';
+import addIcon from '../../assets/add.svg';
+import CreateForm from "../CreateForm/CreateForm.tsx";
 
 export default function Applications() {
     const [applications, setApplications] = useState<Application[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [reloadKey, setReloadKey] = useState<number>(0);
-    const [rotate, setRotate] = useState<boolean>(false);
+    const [reloadRotate, setReloadRotate] = useState<boolean>(false);
+    const [addRotate, setAddRotate] = useState<boolean>(false);
+    const [showForm, setShowForm] = useState<boolean>(false);
 
     function fetchApplications() {
         setLoading(true);
@@ -16,6 +20,7 @@ export default function Applications() {
             .then((response) => {
                 setApplications(response.data);
                 setLoading(false);
+
             })
             .catch((error) => {
                 console.error("Error fetching applications:", error);
@@ -32,30 +37,32 @@ export default function Applications() {
     }
 
     function handleReload(){
-        setRotate(true);
+        setReloadRotate(true);
         setReloadKey(prevKey => prevKey + 1);
 
         setTimeout(() => {
-            setRotate(false);
+            setReloadRotate(false);
         }, 250);
     }
 
+    function handleAdd() {
+        setAddRotate(true);
+
+        setTimeout(() => {
+            setAddRotate(false);
+        }, 250);
+        setShowForm(true); // Formular anzeigen
+    }
+
+
+
+    const closeForm = () => {
+        setShowForm(false); // Formular und Overlay schließen
+    };
+
     return (
         <>
-            <div>
-
-                <button className="reloadButton" onClick={handleReload}>
-                    <img
-                        src={reloadIcon}
-                        alt="Reload"
-                        width="24"
-                        height="24"
-                        className={rotate ? 'rotate' : ''}
-                    />
-                </button>
-                <br/>
-            </div>
-            <div>
+            <div className="content">
                 <table className="tableApplicationList">
                     <thead>
                         <tr>
@@ -73,7 +80,7 @@ export default function Applications() {
                             </td>
 
                             <td>
-                                <span>{application.company_name}</span>
+                                <span>{application.companyName}</span>
                             </td>
 
 
@@ -91,18 +98,38 @@ export default function Applications() {
                     </tbody>
                 </table>
             </div>
-            <br/>
-            <div>
 
+            <div>
+<span>
                 <button className="reloadButton" onClick={handleReload}>
                     <img
                         src={reloadIcon}
                         alt="Reload"
                         width="24"
                         height="24"
-                        className={rotate ? 'rotate' : ''}
+                        className={reloadRotate ? 'rotate' : ''}
                     />
                 </button>
+    <button className="addButton" onClick={handleAdd}>
+                    <img
+                        src={addIcon}
+                        alt="Add new Apply"
+                        width="24"
+                        height="24"
+                        className={addRotate ? 'rotate' : ''}
+                    />
+                </button>
+      </span>
+
+            </div>
+            <div>
+                {showForm && (
+                    <div className="overlay">
+                        <div>
+                            <CreateForm closeForm={closeForm} onApplicationCreated={handleReload}/>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );
