@@ -85,7 +85,6 @@ export default function Applications() {
                         <th><span>Status</span></th>
                         <th><span>Firmenname</span></th>
                         <th><span>Bewerbungs-ID</span></th>
-                        {/*<th className="function"><span>Funktion</span></th>*/}
                     </tr>
                     </thead>
                     <tbody>
@@ -103,10 +102,6 @@ export default function Applications() {
                             <td>
                                 <span>{application.id}</span>
                             </td>
-
-                            {/*<td className="function">*/}
-                            {/*    <button onClick={() => handleToggleDetails(application)}>Details</button>*/}
-                            {/*</td>*/}
 
                         </tr>
                     ))
