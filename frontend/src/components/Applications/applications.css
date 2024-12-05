@@ -33,10 +33,12 @@
 
 .status-typo.SUCCESSFUL {
     color: #0000cc;
+
 }
 
 .status-typo.REJECTED {
     color: #cc0000;
+
 }
 
 .info-box {
