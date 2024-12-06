@@ -40,4 +40,10 @@ public class ApplicationController {
         return ResponseEntity.ok(updatedApplication);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteApplication(@PathVariable String id) {
+        applicationService.deleteApplication(id);
+        return ResponseEntity.noContent().build(); //HTTP 204 - No Content
+    }
+
 }
