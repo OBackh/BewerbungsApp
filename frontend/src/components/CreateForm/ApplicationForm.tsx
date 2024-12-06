@@ -4,15 +4,15 @@ import {useEffect, useState} from "react";
 
 interface CreateFormProps {
     readonly closeForm: () => void; // Funktion als Prop-Typ definieren
-    readonly onApplicationCreated: () => void; // Callback, wenn neue Bewerbung erstellt wurde
-    readonly applicationId?: number;
+    readonly handleReload: () => void; // Callback, wenn neue Bewerbung erstellt wurde
+    readonly applicationId?: string;
     readonly initialData: {
         companyName: string;
         status: string;
     }
 }
 
-export default function ApplicationForm({ closeForm, onApplicationCreated, applicationId, initialData  }: CreateFormProps) {
+export default function ApplicationForm({ closeForm, handleReload, applicationId, initialData  }: CreateFormProps) {
     const [companyName, setCompanyName] = useState(initialData.companyName);
     const [status, setStatus] = useState(initialData.status);
 
@@ -35,7 +35,7 @@ export default function ApplicationForm({ closeForm, onApplicationCreated, appli
 
         request
             .then(() => {
-                onApplicationCreated(); // Trigger, um die Liste zu aktualisieren
+                handleReload(); // Trigger, um die Liste zu aktualisieren
                 closeForm(); // Schließt das Formular
             })
             .catch((error) => {
@@ -47,9 +47,9 @@ export default function ApplicationForm({ closeForm, onApplicationCreated, appli
     function handleDelete(){
         if (applicationId) {
             if (window.confirm(`Möchten Sie die Bewerbung "${initialData.companyName}" wirklich löschen?`)) {
-                axios.delete(`api/application/${applicationId}`)
+                axios.delete(`http://localhost:8080/api/application/${applicationId}`)
                     .then(() => {
-                        onApplicationCreated(); // Aktualisiere die Liste nach dem Löschen
+                        handleReload(); // Aktualisiere die Liste nach dem Löschen
                         closeForm(); // Schließe das Formular
                     })
                     .catch((error) => {

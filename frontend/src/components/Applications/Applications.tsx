@@ -151,7 +151,7 @@ export default function Applications() {
                                     setShowForm(false);
                                     setFormData(null); // Formular-Daten zurücksetzen
                                 }}
-                                onApplicationCreated={handleReload}
+                                handleReload={handleReload}
                                 applicationId={formData.applicationId}
                                 initialData={formData.initialData}
                             />

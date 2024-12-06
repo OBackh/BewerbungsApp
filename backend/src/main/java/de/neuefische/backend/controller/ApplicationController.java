@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import de.neuefische.backend.dto.ApplicationDTO;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/application")
@@ -38,12 +39,17 @@ public class ApplicationController {
     public ResponseEntity<ApplicationModel> updateApplication(@PathVariable String id, @RequestBody ApplicationDTO updatedApplicationDTO) {
         ApplicationModel updatedApplication = applicationService.updateApplication(id, updatedApplicationDTO);
         return ResponseEntity.ok(updatedApplication);
-    }
+        }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteApplication(@PathVariable String id) {
-        applicationService.deleteApplication(id);
-        return ResponseEntity.noContent().build(); //HTTP 204 - No Content
+        try {
+            applicationService.deleteApplication(id);
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+        }
     }
 
 }
