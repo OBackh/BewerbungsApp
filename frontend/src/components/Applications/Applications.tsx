@@ -86,6 +86,8 @@ export default function Applications() {
         setShowForm(true);
     }
 
+
+
     return (
             <div className="content">
                 <table className="table-application-list">

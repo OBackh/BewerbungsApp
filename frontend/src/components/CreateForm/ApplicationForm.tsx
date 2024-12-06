@@ -45,7 +45,21 @@ export default function ApplicationForm({ closeForm, onApplicationCreated, appli
     };
 
     function handleDelete(){
-        return console.log("DELETE");
+        if (applicationId) {
+            if (window.confirm(`Möchten Sie die Bewerbung "${initialData.companyName}" wirklich löschen?`)) {
+                axios.delete(`api/application/${applicationId}`)
+                    .then(() => {
+                        onApplicationCreated(); // Aktualisiere die Liste nach dem Löschen
+                        closeForm(); // Schließe das Formular
+                    })
+                    .catch((error) => {
+                        console.error("Error deleting application:", error);
+                        alert("Fehler beim Löschen der Bewerbung.");
+                    });
+            }
+        } else {
+            alert("Es gibt keine Bewerbung zum Löschen.");
+        }
     }
 
     return (
