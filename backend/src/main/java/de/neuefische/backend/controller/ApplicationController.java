@@ -27,7 +27,7 @@ public class ApplicationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedApplication);
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ApplicationModel> getApplicationById(@PathVariable String id) {
         // Exception-Handling wird vom GlobalExceptionHandler übernommen
         ApplicationModel application = applicationService.getApplicationById(id);
