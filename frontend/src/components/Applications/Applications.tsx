@@ -4,7 +4,7 @@ import { Application } from "./Application.ts";
 import './applications.css';
 import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
-import CreateForm from "../CreateForm/CreateForm.tsx";
+import ApplicationForm from "../CreateForm/ApplicationForm.tsx";
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 
@@ -144,7 +144,7 @@ export default function Applications() {
                 {showForm && formData && (
                     <div className="overlay">
                         <div>
-                            <CreateForm
+                            <ApplicationForm
                                 closeForm={() => {
                                     setShowForm(false);
                                     setFormData(null); // Formular-Daten zurücksetzen

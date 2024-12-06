@@ -12,7 +12,7 @@ interface CreateFormProps {
     }
 }
 
-export default function CreateForm({ closeForm, onApplicationCreated, applicationId, initialData  }: CreateFormProps) {
+export default function ApplicationForm({ closeForm, onApplicationCreated, applicationId, initialData  }: CreateFormProps) {
     const [companyName, setCompanyName] = useState(initialData.companyName);
     const [status, setStatus] = useState(initialData.status);
 
