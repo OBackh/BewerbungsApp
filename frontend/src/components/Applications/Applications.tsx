@@ -21,6 +21,10 @@ export default function Applications() {
     const [addRotate, setAddRotate] = useState<boolean>(false);
     const [showForm, setShowForm] = useState<boolean>(false);
     const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+    const [formData, setFormData] = useState<{
+        applicationId?: number;
+        initialData: { companyName: string; status: string };
+    } | null>(null);
 
     async function fetchApplications() {
         setLoading(true);
@@ -66,16 +70,21 @@ export default function Applications() {
         setShowForm(true); // Formular anzeigen
     }
 
-
-
-    const closeForm = () => {
-        setShowForm(false); // Formular und Overlay schließen
-    };
-
     function handleToggleDetails(selectedApplication: Application) {
         setSelectedApplication(selectedApplication);
     }
 
+    function handleEdit(application: Application) {
+        setSelectedApplication(null);
+        setFormData({
+            applicationId: application.id,
+            initialData: {
+                companyName: application.companyName,
+                status: application.status,
+            },
+        });
+        setShowForm(true);
+    }
 
     return (
             <div className="content">
@@ -132,10 +141,18 @@ export default function Applications() {
 
             </div>
             <div>
-                {showForm && (
+                {showForm && formData && (
                     <div className="overlay">
                         <div>
-                            <CreateForm closeForm={closeForm} onApplicationCreated={handleReload}/>
+                            <CreateForm
+                                closeForm={() => {
+                                    setShowForm(false);
+                                    setFormData(null); // Formular-Daten zurücksetzen
+                                }}
+                                onApplicationCreated={handleReload}
+                                applicationId={formData.applicationId}
+                                initialData={formData.initialData}
+                            />
                         </div>
                     </div>
                 )}
@@ -155,7 +172,11 @@ export default function Applications() {
                              onClick={(e) => e.stopPropagation()}
                              role="presentation"
                              aria-hidden="true">
-                            <ApplicationDetails toggleDetails={() => setSelectedApplication(null)} selectedApplication={selectedApplication}/>
+                            <ApplicationDetails
+                                toggleDetails={() => setSelectedApplication(null)}
+                                selectedApplication={selectedApplication}
+                                onEdit={handleEdit}
+                            />
                         </div>
                     </div>
                 )}

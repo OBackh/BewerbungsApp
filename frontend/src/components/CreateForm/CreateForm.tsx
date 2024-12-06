@@ -1,31 +1,46 @@
 import './createForm.css';
 import axios from "axios";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 interface CreateFormProps {
     readonly closeForm: () => void; // Funktion als Prop-Typ definieren
     readonly onApplicationCreated: () => void; // Callback, wenn neue Bewerbung erstellt wurde
+    readonly applicationId?: number;
+    readonly initialData: {
+        companyName: string;
+        status: string;
+    }
 }
 
-export default function CreateForm({ closeForm, onApplicationCreated }: CreateFormProps) {
-    const [companyName, setCompanyName] = useState("");
+export default function CreateForm({ closeForm, onApplicationCreated, applicationId, initialData  }: CreateFormProps) {
+    const [companyName, setCompanyName] = useState(initialData.companyName);
+    const [status, setStatus] = useState(initialData.status);
+
+    useEffect(() => {
+        setCompanyName(initialData.companyName);
+        setStatus(initialData.status);
+    }, [initialData]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const newApplication = {
+        const applicationData = {
             companyName,
-            status: "ACTIVE", // Standardwert für Status
+            status,
         };
 
-        axios.post("api/application", newApplication)
+        const request = applicationId
+            ? axios.put(`api/application/${applicationId}`, applicationData)
+            : axios.post("api/application", applicationData)
+
+        request
             .then(() => {
                 onApplicationCreated(); // Trigger, um die Liste zu aktualisieren
                 closeForm(); // Schließt das Formular
             })
             .catch((error) => {
-                console.error("Error creating application:", error);
-                alert("Fehler beim Hinzufügen der Bewerbung.");
+                console.error("Error saving application:", error);
+                alert("Fehler beim speichern der Bewerbung.");
             });
     };
 
@@ -33,7 +48,7 @@ export default function CreateForm({ closeForm, onApplicationCreated }: CreateFo
         <div className="create-form-layer">
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend className="form-title">Neue Bewerbung anlegen</legend>
+                    <legend className="form-title">{applicationId ? "Bewerbung bearbeiten" : "Neue Bewerbung anlegen"}</legend>
                     <div className="inputfields-with-labels">
                     <label className="input-labels" htmlFor="input-company">Unternehmen:&nbsp;</label>
                     <input
