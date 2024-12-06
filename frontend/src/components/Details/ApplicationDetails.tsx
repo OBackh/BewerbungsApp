@@ -14,6 +14,7 @@ export default function ApplicationDetails({toggleDetails, selectedApplication, 
             <div>
             <h2>Bewerbungs-Details</h2>
             <p>Name des Unternehmens: {selectedApplication.companyName}</p>
+                <p>Aktueller Status der Bewerbung: {selectedApplication.status}</p>
             </div>
             <div className="details-buttons">
 
