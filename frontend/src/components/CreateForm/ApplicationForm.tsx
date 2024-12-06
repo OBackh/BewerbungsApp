@@ -1,4 +1,4 @@
-import './createForm.css';
+import './ApplicationForm.css';
 import axios from "axios";
 import {useEffect, useState} from "react";
 
@@ -44,6 +44,10 @@ export default function ApplicationForm({ closeForm, onApplicationCreated, appli
             });
     };
 
+    function handleDelete(){
+        return console.log("DELETE");
+    }
+
     return (
         <div className="create-form-layer">
             <form onSubmit={handleSubmit}>
@@ -62,8 +66,9 @@ export default function ApplicationForm({ closeForm, onApplicationCreated, appli
                     />
                     </div>
                     <div className="form-buttons">
+                        <button type="button" className="button-delete" onClick={handleDelete}>Eintrag Löschen</button>
                         <button type="button" onClick={closeForm}>Abbrechen</button>
-                        <button type="submit">Speichern</button>
+                        <button type="submit" className="button-save">Speichern</button>
                     </div>
                 </fieldset>
             </form>
