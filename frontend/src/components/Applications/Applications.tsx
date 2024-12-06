@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Application } from "./Application.ts";
 import './applications.css';
 import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
 import CreateForm from "../CreateForm/CreateForm.tsx";
+import ApplicationDetails from "../Details/ApplicationDetails.tsx";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
+
+// Hilfsfunktion, um eine Verzögerung zu erzeugen
+function wait(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export default function Applications() {
     const [applications, setApplications] = useState<Application[]>([]);
@@ -13,27 +20,32 @@ export default function Applications() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
     const [showForm, setShowForm] = useState<boolean>(false);
+    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
 
-    function fetchApplications() {
+    async function fetchApplications() {
         setLoading(true);
-        axios.get<Application[]>("api/application")
-            .then((response) => {
-                setApplications(response.data);
-                setLoading(false);
 
-            })
-            .catch((error) => {
-                console.error("Error fetching applications:", error);
-                setLoading(false);
-            });
+        // Lade Daten und verzögere gleichzeitig um mindestens 2 Sekunden
+        await Promise.all([
+            wait(2000), // Wartezeit von mindestens 2 Sekunden
+            axios.get<Application[]>("api/application")
+                .then((response) => {
+                    setApplications(response.data); // Daten setzen
+                })
+                .catch((error) => {
+                    console.error("Error fetching applications:", error);
+                })
+        ]);
+
+        setLoading(false); // Spinner ausblenden
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         fetchApplications();
     }, [reloadKey]);
 
     if (loading) {
-        return <div className="loadingInfoBox">Loading Data...</div>;
+        return <LoadingSpinner />;
     }
 
     function handleReload(){
@@ -60,17 +72,21 @@ export default function Applications() {
         setShowForm(false); // Formular und Overlay schließen
     };
 
+    function handleToggleDetails(selectedApplication: Application) {
+        setSelectedApplication(selectedApplication);
+    }
+
+
     return (
-        <>
             <div className="content">
                 <table className="tableApplicationList">
                     <thead>
-                        <tr>
-                            <th><span>Status</span></th>
-                            <th><span>Firmenname</span></th>
-                            <th><span>Bewerbungs-ID</span></th>
-                            <th className="function"><span>Funktion</span></th>
-                        </tr>
+                    <tr>
+                        <th><span>Status</span></th>
+                        <th><span>Firmenname</span></th>
+                        <th><span>Bewerbungs-ID</span></th>
+                        <th className="function"><span>Funktion</span></th>
+                    </tr>
                     </thead>
                     <tbody>
                     {applications.map((application) => (
@@ -89,7 +105,7 @@ export default function Applications() {
                             </td>
 
                             <td className="function">
-                                <button>Details</button>
+                                <button onClick={() => handleToggleDetails(application)}>Details</button>
                             </td>
 
                         </tr>
@@ -97,7 +113,6 @@ export default function Applications() {
                     }
                     </tbody>
                 </table>
-            </div>
 
             <div>
 <span>
@@ -131,6 +146,26 @@ export default function Applications() {
                     </div>
                 )}
             </div>
-        </>
+            <div>
+                {selectedApplication && (
+                    <div className="overlay"
+                         onClick={() => setSelectedApplication(null)}
+                         role="presentation" // beschreibt, dass es visuell, aber nicht semantisch interaktiv ist
+                         aria-label="Close details" // beschreibt die Funktion für Screenreader
+                         onKeyDown={(e) => {
+                            if (e.key === "Escape") {
+                                setSelectedApplication(null);
+                                }
+                        }}>
+                        <div className="application-details-container"
+                             onClick={(e) => e.stopPropagation()}
+                             role="presentation"
+                             aria-hidden="true">
+                            <ApplicationDetails toggleDetails={() => setSelectedApplication(null)} selectedApplication={selectedApplication}/>
+                        </div>
+                    </div>
+                )}
+            </div>
+            </div>
     );
 }
