@@ -22,7 +22,7 @@ export default function Applications() {
     const [showForm, setShowForm] = useState<boolean>(false);
     const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
     const [formData, setFormData] = useState<{
-        applicationId?: number;
+        applicationId?: string;
         initialData: { companyName: string; status: string };
     } | null>(null);
 
