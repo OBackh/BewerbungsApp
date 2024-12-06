@@ -27,7 +27,7 @@ export default function Applications() {
 
         // Lade Daten und verzögere gleichzeitig um mindestens 2 Sekunden
         await Promise.all([
-            wait(2000), // Wartezeit von mindestens 2 Sekunden
+            wait(1200), // Wartezeit von mindestens 2 Sekunden
             axios.get<Application[]>("api/application")
                 .then((response) => {
                     setApplications(response.data); // Daten setzen
@@ -79,7 +79,7 @@ export default function Applications() {
 
     return (
             <div className="content">
-                <table className="tableApplicationList">
+                <table className="table-application-list">
                     <thead>
                     <tr>
                         <th><span>Status</span></th>
@@ -90,9 +90,9 @@ export default function Applications() {
                     </thead>
                     <tbody>
                     {applications.map((application) => (
-                        <tr className="applyCard" key={application.id}>
+                        <tr className="apply-card" key={application.id}>
                             <td>
-                                <span className={`statusTypo ${application.status}`}>{application.status}</span>
+                                <span className={`status-typo ${application.status}`}>{application.status}</span>
                             </td>
 
                             <td>
@@ -113,10 +113,9 @@ export default function Applications() {
                     }
                     </tbody>
                 </table>
-
             <div>
 <span>
-                <button className="reloadButton" onClick={handleReload}>
+                <button className="reload-button" onClick={handleReload}>
                     <img
                         src={reloadIcon}
                         alt="Reload"
@@ -125,7 +124,7 @@ export default function Applications() {
                         className={reloadRotate ? 'rotate' : ''}
                     />
                 </button>
-    <button className="addButton" onClick={handleAdd}>
+    <button className="add-button" onClick={handleAdd}>
                     <img
                         src={addIcon}
                         alt="Add new Apply"

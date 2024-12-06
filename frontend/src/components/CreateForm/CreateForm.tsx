@@ -30,13 +30,14 @@ export default function CreateForm({ closeForm, onApplicationCreated }: CreateFo
     };
 
     return (
-        <div className="createFormLayer">
+        <div className="create-form-layer">
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend className="formTitle">Neue Bewerbung anlegen</legend>
-                    <label htmlFor="input-company">Unternehmen:</label>
+                    <legend className="form-title">Neue Bewerbung anlegen</legend>
+                    <div className="inputfields-with-labels">
+                    <label className="input-labels" htmlFor="input-company">Unternehmen:&nbsp;</label>
                     <input
-                        className="inputfield"
+                        className="input"
                         id="input-company"
                         type="text"
                         required
@@ -44,7 +45,8 @@ export default function CreateForm({ closeForm, onApplicationCreated }: CreateFo
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
                     />
-                    <div className="formButtons">
+                    </div>
+                    <div className="form-buttons">
                         <button type="button" onClick={closeForm}>Abbrechen</button>
                         <button type="submit">Speichern</button>
                     </div>

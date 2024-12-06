@@ -1,25 +1,33 @@
-.applyCard {
+.apply-card {
     background-color: #ddd;
 
 }
 
-.statusTypo {
+.apply-card:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.apply-card:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.status-typo {
     font-weight: bold;
 }
 
-.statusTypo.ACTIVE {
+.status-typo.ACTIVE {
     color: #00cc00;
 }
 
-.statusTypo.SUCCESSFUL {
+.status-typo.SUCCESSFUL {
     color: #0000cc;
 }
 
-.statusTypo.REJECTED {
+.status-typo.REJECTED {
     color: #cc0000;
 }
 
-.loadingInfoBox {
+.info-box {
     z-index: 50;
     width: 200px;
     height: 100px;
@@ -34,7 +42,7 @@
     font-size: x-large;
 }
 
-.reloadButton {
+.reload-button {
     position: fixed;
     bottom: 35px;
     left: 20%;
@@ -52,11 +60,11 @@
 
 }
 
-.reloadButton img.rotate {
+.reload-button img.rotate {
     animation: rotate 0.25s ease-in-out;
 }
 
-.addButton {
+.add-button {
     position: fixed;
     bottom: 35px;
     right: 20%;
@@ -72,13 +80,14 @@
     padding: 6px;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     z-index: 25;
+
 }
-.reloadButton, .addButton {
+.reload-button, .add-button {
 
     z-index: 26;
 }
 
-.addButton img.rotate {
+.add-button img.rotate {
     animation: rotate 0.25s ease-in-out;
 }
 
@@ -105,11 +114,16 @@
 .content {
     position: relative;
     top: 120px;
-    bottom: 80px;
-    height: calc(100vh - 120px);
-    overflow-y: auto;
     width: 100%;
-    margin-bottom: 100px;
+    padding-bottom: 80px;
+}
+
+.table-application-list {
+    border-collapse: collapse;
+    position: relative;
+    width: 60vw;
+    _height: 100%;
+    overflow: hidden;
 }
 
 .navbar {
@@ -136,7 +150,7 @@
     justify-content: center;
 }
 
-.orderedList {
+.ordered-list {
     padding-left: 20px;
     list-style-type: decimal;
     list-style-position: inside;
@@ -144,17 +158,13 @@
     width: 50vw;
 }
 
-.tableApplicationList {
-    border-collapse: collapse;
-    position: relative;
-    width: 60vw;
-}
-
-.tableApplicationList th,
-.tableApplicationList td {
+.table-application-list th,
+.table-application-list td {
     border: 1px solid #000;
     padding-left: 10px;
     padding-right: 10px;
+    word-wrap: break-word;
+    text-align: left;
 }
 
 td {
@@ -176,19 +186,15 @@ thead {
     color: #fff;
 }
 
-.applyCard:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.applyCard:nth-child(odd) {
-    background-color: #ffffff;
-}
-
 body {
     padding-bottom: 80px;
 
 }
 
-.loadingSpinner {
+.loading-spinner {
     z-index: 9999;
+}
+
+table, tbody {
+    height: auto;
 }
