@@ -4,7 +4,7 @@ import { Application } from "./Application.ts";
 import './applications.css';
 import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
-import CreateForm from "../CreateForm/CreateForm.tsx";
+import ApplicationForm from "../CreateForm/ApplicationForm.tsx";
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 
@@ -21,6 +21,10 @@ export default function Applications() {
     const [addRotate, setAddRotate] = useState<boolean>(false);
     const [showForm, setShowForm] = useState<boolean>(false);
     const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+    const [formData, setFormData] = useState<{
+        applicationId?: number;
+        initialData: { companyName: string; status: string };
+    } | null>(null);
 
     async function fetchApplications() {
         setLoading(true);
@@ -63,19 +67,31 @@ export default function Applications() {
         setTimeout(() => {
             setAddRotate(false);
         }, 250);
+        setFormData({
+            applicationId: undefined, // Keine ID, da es sich um eine neue Bewerbung handelt
+            initialData: {
+                companyName: '', // Leeres Feld für Firmenname
+                status: '', // Leeres Feld für Status
+            },
+        });
         setShowForm(true); // Formular anzeigen
     }
-
-
-
-    const closeForm = () => {
-        setShowForm(false); // Formular und Overlay schließen
-    };
 
     function handleToggleDetails(selectedApplication: Application) {
         setSelectedApplication(selectedApplication);
     }
 
+    function handleEdit(application: Application) {
+        setSelectedApplication(null);
+        setFormData({
+            applicationId: application.id,
+            initialData: {
+                companyName: application.companyName,
+                status: application.status,
+            },
+        });
+        setShowForm(true);
+    }
 
     return (
             <div className="content">
@@ -85,12 +101,11 @@ export default function Applications() {
                         <th><span>Status</span></th>
                         <th><span>Firmenname</span></th>
                         <th><span>Bewerbungs-ID</span></th>
-                        <th className="function"><span>Funktion</span></th>
                     </tr>
                     </thead>
                     <tbody>
                     {applications.map((application) => (
-                        <tr className="apply-card" key={application.id}>
+                        <tr className="apply-card" key={application.id} onClick={() => handleToggleDetails(application)}>
                             <td>
                                 <span className={`status-typo ${application.status}`}>{application.status}</span>
                             </td>
@@ -102,10 +117,6 @@ export default function Applications() {
 
                             <td>
                                 <span>{application.id}</span>
-                            </td>
-
-                            <td className="function">
-                                <button onClick={() => handleToggleDetails(application)}>Details</button>
                             </td>
 
                         </tr>
@@ -137,10 +148,18 @@ export default function Applications() {
 
             </div>
             <div>
-                {showForm && (
+                {showForm && formData && (
                     <div className="overlay">
                         <div>
-                            <CreateForm closeForm={closeForm} onApplicationCreated={handleReload}/>
+                            <ApplicationForm
+                                closeForm={() => {
+                                    setShowForm(false);
+                                    setFormData(null); // Formular-Daten zurücksetzen
+                                }}
+                                onApplicationCreated={handleReload}
+                                applicationId={formData.applicationId}
+                                initialData={formData.initialData}
+                            />
                         </div>
                     </div>
                 )}
@@ -160,7 +179,11 @@ export default function Applications() {
                              onClick={(e) => e.stopPropagation()}
                              role="presentation"
                              aria-hidden="true">
-                            <ApplicationDetails toggleDetails={() => setSelectedApplication(null)} selectedApplication={selectedApplication}/>
+                            <ApplicationDetails
+                                toggleDetails={() => setSelectedApplication(null)}
+                                selectedApplication={selectedApplication}
+                                onEdit={handleEdit}
+                            />
                         </div>
                     </div>
                 )}
