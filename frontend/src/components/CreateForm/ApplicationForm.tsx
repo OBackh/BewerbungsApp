@@ -1,6 +1,10 @@
 import './ApplicationForm.css';
+import '../Delete/delete.css';
 import axios from "axios";
 import {useEffect, useState} from "react";
+import ConfirmDialog from "../Delete/ConfirmDialog.tsx";
+import ErrorMessage from "../Delete/ErrorMessage.tsx";
+
 
 interface CreateFormProps {
     readonly closeForm: () => void; // Funktion als Prop-Typ definieren
@@ -15,6 +19,8 @@ interface CreateFormProps {
 export default function ApplicationForm({ closeForm, handleReload, applicationId, initialData  }: CreateFormProps) {
     const [companyName, setCompanyName] = useState(initialData.companyName);
     const [status, setStatus] = useState(initialData.status);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         setCompanyName(initialData.companyName);
@@ -44,24 +50,31 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
             });
     };
 
-    function handleDelete(){
-        console.log("Application ID: "+applicationId);
+    function handleDelete() {
+        console.log("Application ID: " + applicationId);
         if (applicationId) {
-            if (window.confirm(`Möchten Sie die Bewerbung "${initialData.companyName}" wirklich löschen?`)) {
-                axios.delete(`/api/application/${applicationId}`)
-                    .then(() => {
-                        handleReload(); // Aktualisiere die Liste nach dem Löschen
-                        closeForm(); // Schließe das Formular
-                    })
-                    .catch((error) => {
-                        console.error("Error deleting application:", error);
-                        alert("Fehler beim Löschen der Bewerbung.");
-                    });
-            }
+            setShowConfirm(true); // Zeige den Bestätigungsdialog an
         } else {
-            alert("Es gibt keine Bewerbung zum Löschen.");
+            setError("Es gibt keine Bewerbung zum Löschen.");
         }
     }
+
+    const handleConfirmDelete = () => {
+        setShowConfirm(false); // Bestätigungsdialog schließen
+        axios.delete(`/api/application/${applicationId}`)
+            .then(() => {
+                handleReload(); // Aktualisiere die Liste nach dem Löschen
+                closeForm(); // Schließe das Formular
+            })
+            .catch((error) => {
+                console.error("Error deleting application:", error);
+                setError("Fehler beim Löschen der Bewerbung.");
+            });
+    };
+
+    const handleCancelDelete = () => {
+        setShowConfirm(false); // Abbrechen und Dialog schließen
+    };
 
     return (
         <div className="create-form-layer">
@@ -87,6 +100,15 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                     </div>
                 </fieldset>
             </form>
+            {showConfirm && (
+                <ConfirmDialog
+                    message={`Möchten Sie die Bewerbung "${initialData.companyName}" wirklich löschen?`}
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancelDelete}
+                />
+            )}
+
+            {error && <ErrorMessage message={error} />}
         </div>
     );
 }
