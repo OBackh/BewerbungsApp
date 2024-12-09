@@ -82,16 +82,30 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                 <fieldset>
                     <legend className="form-title">{applicationId ? "Bewerbung bearbeiten" : "Neue Bewerbung anlegen"}</legend>
                     <div className="inputfields-with-labels">
-                    <label className="input-labels" htmlFor="input-company">Unternehmen:&nbsp;</label>
-                    <input
-                        className="input"
-                        id="input-company"
-                        type="text"
-                        required
-                        placeholder="Name der Firma"
-                        value={companyName}
-                        onChange={(e) => setCompanyName(e.target.value)}
-                    />
+                        <div>
+                        <label className="input-labels" htmlFor="input-company">Unternehmen:&nbsp;</label>
+                        <input
+                            className="input"
+                            id="input-company"
+                            type="text"
+                            required
+                            placeholder="Name der Firma"
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
+                        />
+                        </div>
+                            <div>
+                        <select id="status"
+                                required
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                        >
+                            <option>Status der Bewerbung</option>
+                            <option>ACTIVE</option>
+                            <option>SUCCESSFUL</option>
+                            <option>REJECTED</option>
+                        </select>
+                            </div>
                     </div>
                     <div className="form-buttons">
                         <button type="button" className="button-delete" onClick={handleDelete}>Eintrag Löschen</button>

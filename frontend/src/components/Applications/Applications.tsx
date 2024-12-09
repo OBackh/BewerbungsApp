@@ -67,6 +67,13 @@ export default function Applications() {
         setTimeout(() => {
             setAddRotate(false);
         }, 250);
+        setFormData({
+            applicationId: undefined, // Keine ID, da es sich um eine neue Bewerbung handelt
+            initialData: {
+                companyName: '', // Leeres Feld für Firmenname
+                status: '', // Leeres Feld für Status
+            },
+        });
         setShowForm(true); // Formular anzeigen
     }
 
