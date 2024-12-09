@@ -46,4 +46,9 @@ public class ApplicationService {
         return applicationRepo.save(updatedApplication);
     }
 
+    public void deleteApplication(String id) {
+        ApplicationModel application = applicationRepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Application not found with ID: " + id));
+        applicationRepo.delete(application);
+    }
 }
