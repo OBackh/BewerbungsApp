@@ -22,7 +22,7 @@ export default function Applications() {
     const [showForm, setShowForm] = useState<boolean>(false);
     const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
     const [formData, setFormData] = useState<{
-        applicationId?: number;
+        applicationId?: string;
         initialData: { companyName: string; status: string };
     } | null>(null);
 
@@ -93,6 +93,8 @@ export default function Applications() {
         setShowForm(true);
     }
 
+
+
     return (
             <div className="content">
                 <table className="table-application-list">
@@ -156,7 +158,7 @@ export default function Applications() {
                                     setShowForm(false);
                                     setFormData(null); // Formular-Daten zurücksetzen
                                 }}
-                                onApplicationCreated={handleReload}
+                                handleReload={handleReload}
                                 applicationId={formData.applicationId}
                                 initialData={formData.initialData}
                             />
