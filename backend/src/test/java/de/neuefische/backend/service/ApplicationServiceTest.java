@@ -1,5 +1,6 @@
 package de.neuefische.backend.service;
 
+import de.neuefische.backend.dto.ApplicationDTO;
 import de.neuefische.backend.model.ApplicationModel;
 import de.neuefische.backend.repository.ApplicationRepo;
 import org.junit.jupiter.api.Test;
@@ -78,6 +79,35 @@ class ApplicationServiceTest {
 
         //VERIFY
         verify(mockRepo).findById(applicationId);
+    }
+
+    @Test
+    void testAddApplication() {
+        //GIVEN
+        String generatedId = "abcd123";
+        ApplicationDTO applicationDTO = new ApplicationDTO("Firma1", "ACTIVE");
+        ApplicationModel newApplication = new ApplicationModel(generatedId, "Firma1", "ACTIVE");
+
+        // Mocking
+        when(mockIdService.generateRandomId()).thenReturn(generatedId);
+        when(mockRepo.save(any(ApplicationModel.class))).thenReturn(newApplication);
+        when(mockRepo.findById(generatedId)).thenReturn(Optional.of(newApplication));
+
+        ApplicationService underTest = new ApplicationService(mockIdService, mockRepo);
+
+        //WHEN
+        ApplicationModel actual = underTest.addApplication(applicationDTO);
+
+        //THEN
+        assertNotNull(actual, "Die zurückgegebene Bewerbung sollte nicht NULL sein");
+        assertEquals(generatedId, actual.id(), "Die generierte ID stimmt nicht überein");
+        assertEquals("Firma1", actual.companyName(), "Der Firmenname der zurückgegebenen Bewerbung stimmt nicht überein");
+        assertEquals("ACTIVE", actual.status(), "Der Status der zurückgegebenen Bewerbung stimmt nicht überein");
+
+        //VERIFY
+        verify(mockIdService).generateRandomId();
+        verify(mockRepo).save(any(ApplicationModel.class));
+        verify(mockRepo).findById(generatedId);
     }
 
 }
