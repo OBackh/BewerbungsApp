@@ -5,6 +5,7 @@ import de.neuefische.backend.repository.ApplicationRepo;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,6 +55,26 @@ class ApplicationServiceTest {
         assertEquals(applicationId, actual.id(), "Die ID der zurückgegebenen Bewerbung stimmt nicht überein");
         assertEquals("Firma1", actual.companyName(), "Der Firmenname der zurückgegebenen Bewerbung stimmt nicht überein");
         assertEquals("ACTIVE", actual.status(), "Der Status der zurückgegebenen Bewerbung stimmt nicht überein");
+
+        //VERIFY
+        verify(mockRepo).findById(applicationId);
+    }
+
+    @Test
+    void testGetApplicationById_ApplicationNotFound() {
+        //GIVEN
+        String applicationId = "abcd123";
+        when(mockRepo.findById(applicationId)).thenReturn(Optional.empty());
+
+        ApplicationService underTest = new ApplicationService(mockIdService, mockRepo);
+
+        //WHEN & THEN
+
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class,
+                () -> underTest.getApplicationById(applicationId)
+        );
+
+        assertEquals("Application not found with ID: abcd123", exception.getMessage(), "Die Fehlermeldung stimmt nicht überein");
 
         //VERIFY
         verify(mockRepo).findById(applicationId);
