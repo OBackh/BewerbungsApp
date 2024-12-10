@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ApplicationServiceTest {
 
@@ -29,6 +28,9 @@ class ApplicationServiceTest {
         ApplicationService underTest = new ApplicationService(mockIdService, mockRepo);
         List<ApplicationModel> actual = underTest.getAllApplications();
         List<ApplicationModel> expected = testdata;
+
+        //VERIFY
+        verify(mockRepo).findAll();
 
         //THEN
         assertEquals(expected, actual, "Die zurückgegebene Liste der Anwendungen stimmt nicht mit den erwarteten Daten überein");
