@@ -63,7 +63,7 @@
 
 .reload-button {
     position: fixed;
-    bottom: 35px;
+    bottom: 39px;
     left: 20%;
     border: none;
     background: #fff;
@@ -71,11 +71,20 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 41px;
-    height: 41px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     padding: 6px;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+.reload-button:hover {
+    width: 41px;
+    height: 41px;
+    bottom: 36px;
+    left: calc(20% - 3px);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
 
 }
 
@@ -85,7 +94,7 @@
 
 .add-button {
     position: fixed;
-    bottom: 35px;
+    bottom: 38px;
     right: 20%;
     border: none;
     background: #fff;
@@ -93,14 +102,23 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 41px;
-    height: 41px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     padding: 6px;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     z-index: 25;
 
 }
+
+.add-button:hover {
+    width: 41px;
+    height: 41px;
+    bottom: 35px;
+    right: calc(20% - 3px);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+}
+
 .reload-button, .add-button {
 
     z-index: 26;
