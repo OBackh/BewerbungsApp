@@ -5,6 +5,7 @@ import de.neuefische.backend.repository.ApplicationRepo;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -35,4 +36,27 @@ class ApplicationServiceTest {
         //THEN
         assertEquals(expected, actual, "Die zurückgegebene Liste der Anwendungen stimmt nicht mit den erwarteten Daten überein");
     }
+
+    @Test
+    void testGetApplicationById_ApplicationFound() {
+        //GIVEN
+        String applicationId = "abcd123";
+        ApplicationModel application = new ApplicationModel(applicationId, "Firma1", "ACTIVE");
+        when(mockRepo.findById(applicationId)).thenReturn(Optional.of(application));
+
+        ApplicationService underTest = new ApplicationService(mockIdService, mockRepo);
+
+        //WHEN
+        ApplicationModel actual = underTest.getApplicationById(applicationId);
+
+        //THEN
+        assertNotNull(actual, "Die zurückgegebene Bewerbung sollte nicht NULL sein");
+        assertEquals(applicationId, actual.id(), "Die ID der zurückgegebenen Bewerbung stimmt nicht überein");
+        assertEquals("Firma1", actual.companyName(), "Der Firmenname der zurückgegebenen Bewerbung stimmt nicht überein");
+        assertEquals("ACTIVE", actual.status(), "Der Status der zurückgegebenen Bewerbung stimmt nicht überein");
+
+        //VERIFY
+        verify(mockRepo).findById(applicationId);
+    }
+
 }
