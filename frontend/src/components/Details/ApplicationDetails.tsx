@@ -25,7 +25,9 @@ export default function ApplicationDetails({toggleDetails, selectedApplication, 
                 }}>Eintrag bearbeiten
                 </button>
 
-                <button type="button" onClick={toggleDetails}>Schliessen</button>
+                <button type="button" onClick={() => {
+                    toggleDetails();
+                }}>Schliessen</button>
             </div>
         </div>
     )
