@@ -100,7 +100,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
                         >
-                            <option>Status der Bewerbung</option>
+                            <option value="" disabled>Status der Bewerbung</option>
                             <option>ACTIVE</option>
                             <option>SUCCESSFUL</option>
                             <option>REJECTED</option>

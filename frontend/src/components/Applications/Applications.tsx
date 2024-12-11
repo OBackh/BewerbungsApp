@@ -125,6 +125,7 @@ export default function Applications({
             <table className="table-application-list">
                 <thead>
                 <tr>
+                    <th><span>Nr.</span></th>
                     <th><span>Status</span></th>
                     <th><span>Firmenname</span></th>
                     <th><span>Bewerbungs-ID</span></th>
@@ -163,12 +164,16 @@ export default function Applications({
                         // Wenn der Status gleich ist, alphabetisch nach Firmenname sortieren
                         return a.companyName.localeCompare(b.companyName);
                     })
-                    .map((application) => (
+                    .map((application, index) => (
                         <tr
                             className="apply-card"
                             key={application.id}
                             onClick={() => handleToggleDetails(application)}
                         >
+                            <td>
+                                {/* Zeilenummer (index + 1, um bei 1 zu starten) */}
+                                <span>{index + 1}</span>
+                            </td>
                             <td>
                                 <span
                                     className={`status-typo ${application.status}`}>{application.status}</span>
