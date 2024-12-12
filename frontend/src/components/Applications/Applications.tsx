@@ -186,7 +186,6 @@ export default function Applications({
                     <th><span>Firmenname</span></th>
                     <th><span>Stellenbezeichnung</span></th>
                     <th><span>Datum der Bewerbung</span></th>
-                    <th><span>Bewerbungs-ID</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -235,9 +234,6 @@ export default function Applications({
                             </td>
                             <td>
                                 <span>{application.applicationDate}</span>
-                            </td>
-                            <td>
-                                <span>{application.id}</span>
                             </td>
                         </tr>
                     ))}
