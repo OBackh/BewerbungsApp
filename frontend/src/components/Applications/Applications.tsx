@@ -14,7 +14,27 @@ type ApplicationsProps = {
     readonly reloadKey: number;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
-        initialData: { companyName: string; status: string };
+        initialData: {
+            companyName: string;
+            status: string;
+            jobTitle: string;
+            applicationDate: string;
+            jobPostingFoundDate: string;
+            applicationEntryCreationDate: string;
+            companyWebsite: string;
+            companyEmail: string;
+            companyStreet: string;
+            companyHouseNumber: string;
+            phoneNumber: string;
+            contactPersonFirstName: string;
+            contactPersonLastName: string;
+            contactPersonEmail: string;
+            jobSource: string;
+            jobPostingUrl: string;
+            applicationMethod: string;
+            applicationPortalUrl: string;
+            notes: string;
+            uploadedDocuments: string; };
     } | null>>;
     readonly setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
     readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -60,7 +80,7 @@ export default function Applications({
         return () => {
             isMounted = false; // Cleanup beim Unmount
         };
-    }, [reloadKey]);
+    }, [reloadKey, setLoading]);
 
     // Debugging-Effekt: Überwacht den Zustand von "selectedApplication"
     useEffect(() => {
@@ -86,10 +106,46 @@ export default function Applications({
             initialData: {
                 companyName: application.companyName,
                 status: application.status,
+                jobTitle: application.jobTitle,
+                applicationDate: application.applicationDate,
+                jobPostingFoundDate: application.jobPostingFoundDate,
+                applicationEntryCreationDate: application.applicationEntryCreationDate,
+                companyWebsite: application.companyWebsite,
+                companyEmail: application.companyEmail,
+                companyStreet: application.companyStreet,
+                companyHouseNumber: application.companyHouseNumber,
+                phoneNumber: application.phoneNumber,
+                contactPersonFirstName: application.contactPersonFirstName,
+                contactPersonLastName: application.contactPersonLastName,
+                contactPersonEmail: application.contactPersonEmail,
+                jobSource: application.jobSource,
+                jobPostingUrl: application.jobPostingUrl,
+                applicationMethod: application.applicationMethod,
+                applicationPortalUrl: application.applicationPortalUrl,
+                notes: application.notes,
+                uploadedDocuments: application.uploadedDocuments
             },
         });
         setShowForm(true);
         setSelectedApplication(null);
+    }
+
+    // Funktion zur Übersetzung der Statuswerte
+    function translateStatus(status: string): string {
+        const statusMap: { [key: string]: string } = {
+            PLANNED: "Geplant",
+            CREATED: "Erstellt",
+            SENT: "Gesendet",
+            CONFIRMED: "Bestätigt",
+            UNDER_REVIEW: "In Prüfung",
+            INVITATION: "Einladung",
+            ACCEPTED: "Zusage",
+            REJECTED: "Abgesagt",
+            WITHDRAWN: "Zurückgezogen",
+            ARCHIVED: "Archiviert"
+        };
+
+        return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
 
    return (
@@ -128,34 +184,28 @@ export default function Applications({
                     <th><span>Nr.</span></th>
                     <th><span>Status</span></th>
                     <th><span>Firmenname</span></th>
+                    <th><span>Stellenbezeichnung</span></th>
+                    <th><span>Datum der Bewerbung</span></th>
                     <th><span>Bewerbungs-ID</span></th>
                 </tr>
                 </thead>
-                {/*<tbody>
-                {applications.map((application) => (
-                    <tr
-                        className="apply-card"
-                        key={application.id}
-                        onClick={() => handleToggleDetails(application)}
-                    >
-                        <td>
-                            <span className={`status-typo ${application.status}`}>{application.status}</span>
-                        </td>
-                        <td>
-                            <span>{application.companyName}</span>
-                        </td>
-                        <td>
-                            <span>{application.id}</span>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>*/}
                 <tbody>
                 {applications
                     .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
                     .sort((a, b) => {
-                        const order = ["active", "successful", "rejected"]; // Definierte Reihenfolge für Status
-                        const statusComparison = order.indexOf(a.status.toLowerCase()) - order.indexOf(b.status.toLowerCase());
+                        const order = [
+                            "PLANNED",
+                            "CREATED",
+                            "SENT",
+                            "CONFIRMED",
+                            "UNDER_REVIEW",
+                            "INVITATION",
+                            "ACCEPTED",
+                            "REJECTED",
+                            "WITHDRAWN",
+                            "ARCHIVED"
+                        ]; // Definierte Reihenfolge für Status
+                        const statusComparison = order.indexOf(a.status) - order.indexOf(b.status);
 
                         if (statusComparison !== 0) {
                             return statusComparison; // Sortiere zuerst nach Status
@@ -166,20 +216,25 @@ export default function Applications({
                     })
                     .map((application, index) => (
                         <tr
-                            className="apply-card"
+                            className={`apply-card ${application.status}`}
                             key={application.id}
                             onClick={() => handleToggleDetails(application)}
                         >
                             <td>
-                                {/* Zeilenummer (index + 1, um bei 1 zu starten) */}
                                 <span>{index + 1}</span>
                             </td>
                             <td>
                                 <span
-                                    className={`status-typo ${application.status}`}>{application.status}</span>
+                                    className={`status-typo ${application.status}`}>{translateStatus(application.status)}</span>
                             </td>
                             <td>
                                 <span>{application.companyName}</span>
+                            </td>
+                            <td>
+                                <span>{application.jobTitle}</span>
+                            </td>
+                            <td>
+                                <span>{application.applicationDate}</span>
                             </td>
                             <td>
                                 <span>{application.id}</span>

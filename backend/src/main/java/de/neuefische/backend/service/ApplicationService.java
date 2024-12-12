@@ -24,7 +24,25 @@ public class ApplicationService {
         ApplicationModel newApplication = new ApplicationModel(
                 idService.generateRandomId(),
                 applicationDTO.getCompanyName(),
-                applicationDTO.getStatus()
+                applicationDTO.getStatus(),
+                applicationDTO.getApplicationDate(),
+                applicationDTO.getJobPostingFoundDate(),
+                applicationDTO.getApplicationEntryCreationDate(),
+                applicationDTO.getJobTitle(),
+                applicationDTO.getCompanyWebsite(),
+                applicationDTO.getCompanyEmail(),
+                applicationDTO.getCompanyStreet(),
+                applicationDTO.getCompanyHouseNumber(),
+                applicationDTO.getPhoneNumber(),
+                applicationDTO.getContactPersonFirstName(),
+                applicationDTO.getContactPersonLastName(),
+                applicationDTO.getContactPersonEmail(),
+                applicationDTO.getJobSource(),
+                applicationDTO.getJobPostingUrl(),
+                applicationDTO.getApplicationMethod(),
+                applicationDTO.getApplicationPortalUrl(),
+                applicationDTO.getNotes(),
+                applicationDTO.getUploadedDocuments()
         );
         applicationRepo.save(newApplication);
         return applicationRepo.findById(newApplication.id()).orElseThrow();
@@ -41,7 +59,25 @@ public class ApplicationService {
         ApplicationModel updatedApplication = new ApplicationModel(
                 existingApplication.id(),
                 updatedApplicationDTO.getCompanyName(),
-                updatedApplicationDTO.getStatus()
+                updatedApplicationDTO.getStatus(),
+                updatedApplicationDTO.getApplicationDate(),
+                updatedApplicationDTO.getJobPostingFoundDate(),
+                updatedApplicationDTO.getApplicationEntryCreationDate(),
+                updatedApplicationDTO.getJobTitle(),
+                updatedApplicationDTO.getCompanyWebsite(),
+                updatedApplicationDTO.getCompanyEmail(),
+                updatedApplicationDTO.getCompanyStreet(),
+                updatedApplicationDTO.getCompanyHouseNumber(),
+                updatedApplicationDTO.getPhoneNumber(),
+                updatedApplicationDTO.getContactPersonFirstName(),
+                updatedApplicationDTO.getContactPersonLastName(),
+                updatedApplicationDTO.getContactPersonEmail(),
+                updatedApplicationDTO.getJobSource(),
+                updatedApplicationDTO.getJobPostingUrl(),
+                updatedApplicationDTO.getApplicationMethod(),
+                updatedApplicationDTO.getApplicationPortalUrl(),
+                updatedApplicationDTO.getNotes(),
+                updatedApplicationDTO.getUploadedDocuments()
         );
         return applicationRepo.save(updatedApplication);
     }
