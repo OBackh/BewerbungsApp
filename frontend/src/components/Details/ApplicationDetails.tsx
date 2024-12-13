@@ -35,15 +35,13 @@ export default function ApplicationDetails({toggleDetails, selectedApplication, 
                     <span className="detail-entry-value">{selectedApplication.companyHouseNumber}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Telefonnummer:</span> <span
                     className="detail-entry-value">{selectedApplication.phoneNumber}</span></p>
-                <p className="detail-entry"><span className="detail-entry-label">Vorname Ansprechpartner:</span>
-                    <span className="detail-entry-value">{selectedApplication.contactPersonFirstName}</span></p>
-                <p className="detail-entry"><span className="detail-entry-label">Nachname Ansprechpartners:</span>
-                    <span className="detail-entry-value">{selectedApplication.contactPersonLastName}</span></p>
+                <p className="detail-entry"><span className="detail-entry-label">Ansprechpartner:</span>
+                    <span className="detail-entry-value">{selectedApplication.contactPersonFirstName} {selectedApplication.contactPersonLastName}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">E-Mail des Ansprechpartners:</span>
                     <span className="detail-entry-value">{selectedApplication.contactPersonEmail}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Quelle der Stellenanzeige:</span> <span
                     className="detail-entry-value">{selectedApplication.jobSource}</span></p>
-                <p className="detail-entry"><span className="detail-entry-label">URL der Stellenanzeige:</span> <span
+                <p className="detail-entry"><span className="detail-entry-label">URL Stellenanzeige:</span> <span
                     className="detail-entry-value">{selectedApplication.jobPostingUrl}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Bewerbungsweg:</span> <span
                     className="detail-entry-value">{selectedApplication.applicationMethod}</span></p>

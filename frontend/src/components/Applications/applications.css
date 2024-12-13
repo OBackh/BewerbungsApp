@@ -172,9 +172,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
     margin: 0;
-    max-height: 380px;
     overflow-y: auto;
     padding-top: 5rem;
 }

@@ -18,8 +18,9 @@
 
 .details-content {
     overflow-y: auto;
-    display: flex;
-    flex-wrap: wrap;
+    _display: flex;
+    _flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 5px;
 }
 
