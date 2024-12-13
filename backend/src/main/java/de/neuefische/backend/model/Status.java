@@ -1,6 +1,5 @@
 package de.neuefische.backend.model;
 
-public class Enum {
     public enum Status {
         PLANNED,
         CREATED,
@@ -13,4 +12,3 @@ public class Enum {
         WITHDRAWN,
         ARCHIVED
     }
-}

@@ -13,7 +13,27 @@ export default function App() {
     const [reloadKey, setReloadKey] = useState<number>(0);
     const [formData, setFormData] = useState<{
         applicationId?: string;
-        initialData: { companyName: string; status: string };
+        initialData: {
+            companyName: string;
+            status: string;
+            applicationDate: string; // Datum der Bewerbung
+            jobPostingFoundDate: string; // Datum der Stellenausschreibung
+            applicationEntryCreationDate: string; // Datum der Erstellung des Eintrags in der App
+            jobTitle: string;
+            companyWebsite: string;
+            companyEmail: string;
+            companyStreet: string;
+            companyHouseNumber: string;
+            phoneNumber: string;
+            contactPersonFirstName: string;
+            contactPersonLastName: string;
+            contactPersonEmail: string;
+            jobSource: string;
+            jobPostingUrl: string;
+            applicationMethod: string;
+            applicationPortalUrl: string;
+            notes: string;
+            uploadedDocuments: string; };
     } | null>(null);
     const [showForm, setShowForm] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -40,6 +60,24 @@ export default function App() {
             initialData: {
                 companyName: '', // Leeres Feld für Firmenname
                 status: '', // Leeres Feld für Status
+                applicationDate: '',
+                jobPostingFoundDate: '',
+                applicationEntryCreationDate: '',
+                jobTitle: '',
+                companyWebsite: '',
+                companyEmail: '',
+                companyStreet: '',
+                companyHouseNumber: '',
+                phoneNumber: '',
+                contactPersonFirstName: '',
+                contactPersonLastName: '',
+                contactPersonEmail: '',
+                jobSource: '',
+                jobPostingUrl: '',
+                applicationMethod: '',
+                applicationPortalUrl: '',
+                notes: '',
+                uploadedDocuments: ''
             },
         });
         setShowForm(true); // Formular anzeigen

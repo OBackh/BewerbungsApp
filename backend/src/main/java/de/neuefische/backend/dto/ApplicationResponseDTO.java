@@ -1,6 +1,6 @@
 package de.neuefische.backend.dto;
 
-import de.neuefische.backend.model.Enum;
+import de.neuefische.backend.model.Status;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class ApplicationResponseDTO {
     private String id;
     private String companyName;
-    private Enum.Status status;
+    private Status status;
     private LocalDate applicationDate;
     private LocalDate jobPostingFoundDate;
     private LocalDate applicationEntryCreationDate;

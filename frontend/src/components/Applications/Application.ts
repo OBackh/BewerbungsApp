@@ -4,10 +4,10 @@ export type Application = {
     id: string;
     companyName: string;
     status: ApplicationStatus;
-    jobTitle: string;
     applicationDate: string; // Datum der Bewerbung
     jobPostingFoundDate: string; // Datum der Stellenausschreibung
     applicationEntryCreationDate: string; // Datum der Erstellung des Eintrags in der App
+    jobTitle: string;
     companyWebsite: string;
     companyEmail: string;
     companyStreet: string;

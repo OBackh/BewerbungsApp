@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 public class ApplicationService {
 
     private final IdService idService;
-    public final ApplicationRepo applicationRepo;
+    private final ApplicationRepo applicationRepo;
 
     public List<ApplicationModel> getAllApplications() {
         return applicationRepo.findAll();
@@ -83,8 +83,9 @@ public class ApplicationService {
     }
 
     public void deleteApplication(String id) {
-        ApplicationModel application = applicationRepo.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Application not found with ID: " + id));
-        applicationRepo.delete(application);
+        if (!applicationRepo.existsById(id)) {
+            throw new NoSuchElementException("Application not found with ID: " + id);
+        }
+        applicationRepo.deleteById(id);
     }
 }

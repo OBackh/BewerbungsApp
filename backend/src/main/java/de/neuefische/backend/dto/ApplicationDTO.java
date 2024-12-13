@@ -1,6 +1,6 @@
 package de.neuefische.backend.dto;
 
-import de.neuefische.backend.model.Enum.Status;
+import de.neuefische.backend.model.Status;
 import lombok.*;
 
 import java.time.LocalDate;
