@@ -174,7 +174,9 @@
 
 .table-application-list {
     border-collapse: collapse;
-    width: 85vw;
+    position: relative;
+    width: 60vw;
+    _height: 100%;
     overflow: hidden;
 }
 

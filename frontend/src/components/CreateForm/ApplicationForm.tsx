@@ -95,21 +95,28 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         />
                         </div>
                             <div>
-                        <select id="status"
-                                required
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                        >
-                            <option>Status der Bewerbung</option>
-                            <option>ACTIVE</option>
-                            <option>SUCCESSFUL</option>
-                            <option>REJECTED</option>
-                        </select>
+                                <select id="status"
+                                        required
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                >
+                                    <option value="" disabled>Status der Bewerbung</option>
+                                    <option value="GEPLANT">GEPLANT</option>
+                                    <option value="ERSTELLT">ERSTELLT</option>
+                                    <option value="GESENDET">GESENDET</option>
+                                    <option value="BESTÄTIGT">BESTÄTIGT</option>
+                                    <option value="IN_PRÜFUNG">IN PRÜFUNG</option>
+                                    <option value="EINLADUNG">EINLADUNG</option>
+                                    <option value="ZUSAGE">ZUSAGE</option>
+                                    <option value="ABGESAGT">ABGESAGT</option>
+                                    <option value="ZURÜCKGEZOGEN">ZURÜCKGEZOGEN</option>
+                                    <option value="ARCHIVIERT">ARCHIVIERT</option>
+                                </select>
                             </div>
                     </div>
                     <div className="form-buttons">
                         {applicationId ? <button type="button" className="button-delete" onClick={handleDelete}>Eintrag
-                            Löschen</button> : null }
+                            Löschen</button> : null}
 
                         <button type="button" onClick={closeForm}>Abbrechen</button>
                         <button type="submit" className="button-save">Speichern</button>

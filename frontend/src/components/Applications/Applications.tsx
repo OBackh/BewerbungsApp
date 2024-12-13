@@ -1,10 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Application } from "./Application.ts";
 import './applications.css';
-import reloadIcon from '../../assets/reload.svg';
-import addIcon from '../../assets/add.svg';
-import ApplicationForm from "../CreateForm/ApplicationForm.tsx";
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 
@@ -13,183 +10,235 @@ function wait(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export default function Applications() {
-    const [applications, setApplications] = useState<Application[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [reloadKey, setReloadKey] = useState<number>(0);
-    const [reloadRotate, setReloadRotate] = useState<boolean>(false);
-    const [addRotate, setAddRotate] = useState<boolean>(false);
-    const [showForm, setShowForm] = useState<boolean>(false);
-    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
-    const [formData, setFormData] = useState<{
+type ApplicationsProps = {
+    readonly reloadKey: number;
+    readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
-        initialData: { companyName: string; status: string };
-    } | null>(null);
+        initialData: {
+            companyName: string;
+            status: string;
+            jobTitle: string;
+            applicationDate: string;
+            jobPostingFoundDate: string;
+            applicationEntryCreationDate: string;
+            companyWebsite: string;
+            companyEmail: string;
+            companyStreet: string;
+            companyHouseNumber: string;
+            phoneNumber: string;
+            contactPersonFirstName: string;
+            contactPersonLastName: string;
+            contactPersonEmail: string;
+            jobSource: string;
+            jobPostingUrl: string;
+            applicationMethod: string;
+            applicationPortalUrl: string;
+            notes: string;
+            uploadedDocuments: string; };
+    } | null>>;
+    readonly setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+    readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    readonly loading: boolean
+    readonly setSelectedApplication: React.Dispatch<React.SetStateAction<Application | null>>;
+    readonly selectedApplication: Application | null;
 
-    async function fetchApplications() {
-        setLoading(true);
+};
 
-        // Lade Daten und verzögere gleichzeitig um mindestens 2 Sekunden
-        await Promise.all([
-            wait(1200), // Wartezeit von mindestens 2 Sekunden
-            axios.get<Application[]>("api/application")
-                .then((response) => {
-                    setApplications(response.data); // Daten setzen
-                })
-                .catch((error) => {
-                    console.error("Error fetching applications:", error);
-                })
-        ]);
-
-        setLoading(false); // Spinner ausblenden
-    }
+export default function Applications({
+                                        reloadKey,
+                                        setFormData,
+                                        setShowForm,
+                                        setLoading,
+                                        loading,
+                                        setSelectedApplication,
+                                        selectedApplication
+                                     }: ApplicationsProps) {
+    const [applications, setApplications] = useState<Application[]>([]);
 
     useEffect(() => {
+        let isMounted = true;
+
+        async function fetchApplications() {
+            setLoading(true);
+
+            await Promise.all([
+                wait(1200),
+                axios.get<Application[]>("api/application")
+                    .then((response) => {
+                        if (isMounted) setApplications(response.data);
+                    })
+                    .catch((error) => {
+                        if (isMounted) console.error("Error fetching applications:", error);
+                    }),
+            ]);
+
+            if (isMounted) setLoading(false);
+        }
+
         fetchApplications();
-    }, [reloadKey]);
+
+        return () => {
+            isMounted = false; // Cleanup beim Unmount
+        };
+    }, [reloadKey, setLoading]);
+
+    // Debugging-Effekt: Überwacht den Zustand von "selectedApplication"
+    useEffect(() => {
+        console.log("Selected application:", selectedApplication);
+    }, [selectedApplication]); // Führt die Funktion aus, wenn sich "selectedApplication" ändert
 
     if (loading) {
-        return <LoadingSpinner />;
+        return <LoadingSpinner/>;
     }
 
-    function handleReload(){
-        setReloadRotate(true);
-        setReloadKey(prevKey => prevKey + 1);
 
-        setTimeout(() => {
-            setReloadRotate(false);
-        }, 250);
-    }
-
-    function handleAdd() {
-        setAddRotate(true);
-
-        setTimeout(() => {
-            setAddRotate(false);
-        }, 250);
-        setFormData({
-            applicationId: undefined, // Keine ID, da es sich um eine neue Bewerbung handelt
-            initialData: {
-                companyName: '', // Leeres Feld für Firmenname
-                status: '', // Leeres Feld für Status
-            },
-        });
-        setShowForm(true); // Formular anzeigen
-    }
-
-    function handleToggleDetails(selectedApplication: Application) {
-        setSelectedApplication(selectedApplication);
-    }
+    const handleToggleDetails = (application: Application) => {
+        if (selectedApplication?.id === application.id) {
+            setSelectedApplication(null); // Detailansicht schließen
+        } else {
+            setSelectedApplication(application); // Detailansicht öffnen
+        }
+    };
 
     function handleEdit(application: Application) {
-        setSelectedApplication(null);
         setFormData({
             applicationId: application.id,
             initialData: {
                 companyName: application.companyName,
                 status: application.status,
+                jobTitle: application.jobTitle,
+                applicationDate: application.applicationDate,
+                jobPostingFoundDate: application.jobPostingFoundDate,
+                applicationEntryCreationDate: application.applicationEntryCreationDate,
+                companyWebsite: application.companyWebsite,
+                companyEmail: application.companyEmail,
+                companyStreet: application.companyStreet,
+                companyHouseNumber: application.companyHouseNumber,
+                phoneNumber: application.phoneNumber,
+                contactPersonFirstName: application.contactPersonFirstName,
+                contactPersonLastName: application.contactPersonLastName,
+                contactPersonEmail: application.contactPersonEmail,
+                jobSource: application.jobSource,
+                jobPostingUrl: application.jobPostingUrl,
+                applicationMethod: application.applicationMethod,
+                applicationPortalUrl: application.applicationPortalUrl,
+                notes: application.notes,
+                uploadedDocuments: application.uploadedDocuments
             },
         });
         setShowForm(true);
+        setSelectedApplication(null);
     }
 
+    // Funktion zur Übersetzung der Statuswerte
+    function translateStatus(status: string): string {
+        const statusMap: { [key: string]: string } = {
+            PLANNED: "Geplant",
+            CREATED: "Erstellt",
+            SENT: "Gesendet",
+            CONFIRMED: "Bestätigt",
+            UNDER_REVIEW: "In Prüfung",
+            INVITATION: "Einladung",
+            ACCEPTED: "Zusage",
+            REJECTED: "Abgesagt",
+            WITHDRAWN: "Zurückgezogen",
+            ARCHIVED: "Archiviert"
+        };
 
+        return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
+    }
 
-    return (
-            <div className="content">
-                <table className="table-application-list">
-                    <thead>
-                    <tr>
-                        <th><span>Status</span></th>
-                        <th><span>Firmenname</span></th>
-                        <th><span>Bewerbungs-ID</span></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {applications.map((application) => (
-                        <tr className="apply-card" key={application.id} onClick={() => handleToggleDetails(application)}>
+   return (
+        <div className="content">
+            {/* Zeigt das Overlay nur an, wenn loading false ist */}
+            {selectedApplication && !loading && (
+                <div
+                    className="overlay-spinner"
+                    onClick={() => setSelectedApplication(null)}
+                    role="presentation"
+                    aria-label="Close details"
+                    onKeyDown={(e) => {
+                        if (e.key === "Escape") {
+                            setSelectedApplication(null);
+                        }
+                    }}
+                >
+                    <div
+                        className="application-details-container"
+                        onClick={(e) => e.stopPropagation()}
+                        role="presentation"
+                        aria-hidden="true"
+                    >
+                        <ApplicationDetails
+                            toggleDetails={() => setSelectedApplication(null)}
+                            selectedApplication={selectedApplication}
+                            onEdit={handleEdit}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <table className="table-application-list">
+                <thead>
+                <tr>
+                    <th><span>Nr.</span></th>
+                    <th><span>Status</span></th>
+                    <th><span>Firmenname</span></th>
+                    <th><span>Stellenbezeichnung</span></th>
+                    <th><span>Datum der Bewerbung</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                {applications
+                    .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
+                    .sort((a, b) => {
+                        const order = [
+                            "PLANNED",
+                            "CREATED",
+                            "SENT",
+                            "CONFIRMED",
+                            "UNDER_REVIEW",
+                            "INVITATION",
+                            "ACCEPTED",
+                            "REJECTED",
+                            "WITHDRAWN",
+                            "ARCHIVED"
+                        ]; // Definierte Reihenfolge für Status
+                        const statusComparison = order.indexOf(a.status) - order.indexOf(b.status);
+
+                        if (statusComparison !== 0) {
+                            return statusComparison; // Sortiere zuerst nach Status
+                        }
+
+                        // Wenn der Status gleich ist, alphabetisch nach Firmenname sortieren
+                        return a.companyName.localeCompare(b.companyName);
+                    })
+                    .map((application, index) => (
+                        <tr
+                            className={`apply-card ${application.status}`}
+                            key={application.id}
+                            onClick={() => handleToggleDetails(application)}
+                        >
                             <td>
-                                <span className={`status-typo ${application.status}`}>{application.status}</span>
+                                <span>{index + 1}</span>
                             </td>
-
+                            <td>
+                                <span
+                                    className={`status-typo ${application.status}`}>{translateStatus(application.status)}</span>
+                            </td>
                             <td>
                                 <span>{application.companyName}</span>
                             </td>
-
-
                             <td>
-                                <span>{application.id}</span>
+                                <span>{application.jobTitle}</span>
                             </td>
-
+                            <td>
+                                <span>{application.applicationDate}</span>
+                            </td>
                         </tr>
-                    ))
-                    }
-                    </tbody>
-                </table>
-            <div>
-<span>
-                <button className="reload-button" onClick={handleReload}>
-                    <img
-                        src={reloadIcon}
-                        alt="Reload"
-                        width="24"
-                        height="24"
-                        className={reloadRotate ? 'rotate' : ''}
-                    />
-                </button>
-    <button className="add-button" onClick={handleAdd}>
-                    <img
-                        src={addIcon}
-                        alt="Add new Apply"
-                        width="24"
-                        height="24"
-                        className={addRotate ? 'rotate' : ''}
-                    />
-                </button>
-      </span>
-
-            </div>
-            <div>
-                {showForm && formData && (
-                    <div className="overlay">
-                        <div>
-                            <ApplicationForm
-                                closeForm={() => {
-                                    setShowForm(false);
-                                    setFormData(null); // Formular-Daten zurücksetzen
-                                }}
-                                handleReload={handleReload}
-                                applicationId={formData.applicationId}
-                                initialData={formData.initialData}
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div>
-                {selectedApplication && (
-                    <div className="overlay"
-                         onClick={() => setSelectedApplication(null)}
-                         role="presentation" // beschreibt, dass es visuell, aber nicht semantisch interaktiv ist
-                         aria-label="Close details" // beschreibt die Funktion für Screenreader
-                         onKeyDown={(e) => {
-                            if (e.key === "Escape") {
-                                setSelectedApplication(null);
-                                }
-                        }}>
-                        <div className="application-details-container"
-                             onClick={(e) => e.stopPropagation()}
-                             role="presentation"
-                             aria-hidden="true">
-                            <ApplicationDetails
-                                toggleDetails={() => setSelectedApplication(null)}
-                                selectedApplication={selectedApplication}
-                                onEdit={handleEdit}
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
-            </div>
-    );
+                    ))}
+                </tbody>
+            </table>
+        </div>
+   );
 }
