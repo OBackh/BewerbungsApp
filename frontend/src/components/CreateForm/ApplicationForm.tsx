@@ -108,7 +108,9 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                             </div>
                     </div>
                     <div className="form-buttons">
-                        <button type="button" className="button-delete" onClick={handleDelete}>Eintrag Löschen</button>
+                        {applicationId ? <button type="button" className="button-delete" onClick={handleDelete}>Eintrag
+                            Löschen</button> : null }
+
                         <button type="button" onClick={closeForm}>Abbrechen</button>
                         <button type="submit" className="button-save">Speichern</button>
                     </div>
