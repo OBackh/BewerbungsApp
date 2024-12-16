@@ -20,6 +20,7 @@ export default function App() {
             jobPostingFoundDate: string; // Datum der Stellenausschreibung
             applicationEntryCreationDate: string; // Datum der Erstellung des Eintrags in der App
             jobTitle: string;
+            jobTitleFree: string;
             companyWebsite: string;
             companyEmail: string;
             companyStreet: string;
@@ -29,15 +30,19 @@ export default function App() {
             contactPersonLastName: string;
             contactPersonEmail: string;
             jobSource: string;
+            jobSourceFree: string;
             jobPostingUrl: string;
             applicationMethod: string;
             applicationPortalUrl: string;
             notes: string;
-            uploadedDocuments: string; };
+            uploadedDocuments: string;
+            isFavorite: string
+        };
     } | null>(null);
     const [showForm, setShowForm] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+
 
     const disableButtons = loading || showForm || selectedApplication !== null;
 
@@ -58,12 +63,13 @@ export default function App() {
         setFormData({
             applicationId: undefined, // Keine ID, da es sich um eine neue Bewerbung handelt
             initialData: {
-                companyName: '', // Leeres Feld für Firmenname
-                status: '', // Leeres Feld für Status
+                companyName: '',
+                status: '',
                 applicationDate: '',
                 jobPostingFoundDate: '',
                 applicationEntryCreationDate: '',
                 jobTitle: '',
+                jobTitleFree: '',
                 companyWebsite: '',
                 companyEmail: '',
                 companyStreet: '',
@@ -73,15 +79,19 @@ export default function App() {
                 contactPersonLastName: '',
                 contactPersonEmail: '',
                 jobSource: '',
+                jobSourceFree: '',
                 jobPostingUrl: '',
                 applicationMethod: '',
                 applicationPortalUrl: '',
                 notes: '',
-                uploadedDocuments: ''
+                uploadedDocuments: '',
+                isFavorite: 'no',
             },
         });
         setShowForm(true); // Formular anzeigen
     }
+
+
 
     return (
 
@@ -92,7 +102,7 @@ export default function App() {
                 <Route path="/" element={
                     <Applications
                         reloadKey={reloadKey}
-                        setFormData={setFormData} // Zum Bearbeiten von Bewerbungen
+                        setFormData={setFormData}
                         setShowForm={setShowForm}
                         setLoading={setLoading}
                         loading={loading}

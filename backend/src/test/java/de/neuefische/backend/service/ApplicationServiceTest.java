@@ -32,6 +32,7 @@ class ApplicationServiceTest {
                         LocalDate.of(2023, 11, 15),
                         LocalDate.of(2023, 12, 2),
                         "Software Developer",
+                        "",
                         "https://firma1.de",
                         "info@firma1.de",
                         "Musterstraße",
@@ -41,11 +42,13 @@ class ApplicationServiceTest {
                         "Mustermann",
                         "max.mustermann@firma1.de",
                         "LinkedIn",
+                        "",
                         "https://linkedin.com/job/12345",
                         "EMAIL",
                         "https://bewerbungsportal.firma1.de",
                         "Interessante Stelle mit tollen Aufgaben",
-                        "bewerbung_firma1.pdf"
+                        "bewerbung_firma1.pdf",
+                        "no"
                 ),
                 new ApplicationModel(
                         "abcd246",
@@ -55,6 +58,7 @@ class ApplicationServiceTest {
                         LocalDate.of(2023, 10, 10),
                         LocalDate.of(2023, 10, 21),
                         "Frontend Developer",
+                        "",
                         "https://firma2.de",
                         "kontakt@firma2.de",
                         "Hauptstraße",
@@ -64,11 +68,13 @@ class ApplicationServiceTest {
                         "Musterfrau",
                         "anna.musterfrau@firma2.de",
                         "XING",
+                        "",
                         "https://xing.com/job/67890",
                         "WEBSITE",
                         "https://bewerbungsportal.firma2.de",
                         "Gute Perspektiven und spannende Projekte",
-                        "bewerbung_firma2.pdf"
+                        "bewerbung_firma2.pdf",
+                        "no"
                 )
         );
         when(mockRepo.findAll()).thenReturn(testdata);
@@ -98,6 +104,7 @@ class ApplicationServiceTest {
                 LocalDate.of(2023, 11, 15),
                 LocalDate.of(2023, 12, 2),
                 "Software Developer",
+                "",
                 "https://firma1.de",
                 "info@firma1.de",
                 "Musterstraße",
@@ -107,11 +114,13 @@ class ApplicationServiceTest {
                 "Mustermann",
                 "max.mustermann@firma1.de",
                 "LinkedIn",
+                "",
                 "https://linkedin.com/job/12345",
                 "EMAIL",
                 "https://bewerbungsportal.firma1.de",
                 "Interessante Stelle mit tollen Aufgaben",
-                "bewerbung_firma1.pdf"
+                "bewerbung_firma1.pdf",
+                "no"
         );
         when(mockRepo.findById(applicationId)).thenReturn(Optional.of(application));
 
@@ -129,6 +138,7 @@ class ApplicationServiceTest {
         assertEquals(LocalDate.of(2023, 11, 15), actual.jobPostingFoundDate(), "Das Datum der Stellenausschreibung stimmt nicht überein");
         assertEquals(LocalDate.of(2023, 12, 2), actual.applicationEntryCreationDate(), "Das Datum der Erstellung des Eintrags stimmt nicht überein");
         assertEquals("Software Developer", actual.jobTitle(), "Die Stellenbezeichnung stimmt nicht überein");
+        assertEquals("", actual.jobTitleFree(), "Die Stellenbezeichnung stimmt nicht überein");
         assertEquals("https://firma1.de", actual.companyWebsite(), "Die Website der Firma stimmt nicht überein");
         assertEquals("info@firma1.de", actual.companyEmail(), "Die E-Mail der Firma stimmt nicht überein");
         assertEquals("Musterstraße", actual.companyStreet(), "Die Straße der Firma stimmt nicht überein");
@@ -138,11 +148,14 @@ class ApplicationServiceTest {
         assertEquals("Mustermann", actual.contactPersonLastName(), "Der Nachname der Kontaktperson stimmt nicht überein");
         assertEquals("max.mustermann@firma1.de", actual.contactPersonEmail(), "Die E-Mail der Kontaktperson stimmt nicht überein");
         assertEquals("LinkedIn", actual.jobSource(), "Die Quelle der Stellenausschreibung stimmt nicht überein");
+        assertEquals("", actual.jobSourceFree(), "Die Quelle der frei gewählten Stellenausschreibung stimmt nicht überein");
         assertEquals("https://linkedin.com/job/12345", actual.jobPostingUrl(), "Die URL der Stellenausschreibung stimmt nicht überein");
         assertEquals("EMAIL", actual.applicationMethod(), "Die Bewerbungsart stimmt nicht überein");
         assertEquals("https://bewerbungsportal.firma1.de", actual.applicationPortalUrl(), "Die URL des Bewerbungsportals stimmt nicht überein");
         assertEquals("Interessante Stelle mit tollen Aufgaben", actual.notes(), "Die Notizen stimmen nicht überein");
         assertEquals("bewerbung_firma1.pdf", actual.uploadedDocuments(), "Die hochgeladenen Dokumente stimmen nicht überein");
+        assertEquals("no", actual.isFavorite(), "Der Favoritenstatus stimmt nicht überein");
+
 
         //VERIFY
         verify(mockRepo).findById(applicationId);
@@ -179,6 +192,7 @@ class ApplicationServiceTest {
                 LocalDate.of(2023, 11, 15),
                 LocalDate.of(2023, 12, 2),
                 "Software Developer",
+                "",
                 "https://firma1.de",
                 "info@firma1.de",
                 "Musterstraße",
@@ -188,11 +202,13 @@ class ApplicationServiceTest {
                 "Mustermann",
                 "max.mustermann@firma1.de",
                 "LinkedIn",
+                "",
                 "https://linkedin.com/job/12345",
                 "EMAIL",
                 "https://bewerbungsportal.firma1.de",
                 "Interessante Stelle mit tollen Aufgaben",
-                "bewerbung_firma1.pdf"
+                "bewerbung_firma1.pdf",
+                "no"
         );
 
         ApplicationModel newApplication = new ApplicationModel(
@@ -203,6 +219,7 @@ class ApplicationServiceTest {
                 LocalDate.of(2023, 11, 15),
                 LocalDate.of(2023, 12, 2),
                 "Software Developer",
+                "",
                 "https://firma1.de",
                 "info@firma1.de",
                 "Musterstraße",
@@ -212,11 +229,13 @@ class ApplicationServiceTest {
                 "Mustermann",
                 "max.mustermann@firma1.de",
                 "LinkedIn",
+                "",
                 "https://linkedin.com/job/12345",
                 "EMAIL",
                 "https://bewerbungsportal.firma1.de",
                 "Interessante Stelle mit tollen Aufgaben",
-                "bewerbung_firma1.pdf"
+                "bewerbung_firma1.pdf",
+                "no"
         );
 
 
@@ -239,6 +258,7 @@ class ApplicationServiceTest {
         assertEquals(LocalDate.of(2023, 11, 15), actual.jobPostingFoundDate(), "Das Datum der Stellenausschreibung stimmt nicht überein");
         assertEquals(LocalDate.of(2023, 12, 2), actual.applicationEntryCreationDate(), "Das Datum der Erstellung des Eintrags stimmt nicht überein");
         assertEquals("Software Developer", actual.jobTitle(), "Die Stellenbezeichnung stimmt nicht überein");
+        assertEquals("", actual.jobTitleFree(), "Die Stellenbezeichnung stimmt nicht überein");
         assertEquals("https://firma1.de", actual.companyWebsite(), "Die Website der Firma stimmt nicht überein");
         assertEquals("info@firma1.de", actual.companyEmail(), "Die E-Mail der Firma stimmt nicht überein");
         assertEquals("Musterstraße", actual.companyStreet(), "Die Straße der Firma stimmt nicht überein");
@@ -248,6 +268,7 @@ class ApplicationServiceTest {
         assertEquals("Mustermann", actual.contactPersonLastName(), "Der Nachname der Kontaktperson stimmt nicht überein");
         assertEquals("max.mustermann@firma1.de", actual.contactPersonEmail(), "Die E-Mail der Kontaktperson stimmt nicht überein");
         assertEquals("LinkedIn", actual.jobSource(), "Die Quelle der Stellenausschreibung stimmt nicht überein");
+        assertEquals("", actual.jobSourceFree(), "Die Quelle der frei gewählten Stellenausschreibung stimmt nicht überein");
         assertEquals("https://linkedin.com/job/12345", actual.jobPostingUrl(), "Die URL der Stellenausschreibung stimmt nicht überein");
         assertEquals("EMAIL", actual.applicationMethod(), "Die Bewerbungsart stimmt nicht überein");
         assertEquals("https://bewerbungsportal.firma1.de", actual.applicationPortalUrl(), "Die URL des Bewerbungsportals stimmt nicht überein");

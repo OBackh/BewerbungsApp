@@ -4,10 +4,11 @@ export type Application = {
     id: string;
     companyName: string;
     status: ApplicationStatus;
-    applicationDate: string; // Datum der Bewerbung
-    jobPostingFoundDate: string; // Datum der Stellenausschreibung
-    applicationEntryCreationDate: string; // Datum der Erstellung des Eintrags in der App
+    applicationDate: string;
+    jobPostingFoundDate: string;
+    applicationEntryCreationDate: string;
     jobTitle: string;
+    jobTitleFree: string;
     companyWebsite: string;
     companyEmail: string;
     companyStreet: string;
@@ -17,9 +18,11 @@ export type Application = {
     contactPersonLastName: string;
     contactPersonEmail: string;
     jobSource: string;
+    jobSourceFree: string;
     jobPostingUrl: string;
     applicationMethod: string;
     applicationPortalUrl: string;
     notes: string;
-    uploadedDocuments: string; // URL zu hochgeladenen Dokumenten
+    uploadedDocuments: string;
+    isFavorite: string;
 };

@@ -16,6 +16,7 @@ public class ApplicationResponseDTO {
     private LocalDate jobPostingFoundDate;
     private LocalDate applicationEntryCreationDate;
     private String jobTitle;
+    private String jobTitleFree;
     private String companyWebsite;
     private String companyEmail;
     private String companyStreet;
@@ -25,9 +26,10 @@ public class ApplicationResponseDTO {
     private String contactPersonLastName;
     private String contactPersonEmail;
     private String jobSource;
+    private String jobSourceFree;
     private String jobPostingUrl;
     private String applicationMethod;
     private String applicationPortalUrl;
     private String notes;
-    private String uploadedDocuments;
+    private String isFavorite;
     }

@@ -1,11 +1,8 @@
 .apply-card {
-    _background-color: #ddd;
-    _border: 2px solid black;
     cursor: pointer;
 }
 
 .apply-card:hover {
-    _border: 2px solid #f00;
     background-color: #535bf2;
 }
 
@@ -148,7 +145,6 @@
 }
 
 .reload-button, .add-button {
-
     z-index: 27;
 }
 
@@ -163,6 +159,11 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+.button-favorite {
+    border: none;
+    background-color: #00000000;
 }
 
 .content {
@@ -267,7 +268,7 @@ body {
     height: calc(100vh - 7.5em);
     background-image: url('../../../public/blackboard-2618793_1920.jpg');
     background-size: 100% auto ;
-    background-position: center 35px ;
+    background-position: center calc(calc(100vw / 35)) ;
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-color: #e8c8a3;

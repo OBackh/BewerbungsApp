@@ -29,6 +29,7 @@ public class ApplicationService {
                 applicationDTO.getJobPostingFoundDate(),
                 applicationDTO.getApplicationEntryCreationDate(),
                 applicationDTO.getJobTitle(),
+                applicationDTO.getJobTitleFree(),
                 applicationDTO.getCompanyWebsite(),
                 applicationDTO.getCompanyEmail(),
                 applicationDTO.getCompanyStreet(),
@@ -38,11 +39,14 @@ public class ApplicationService {
                 applicationDTO.getContactPersonLastName(),
                 applicationDTO.getContactPersonEmail(),
                 applicationDTO.getJobSource(),
+                applicationDTO.getJobSourceFree(),
                 applicationDTO.getJobPostingUrl(),
                 applicationDTO.getApplicationMethod(),
                 applicationDTO.getApplicationPortalUrl(),
                 applicationDTO.getNotes(),
-                applicationDTO.getUploadedDocuments()
+                applicationDTO.getUploadedDocuments(),
+                applicationDTO.getIsFavorite()
+
         );
         applicationRepo.save(newApplication);
         return applicationRepo.findById(newApplication.id()).orElseThrow();
@@ -64,6 +68,7 @@ public class ApplicationService {
                 updatedApplicationDTO.getJobPostingFoundDate(),
                 updatedApplicationDTO.getApplicationEntryCreationDate(),
                 updatedApplicationDTO.getJobTitle(),
+                updatedApplicationDTO.getJobTitleFree(),
                 updatedApplicationDTO.getCompanyWebsite(),
                 updatedApplicationDTO.getCompanyEmail(),
                 updatedApplicationDTO.getCompanyStreet(),
@@ -73,11 +78,13 @@ public class ApplicationService {
                 updatedApplicationDTO.getContactPersonLastName(),
                 updatedApplicationDTO.getContactPersonEmail(),
                 updatedApplicationDTO.getJobSource(),
+                updatedApplicationDTO.getJobSourceFree(),
                 updatedApplicationDTO.getJobPostingUrl(),
                 updatedApplicationDTO.getApplicationMethod(),
                 updatedApplicationDTO.getApplicationPortalUrl(),
                 updatedApplicationDTO.getNotes(),
-                updatedApplicationDTO.getUploadedDocuments()
+                updatedApplicationDTO.getUploadedDocuments(),
+                updatedApplicationDTO.getIsFavorite()
         );
         return applicationRepo.save(updatedApplication);
     }

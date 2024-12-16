@@ -18,10 +18,11 @@ type ApplicationsProps = {
         initialData: {
             companyName: string;
             status: string;
-            jobTitle: string;
             applicationDate: string;
             jobPostingFoundDate: string;
             applicationEntryCreationDate: string;
+            jobTitle: string;
+            jobTitleFree: string;
             companyWebsite: string;
             companyEmail: string;
             companyStreet: string;
@@ -31,11 +32,14 @@ type ApplicationsProps = {
             contactPersonLastName: string;
             contactPersonEmail: string;
             jobSource: string;
+            jobSourceFree: string;
             jobPostingUrl: string;
             applicationMethod: string;
             applicationPortalUrl: string;
             notes: string;
-            uploadedDocuments: string; };
+            uploadedDocuments: string;
+            isFavorite: string
+        };
     } | null>>;
     readonly setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
     readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -85,13 +89,12 @@ export default function Applications({
 
     // Debugging-Effekt: Überwacht den Zustand von "selectedApplication"
     useEffect(() => {
-        console.log("Selected application:", selectedApplication);
+        console.log("selectedApplication (useEffect): ", selectedApplication);
     }, [selectedApplication]); // Führt die Funktion aus, wenn sich "selectedApplication" ändert
 
     if (loading) {
         return <LoadingSpinner/>;
     }
-
 
     const handleToggleDetails = (application: Application) => {
         if (selectedApplication?.id === application.id) {
@@ -99,18 +102,35 @@ export default function Applications({
         } else {
             setSelectedApplication(application); // Detailansicht öffnen
         }
+        console.log("selectedApplication (handleToggleDetails): ", selectedApplication)
     };
 
-    function handleEdit(application: Application) {
+    const handleToggleFavorite = (applicationId: string) => {
+        setApplications((prevApplications) =>
+            prevApplications.map((application) =>
+                application.id === applicationId
+                    ? {
+                        ...application,
+                        isFavorite: application.isFavorite === "yes" ? "no" : "yes",
+                    }
+                    : application
+            )
+        )
+
+
+    }
+
+        function handleEdit(application: Application) {
         setFormData({
             applicationId: application.id,
             initialData: {
                 companyName: application.companyName,
                 status: application.status,
-                jobTitle: application.jobTitle,
                 applicationDate: application.applicationDate,
                 jobPostingFoundDate: application.jobPostingFoundDate,
                 applicationEntryCreationDate: application.applicationEntryCreationDate,
+                jobTitle: application.jobTitle,
+                jobTitleFree: application.jobTitleFree,
                 companyWebsite: application.companyWebsite,
                 companyEmail: application.companyEmail,
                 companyStreet: application.companyStreet,
@@ -120,11 +140,13 @@ export default function Applications({
                 contactPersonLastName: application.contactPersonLastName,
                 contactPersonEmail: application.contactPersonEmail,
                 jobSource: application.jobSource,
+                jobSourceFree: application.jobSourceFree,
                 jobPostingUrl: application.jobPostingUrl,
                 applicationMethod: application.applicationMethod,
                 applicationPortalUrl: application.applicationPortalUrl,
                 notes: application.notes,
-                uploadedDocuments: application.uploadedDocuments
+                uploadedDocuments: application.uploadedDocuments,
+                isFavorite: application.isFavorite
             },
         });
         setShowForm(true);
@@ -219,26 +241,44 @@ export default function Applications({
                         <tr
                             className={`apply-card ${application.status}`}
                             key={application.id}
-                            onClick={() => handleToggleDetails(application)}
+
                         >
-                            <td>
+                            <td onClick={() => handleToggleDetails(application)}>
                                 <span>{index + 1}</span>
                             </td>
-                            <td>
+                            <td onClick={() => handleToggleDetails(application)}>
                                 <span
                                     className={`status-typo ${application.status}`}>{translateStatus(application.status)}</span>
                             </td>
-                            <td>
+                            <td onClick={() => handleToggleDetails(application)}>
                                 <span>{application.companyName}</span>
                             </td>
-                            <td>
-                                <span>{application.jobTitle}</span>
+                            <td onClick={() => handleToggleDetails(application)}>
+                                <span>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</span>
                             </td>
-                            <td>
+                            <td onClick={() => handleToggleDetails(application)} onKeyDown={(e) => {
+                                e.preventDefault();
+                            }
+                            }>
                                 <span>{application.applicationDate}</span>
                             </td>
                             <td>
-                                <span><MdFavorite className="heart"/><MdFavoriteBorder className="heart"/></span>
+                                <button className="button-favorite"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleToggleFavorite(application.id);
+                                    }}
+                                        onKeyDown={(e) => {
+                                            e.preventDefault(); // Verhindert die Standardaktion, falls nötig
+                                        }}
+
+                                >
+                                    {application.isFavorite === "yes" ? (
+                                        <MdFavorite className="heart"/>
+                                    ) : (
+                                        <MdFavoriteBorder className="heart"/>
+                                    )}
+                                </button>
                             </td>
                         </tr>
                     ))}

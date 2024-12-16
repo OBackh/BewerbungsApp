@@ -12,6 +12,7 @@ interface ApplicationData {
     jobPostingFoundDate: string;
     applicationEntryCreationDate: string;
     jobTitle: string;
+    jobTitleFree: string;
     companyWebsite: string;
     companyEmail: string;
     companyStreet: string;
@@ -21,16 +22,18 @@ interface ApplicationData {
     contactPersonLastName: string;
     contactPersonEmail: string;
     jobSource: string;
+    jobSourceFree: string;
     jobPostingUrl: string;
     applicationMethod: string;
     applicationPortalUrl: string;
     notes: string;
     uploadedDocuments: string;
+    isFavorite: string;
 }
 
 interface CreateFormProps {
-    readonly closeForm: () => void; // Funktion als Prop-Typ definieren
-    readonly handleReload: () => void; // Callback, wenn neue Bewerbung erstellt wurde
+    readonly closeForm: () => void;
+    readonly handleReload: () => void;
     readonly applicationId?: string;
     readonly initialData: ApplicationData;
 }
@@ -40,6 +43,9 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
     const [error, setError] = useState<string | null>(null);
     const [formData, setFormData] = useState<ApplicationData>(initialData);
 
+    console.log("InitialData: ", initialData);
+
+
     useEffect(() => {
         setFormData(initialData);
     }, [initialData]);
@@ -47,6 +53,14 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const formatDateForInput = (date: Date | string): string => {
+        const localDate = new Date(date);
+        const year = localDate.getFullYear();
+        const month = String(localDate.getMonth() + 1).padStart(2, '0');
+        const day = String(localDate.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -70,18 +84,18 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
     function handleDelete() {
         console.log("Application ID: " + applicationId);
         if (applicationId) {
-            setShowConfirm(true); // Zeige den Bestätigungsdialog an
+            setShowConfirm(true);
         } else {
             setError("Es gibt keine Bewerbung zum Löschen.");
         }
     }
 
     const handleConfirmDelete = () => {
-        setShowConfirm(false); // Bestätigungsdialog schließen
+        setShowConfirm(false);
         axios.delete(`/api/application/${applicationId}`)
             .then(() => {
-                handleReload(); // Aktualisiere die Liste nach dem Löschen
-                closeForm(); // Schließe das Formular
+                handleReload();
+                closeForm();
             })
             .catch((error) => {
                 console.error("Error deleting application:", error);
@@ -90,7 +104,43 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
     };
 
     const handleCancelDelete = () => {
-        setShowConfirm(false); // Abbrechen und Dialog schließen
+        setShowConfirm(false);
+    };
+
+    const handleJobTitleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target;
+
+        // Wenn 'other' ausgewählt wird, bleibt das benutzerdefinierte Jobtitel-Feld sichtbar
+        if (value !== 'other') {
+            // Setzt den benutzerdefinierten Jobtitel zurück, wenn eine Auswahl getroffen wird, die nicht 'other' ist
+            setFormData((prev) => ({ ...prev, jobTitle: value, jobTitleFree: '' }));
+        } else {
+            // Setzt nur den Jobtitel, wenn 'other' ausgewählt wird
+            setFormData((prev) => ({ ...prev, jobTitle: value }));
+        }
+    };
+
+    const handleCustomJobTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setFormData((prev) => ({ ...prev, jobTitleFree: value }));
+    };
+
+    const handleJobSourceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target;
+
+        // Wenn 'other' ausgewählt wird, bleibt das benutzerdefinierte Jobquelle-Feld sichtbar
+        if (value !== 'other') {
+            // Setzt die benutzerdefinierte Jobquelle zurück, wenn eine Auswahl getroffen wird, die nicht 'other' ist
+            setFormData((prev) => ({ ...prev, jobSource: value, jobSourceFree: '' }));
+        } else {
+            // Setzt nur die Jobquelle, wenn 'other' ausgewählt wird
+            setFormData((prev) => ({ ...prev, jobSource: value }));
+        }
+    };
+
+    const handleCustomJobSourceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setFormData((prev) => ({ ...prev, jobSourceFree: value }));
     };
 
     return (
@@ -140,14 +190,15 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-applicationDate">Datum der
-                                Bewerbung:&nbsp;</label>
+                            <label className="detail-entry-label" htmlFor="input-applicationDate">
+                                Datum der Bewerbung:&nbsp;
+                            </label>
                             <input
                                 className="detail-entry-value"
                                 name="applicationDate"
                                 id="input-applicationDate"
                                 type="date"
-                                value={formData.applicationDate}
+                                value={formatDateForInput(formData.applicationDate)}  // Hier wird das Datum formatiert
                                 onChange={handleInputChange}
                             />
                         </div>
@@ -160,27 +211,45 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 name="jobPostingFoundDate"
                                 id="input-jobPostingFoundDate"
                                 type="date"
-                                value={formData.jobPostingFoundDate}
+                                value={formatDateForInput(formData.jobPostingFoundDate)}
                                 onChange={handleInputChange}
                             />
                         </div>
 
                         <div className="detail-entry">
                             <label className="detail-entry-label" htmlFor="input-jobTitle">Jobtitel:&nbsp;</label>
-                            <input
+                            <select
                                 className="detail-entry-value"
-                                name="jobTitle"
                                 id="input-jobTitle"
-                                type="text"
-                                placeholder="Jobtitel"
+                                name="jobTitle"
                                 value={formData.jobTitle}
-                                onChange={handleInputChange}
-                            />
+                                onChange={handleJobTitleChange}
+                            >
+                                <option value="">Bitte wählen ...</option>
+                                <option value="Junior Fullstack Entwickler">Junior Fullstack Entwickler</option>
+                                <option value="Webentwickler">Webentwickler</option>
+                                <option value="Java Entwickler">Java Entwickler</option>
+                                <option value="Frontend Entwickler">Frontend Entwickler</option>
+                                <option value="Backend Entwickler">Backend Entwickler</option>
+                                <option value="Fullstack Entwickler">Fullstack Entwickler</option>
+                                <option value="other">Andere</option>
+                            </select>
+
+                            {formData.jobTitle === 'other' && (
+                                <input
+                                    className="detail-entry-value"
+                                    type="text"
+                                    id="input-custom-jobTitle"
+                                    name="customJobTitle"
+                                    placeholder="Jobtitel"
+                                    value={formData.jobTitleFree}
+                                    onChange={handleCustomJobTitleChange}
+                                />
+                            )}
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-companyWebsite">Website des
-                                Unternehmens:&nbsp;</label>
+                            <label className="detail-entry-label" htmlFor="input-companyWebsite">Website:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="companyWebsite"
@@ -193,8 +262,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-companyEmail">E-Mail des
-                                Unternehmens:&nbsp;</label>
+                            <label className="detail-entry-label" htmlFor="input-companyEmail">E-Mail:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="companyEmail"
@@ -207,8 +275,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-companyStreet">Straße des
-                                Unternehmens:&nbsp;</label>
+                            <label className="detail-entry-label" htmlFor="input-companyStreet">Straße:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="companyStreet"
@@ -221,8 +288,8 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-companyHouseNumber">Hausnummer des
-                                Unternehmens:&nbsp;</label>
+                            <label className="detail-entry-label"
+                                   htmlFor="input-companyHouseNumber">Hausnummer:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="companyHouseNumber"
@@ -250,13 +317,13 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
 
                         <div className="detail-entry">
                             <label className="detail-entry-label" htmlFor="input-contactPersonFirstName">Vorname
-                                Ansprechpartner:&nbsp;</label>
+                                des Ansprechpartners:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="contactPersonFirstName"
                                 id="input-contactPersonFirstName"
                                 type="text"
-                                placeholder="Vorname des Ansprechpartners"
+                                placeholder="Vorname"
                                 value={formData.contactPersonFirstName}
                                 onChange={handleInputChange}
                             />
@@ -264,21 +331,21 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
 
                         <div className="detail-entry">
                             <label className="detail-entry-label" htmlFor="input-contactPersonLastName">Nachname
-                                Ansprechpartner:&nbsp;</label>
+                                des Ansprechpartners:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="contactPersonLastName"
                                 id="input-contactPersonLastName"
                                 type="text"
-                                placeholder="Nachname des Ansprechpartners"
+                                placeholder="Nachname"
                                 value={formData.contactPersonLastName}
                                 onChange={handleInputChange}
                             />
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-contactPersonEmail">E-Mail
-                                Ansprechpartner:&nbsp;</label>
+                            <label className="detail-entry-label" htmlFor="input-contactPersonEmail">E-Mail des
+                                Ansprechpartners:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="contactPersonEmail"
@@ -298,9 +365,9 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 name="jobSource"
                                 id="input-jobSource"
                                 value={formData.jobSource}
-                                onChange={handleInputChange}
+                                onChange={handleJobSourceChange}
                             >
-                                <option value="">Bitte wählen ...</option>
+                                <option value="" disabled>Bitte wählen ...</option>
                                 <option value="linkedin">LinkedIn</option>
                                 <option value="indeed">Indeed</option>
                                 <option value="stepstone">StepStone</option>
@@ -311,9 +378,20 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 <option value="kununu">Kununu</option>
                                 <option value="jobboerse">Bundesagentur für Arbeit</option>
                                 <option value="firmenhomepage">Unternehmens Website</option>
-                                <option value="meta">Meta Jobsuche</option>
-                                <option value="sonstige">Sonstige</option>
+                                <option value="metajob">Meta Jobsuche</option>
+                                <option value="other">Sonstige</option>
                             </select>
+                            {formData.jobSource === 'other' && (
+                                <input
+                                    className="detail-entry-value"
+                                    type="text"
+                                    id="input-custom-jobSource"
+                                    name="customJobSource"
+                                    placeholder="Bitte eintragen ..."
+                                    value={formData.jobSourceFree}
+                                    onChange={handleCustomJobSourceChange}
+                                />
+                            )}
                         </div>
 
                         <div className="detail-entry">
@@ -345,14 +423,14 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-applicationPortalUrl">Bewerbungsportal
-                                URL:&nbsp;</label>
+                            <label className="detail-entry-label"
+                                   htmlFor="input-applicationPortalUrl">Bewerbungsportal-URL:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="applicationPortalUrl"
                                 id="input-applicationPortalUrl"
                                 type="url"
-                                placeholder="Bewerbungsportal URL"
+                                placeholder="Bewerbungsportal-URL"
                                 value={formData.applicationPortalUrl}
                                 onChange={handleInputChange}
                             />
@@ -364,7 +442,6 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 className="detail-entry-value"
                                 name="notes"
                                 id="input-notes"
-                                placeholder="Notizen zur Bewerbung"
                                 value={formData.notes}
                                 onChange={handleInputChange}
                             />
@@ -377,30 +454,70 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 className="detail-entry-value"
                                 name="uploadedDocuments"
                                 id="input-uploadedDocuments"
-                                type="text"
-                                placeholder="Dokumente, die hochgeladen wurden"
-                                value={formData.uploadedDocuments}
+                                type="file"
+                                multiple
                                 onChange={handleInputChange}
                             />
                         </div>
+                        <div className="detail-entry">
+                            <label className="detail-entry-label" htmlFor="input-isFavorite">Favorit:&nbsp;</label>
+
+                            <div className="radio-buttons">
+                                <label>
+                                    <input
+                                        className="detail-entry-value"
+                                        name="isFavorite"
+                                        type="radio"
+                                        value="yes"
+                                        checked={formData.isFavorite === 'yes'}
+                                        onChange={handleInputChange}
+                                    />
+                                    Ja
+                                </label>
+
+                                <label>
+                                    <input
+                                        className="detail-entry-value"
+                                        name="isFavorite"
+                                        type="radio"
+                                        value="no"
+                                        checked={formData.isFavorite === 'no'}
+                                        onChange={handleInputChange}
+                                    />
+                                    Nein
+                                </label>
+                            </div>
+                        </div>
                     </div>
+
                     <div className="form-buttons">
-                        {applicationId ? <button type="button" className="button-delete" onClick={handleDelete}>Eintrag
-                            Löschen</button> : null}
-                        <button type="button" onClick={closeForm}>Abbrechen</button>
-                        <button type="submit" className="button-save">Speichern</button>
+
+                        {applicationId && (
+                            <button
+                                type="button"
+                                className="button-delete"
+                                onClick={handleDelete}
+                            >
+                                Löschen
+                            </button>
+                        )}
+                        <button className="form-button" type="button" onClick={closeForm}>Abbrechen</button>
+                        <button className="button-save" type="submit">
+                            {applicationId ? "Übernehmen" : "Speichern"}
+                        </button>
                     </div>
                 </fieldset>
             </form>
+
             {showConfirm && (
                 <ConfirmDialog
-                    message={`Möchten Sie die Bewerbung "${initialData.companyName}" wirklich löschen?`}
+                    message="Sind Sie sicher, dass Sie die Bewerbung löschen möchten?"
                     onConfirm={handleConfirmDelete}
                     onCancel={handleCancelDelete}
                 />
             )}
 
-            {error && <ErrorMessage message={error}/>}
+            {error && <ErrorMessage message={error} />}
         </div>
     );
 }
