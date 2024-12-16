@@ -11,18 +11,21 @@
     overflow-x: hidden;
 }
 
-.form-title {
+.fieldset {
+    width: 61vw;
+    height: auto;
+    _padding: 0;
+    _margin: 0;
+    border: none;
+}
+
+.details-title {
     color: #fff;
     text-align: left;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     font-weight: bold;
     }
-
-.fieldset {
-    width: 61vw;
-    height: auto;
-}
 
 .floating-label {
     background-color: white;
@@ -47,8 +50,8 @@
 
 .inputfields-with-labels {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
     gap: 1rem;
 }
 
@@ -95,4 +98,43 @@ form fieldset label {
     color: #000;
     background-color: #0D0;
     border-color: #fff;
+}
+
+.detail-entry {
+    text-align: left;
+    font-size: smaller;
+    line-height: 1.2;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+    _border: 1px solid #000;
+    white-space: nowrap;
+}
+
+.detail-entry-label {
+    font-weight: bold;
+    flex-basis: 200px;
+    background-color: #646cff;
+    border-radius: 7px 0 0 7px;
+    border-left: 1px solid #212260;
+    border-top: 2px solid #212260;
+    border-bottom: 2px solid #212260;
+}
+
+.detail-entry-value {
+    color: #212260;
+    background-color: #fff;
+    border-radius: 0 7px 7px 0;
+    border-right: 1px solid #212260;
+    border-top: 2px solid #212260;
+    border-bottom: 2px solid #212260;
+}
+
+.detail-entry-label, .detail-entry-value {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
 }

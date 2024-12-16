@@ -1,5 +1,6 @@
 import './applicationsDetails.css'
 import {Application} from "../Applications/Application.ts";
+import translateStatusToGerman from "../StatusTranslator/statusTranslatorToGerman.ts";
 
 interface ApplicationDetailsProps {
     readonly toggleDetails: () => void;
@@ -11,11 +12,14 @@ export default function ApplicationDetails({toggleDetails, selectedApplication, 
 
     return (
         <div className="application-details">
+            <div className="details-title">
+                Bewerbungs Details
+            </div>
             <div className="details-content">
                 <p className="detail-entry"><span className="detail-entry-label">Name des Unternehmens:</span> <span
                     className="detail-entry-value">{selectedApplication.companyName}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Status der Bewerbung:</span>
-                    <span className="detail-entry-value">{selectedApplication.status}</span></p>
+                    <span className="detail-entry-value">{translateStatusToGerman(selectedApplication.status)}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Datum der Bewerbung:</span> <span
                     className="detail-entry-value">{selectedApplication.applicationDate}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Ausschreibung gefunden am:</span>
@@ -36,7 +40,9 @@ export default function ApplicationDetails({toggleDetails, selectedApplication, 
                 <p className="detail-entry"><span className="detail-entry-label">Telefonnummer:</span> <span
                     className="detail-entry-value">{selectedApplication.phoneNumber}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Ansprechpartner:</span>
-                    <span className="detail-entry-value">{selectedApplication.contactPersonFirstName} {selectedApplication.contactPersonLastName}</span></p>
+                    <span
+                        className="detail-entry-value">{selectedApplication.contactPersonFirstName} {selectedApplication.contactPersonLastName}</span>
+                </p>
                 <p className="detail-entry"><span className="detail-entry-label">E-Mail des Ansprechpartners:</span>
                     <span className="detail-entry-value">{selectedApplication.contactPersonEmail}</span></p>
                 <p className="detail-entry"><span className="detail-entry-label">Quelle der Stellenanzeige:</span> <span
