@@ -106,6 +106,7 @@ export default function Applications({
     };
 
     const handleToggleFavorite = (applicationId: string) => {
+        // Toggle Icon
         setApplications((prevApplications) =>
             prevApplications.map((application) =>
                 application.id === applicationId
@@ -116,6 +117,16 @@ export default function Applications({
                     : application
             )
         )
+        // Toggle db entry
+        const applicationToUpdate = applications.find((a) => a.id === applicationId);
+        if (applicationToUpdate) {
+            axios.put(`api/application/${applicationId}`, {
+                ...applicationToUpdate,
+                isFavorite: applicationToUpdate.isFavorite === "yes" ? "no" : "yes",
+            });
+        } else {
+            console.error("No application found with the given ID");
+        }
 
 
     }
@@ -208,7 +219,7 @@ export default function Applications({
                     <th><span>Status</span></th>
                     <th><span>Firmenname</span></th>
                     <th><span>Stellenbezeichnung</span></th>
-                    <th><span>Datum der Bewerbung</span></th>
+                    <th><span>Beworben am</span></th>
                     <th><span>Favorit</span></th>
                 </tr>
                 </thead>
@@ -243,27 +254,31 @@ export default function Applications({
                             key={application.id}
 
                         >
-                            <td onClick={() => handleToggleDetails(application)}>
-                                <span>{index + 1}</span>
-                            </td>
-                            <td onClick={() => handleToggleDetails(application)}>
-                                <span
-                                    className={`status-typo ${application.status}`}>{translateStatus(application.status)}</span>
-                            </td>
-                            <td onClick={() => handleToggleDetails(application)}>
-                                <span>{application.companyName}</span>
-                            </td>
-                            <td onClick={() => handleToggleDetails(application)}>
-                                <span>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</span>
-                            </td>
-                            <td onClick={() => handleToggleDetails(application)} onKeyDown={(e) => {
-                                e.preventDefault();
-                            }
-                            }>
-                                <span>{application.applicationDate}</span>
+
+                                <td>
+                                    <button className="button-list" onClick={() => handleToggleDetails(application)}>{index + 1}</button>
+                                </td>
+
+                            <td >
+                                <button onClick={() => handleToggleDetails(application)} className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
                             </td>
                             <td>
-                                <button className="button-favorite"
+                                <button className="button-list td-with-break" onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
+                            </td>
+                            <td>
+                                <button className="button-list td-with-break" onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
+                            </td>
+                            <td>
+                                <button className="button-list date" onClick={() => handleToggleDetails(application)}>
+                                    {new Date(application.applicationDate).toLocaleDateString("de-DE", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                    })}
+                                </button>
+                            </td>
+                            <td>
+                            <button className="button-favorite"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleToggleFavorite(application.id);
