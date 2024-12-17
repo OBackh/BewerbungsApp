@@ -1,11 +1,14 @@
 .create-form-layer {
     position: relative;
-    width: 60vw;
-    height: 35vh;
+    top: 0;
+    width: 65vw;
+    height: 60vh;
     background-color: #7B99FD;
     z-index: 30;
     border: 2px solid #fff;
     box-shadow: 0 0 10px #1a1a1a;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .form-title {
@@ -14,6 +17,11 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     font-weight: bold;
+    }
+
+.fieldset {
+    width: 61vw;
+    height: auto;
 }
 
 .floating-label {
@@ -24,26 +32,24 @@
 }
 
 .input {
-    display: block;
-    width: 80%;
-    padding: 5px;
-    font-size: 16px;
+    flex: 1 1 45%;
+    padding: 10px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
-    position: relative;
+    margin-bottom: 10px;
 }
 
 .input-labels {
+    font-size: 14px;
     color: #fff;
 }
 
 .inputfields-with-labels {
     display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: center;
-
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 1rem;
 }
 
 .close-button {
@@ -67,14 +73,11 @@
     background-color: #fff;
 }
 .form-buttons {
-    position: absolute;
+    position: relative;
     display: flex;
     justify-content: space-around;
     right: 0;
-    _padding-left: 10px;
-    _padding-right: 10px;
-    bottom: 10px;
-    _border: none;
+    bottom: 1px;
     width: 100%;
 }
 

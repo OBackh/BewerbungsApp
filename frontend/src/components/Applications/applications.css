@@ -167,15 +167,22 @@
 
 .content {
     position: relative;
-    top: 50px;
+    top: 0;
     width: 100%;
-    _padding-bottom: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    margin: 0;
+    overflow-y: auto;
+    padding-top: 5rem;
 }
 
 .table-application-list {
     border-collapse: collapse;
-    width: 85vw;
+    width: 70vw;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 .overlay-form {
@@ -184,7 +191,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 20;
     display: flex;
     align-items: center;
@@ -197,7 +204,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.0);
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 20;
     display: flex;
     align-items: center;
@@ -210,8 +217,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-    z-index: 20; /* Höher als das Overlay */
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 20;
 }
 
 .ordered-list {
@@ -231,6 +238,11 @@
     text-align: left;
 }
 
+.table-application-list th {
+    _position: sticky;
+    _top: 20px;
+}
+
 td {
     text-align: left;
 }
@@ -246,13 +258,19 @@ td button {
 
 thead {
     font-weight: bold;
-    background-color: rgba(91, 121, 213, 0.79);
+    background-color: rgba(91, 121, 213, 1);
     color: #fff;
 }
 
 body {
     padding-bottom: 80px;
     height: calc(100vh - 7.5em);
+    background-image: url('../../../public/blackboard-2618793_1920.jpg');
+    background-size: 100% auto ;
+    background-position: center 35px ;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: #e8c8a3;
 }
 
 .loading-spinner {
@@ -261,4 +279,9 @@ body {
 
 table, tbody {
     height: auto;
+}
+
+.heart {
+    color: #5B79D5;
+    font-size: larger;
 }

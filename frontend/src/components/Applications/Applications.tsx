@@ -4,6 +4,7 @@ import { Application } from "./Application.ts";
 import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 // Hilfsfunktion, um eine Verzögerung zu erzeugen
 function wait(ms: number) {
@@ -186,6 +187,7 @@ export default function Applications({
                     <th><span>Firmenname</span></th>
                     <th><span>Stellenbezeichnung</span></th>
                     <th><span>Datum der Bewerbung</span></th>
+                    <th><span>Favorit</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -234,6 +236,9 @@ export default function Applications({
                             </td>
                             <td>
                                 <span>{application.applicationDate}</span>
+                            </td>
+                            <td>
+                                <span><MdFavorite className="heart"/><MdFavoriteBorder className="heart"/></span>
                             </td>
                         </tr>
                     ))}
