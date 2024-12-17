@@ -14,6 +14,7 @@ function wait(ms: number) {
 type ApplicationsProps = {
     readonly reloadKey: number;
     readonly showFavorites?: boolean;
+    readonly showArchive?: boolean;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
         initialData: {
@@ -53,6 +54,7 @@ type ApplicationsProps = {
 export default function Applications({
                                         reloadKey,
                                         showFavorites,
+                                        showArchive,
                                         setFormData,
                                         setShowForm,
                                         setLoading,

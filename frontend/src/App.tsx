@@ -10,6 +10,7 @@ import {Application} from "./components/Applications/Application.ts";
 export default function App() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
+    const [archiveRotate, setArchiveRotate] = useState<boolean>(false);
     const [favoriteRotate, setFavoriteRotate] = useState<boolean>(false);
     const [reloadKey, setReloadKey] = useState<number>(0);
     const [formData, setFormData] = useState<{
@@ -40,10 +41,12 @@ export default function App() {
             isFavorite: string
         };
     } | null>(null);
+
+    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
     const [showForm, setShowForm] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
     const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const [showArchive, setShowArchive] = useState<boolean>(false);
 
     const disableButtons = loading || showForm || selectedApplication !== null;
 
@@ -107,6 +110,17 @@ function handleToggleFavoritePage(){
         console.log("SetShowFav: ", showFavorites);
 }
 
+    function handleToggleArchivePage(){
+        setArchiveRotate(true);
+
+        setTimeout(() => {
+            setArchiveRotate(false);
+        }, 250);
+
+        setShowArchive(!showArchive);
+        console.log("SetShowArchive: ", showArchive);
+    }
+
     return (
 
         <Router>
@@ -129,10 +143,12 @@ function handleToggleFavoritePage(){
             <Navbar
                 reloadRotate={reloadRotate}
                 addRotate={addRotate}
+                archiveRotate={archiveRotate}
                 favoriteRotate={favoriteRotate}
                 onReload={handleReload}
                 onAdd={handleAdd}
                 onFav={handleToggleFavoritePage}
+                onArch={handleToggleArchivePage}
                 disableButtons={disableButtons}
             />
             {showForm && formData && (

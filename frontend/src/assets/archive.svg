@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496" width="40" height="40">
+    <!-- Hintergrund-Kreis -->
+    <circle cx="248" cy="248" r="240" style="fill:#555;" />
+
+    <!-- Kasten -->
+    <path
+            d="M332 112H164c-11 0-19.9 8.9-19.9 19.9v251.2c0 11 8.9 19.9 19.9 19.9h168c11 0 19.9-8.9 19.9-19.9V131.9c0-11-8.9-19.9-19.9-19.9zm-19.9 271.1H164V131.9h168v251.2z"
+            fill="#ccc" />
+
+    <!-- Griffe -->
+    <path fill="#ccc" d="M178 185h140v20H178zm0 53h140v20H178z"/>
+</svg>

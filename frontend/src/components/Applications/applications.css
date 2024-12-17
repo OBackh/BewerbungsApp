@@ -95,6 +95,10 @@
     right: 50%;
 }
 
+.archiv-button{
+    right: 25%
+}
+
 .add-button {
     right: 20%;
 }
@@ -111,7 +115,11 @@
     right: calc(20% - 3px);
 }
 
-.reload-button, .add-button, .favorite-button {
+.archiv-button:hover {
+    right: calc(25% - 3px);
+}
+
+.reload-button, .add-button, .favorite-button, .archiv-button {
     position: fixed;
     z-index: 27;
     border: none;
@@ -129,14 +137,14 @@
     transition: transform 0.2s ease-in-out;
 }
 
-.reload-button:hover, .add-button:hover, .favorite-button:hover {
+.reload-button:hover, .add-button:hover, .favorite-button:hover, .archiv-button:hover {
     width: 41px;
     height: 41px;
     bottom: 35px;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.reload-button img.rotate, .favorite-button img.rotate {
+.reload-button img.rotate, .favorite-button img.rotate, .archive-button img.rotate {
     animation: rotate 0.25s ease-in-out;
 }
 

@@ -3,20 +3,24 @@ import React from 'react';
 import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
 import heartIcon from '../../assets/heart.svg';
+import archiveIcon from '../../assets/archive.svg';
+
 import './Navbar.css';
 import '../Applications/applications.css';
 
 type FooterProps = {
     reloadRotate: boolean;
     onFav: React.MouseEventHandler<HTMLButtonElement>;
+    onArch: React.MouseEventHandler<HTMLButtonElement>;
     addRotate: boolean;
     favoriteRotate: boolean;
     onReload: () => void;
     onAdd: () => void;
     disableButtons: boolean;
+    archiveRotate: boolean;
 };
 
-const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, onReload, onAdd, onFav, disableButtons }) => {
+const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, archiveRotate, onReload, onAdd, onFav, onArch, disableButtons }) => {
     return (
         <>
             <div className="footer-buttons">
@@ -41,6 +45,18 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                         width="24"
                         height="24"
                         className={favoriteRotate ? 'rotate' : ''}
+                    />
+                </button>
+
+                <button className="archiv-button"
+                        onClick={onArch}
+                        disabled={disableButtons}>
+                    <img
+                        src={archiveIcon}
+                        alt="Reload"
+                        width="24"
+                        height="24"
+                        className={archiveRotate ? 'rotate' : ''}
                     />
                 </button>
 
