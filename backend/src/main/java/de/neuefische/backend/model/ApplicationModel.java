@@ -13,6 +13,7 @@ public record ApplicationModel(
         LocalDate jobPostingFoundDate,
         LocalDate applicationEntryCreationDate,
         String jobTitle,
+        String jobTitleFree,
         String companyWebsite,
         String companyEmail,
         String companyStreet,
@@ -22,10 +23,12 @@ public record ApplicationModel(
         String contactPersonLastName,
         String contactPersonEmail,
         String jobSource,
+        String jobSourceFree,
         String jobPostingUrl,
         String applicationMethod,
         String applicationPortalUrl,
         String notes,
-        String uploadedDocuments
+        String uploadedDocuments,
+        String isFavorite
 ) {
 }
