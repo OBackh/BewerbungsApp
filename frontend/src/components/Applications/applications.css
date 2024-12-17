@@ -88,40 +88,32 @@
 }
 
 .reload-button {
-    position: fixed;
-    bottom: 39px;
     left: 20%;
-    border: none;
-    background: #fff;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    padding: 6px;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-
 }
 
-.reload-button:hover {
-    width: 41px;
-    height: 41px;
-    bottom: 36px;
-    left: calc(20% - 3px);
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
-
-}
-
-.reload-button img.rotate {
-    animation: rotate 0.25s ease-in-out;
+.favorite-button {
+    right: 50%;
 }
 
 .add-button {
-    position: fixed;
-    bottom: 38px;
     right: 20%;
+}
+
+.reload-button:hover {
+    left: calc(20% - 3px);
+}
+
+.favorite-button:hover {
+    right: calc(50% - 3px);
+}
+
+.add-button:hover {
+    right: calc(20% - 3px);
+}
+
+.reload-button, .add-button, .favorite-button {
+    position: fixed;
+    z-index: 27;
     border: none;
     background: #fff;
     cursor: pointer;
@@ -133,23 +125,23 @@
     border-radius: 50%;
     padding: 6px;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-
+    bottom: 38px;
+    transition: transform 0.2s ease-in-out;
 }
 
-.add-button:hover {
+.reload-button:hover, .add-button:hover, .favorite-button:hover {
     width: 41px;
     height: 41px;
     bottom: 35px;
-    right: calc(20% - 3px);
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.reload-button, .add-button {
-    z-index: 27;
+.reload-button img.rotate, .favorite-button img.rotate {
+    animation: rotate 0.25s ease-in-out;
 }
 
 .add-button img.rotate {
-    animation: rotate 0.25s ease-in-out;
+    animation: rotate 1.2s ease-in-out;
 }
 
 @keyframes rotate {
@@ -161,14 +153,20 @@
     }
 }
 
+.favorite-button:active {
+    transform: scale(1.2);
+}
+
 .button-favorite {
     border: none;
     background-color: #00000000;
 }
 
 .content {
-    position: relative;
-    top: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -176,7 +174,6 @@
     height: 80vh;
     margin: 0;
     overflow-y: auto;
-    padding-top: 5rem;
 }
 
 .table-application-list {
@@ -239,11 +236,6 @@
     text-align: left;
 }
 
-.table-application-list th {
-    _position: sticky;
-    _top: 20px;
-}
-
 td {
     text-align: left;
 }
@@ -285,4 +277,11 @@ table, tbody {
 .heart {
     color: #5B79D5;
     font-size: larger;
+}
+
+.caption {
+    color: #fff;
+    text-align: left;
+    font-size: xx-large;
+    padding-bottom: 0.5rem;
 }

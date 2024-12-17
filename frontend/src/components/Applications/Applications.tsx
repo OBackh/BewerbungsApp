@@ -13,6 +13,7 @@ function wait(ms: number) {
 
 type ApplicationsProps = {
     readonly reloadKey: number;
+    readonly showFavorites?: boolean;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
         initialData: {
@@ -51,6 +52,7 @@ type ApplicationsProps = {
 
 export default function Applications({
                                         reloadKey,
+                                        showFavorites,
                                         setFormData,
                                         setShowForm,
                                         setLoading,
@@ -213,6 +215,7 @@ export default function Applications({
             )}
 
             <table className="table-application-list">
+                <caption className="caption">{showFavorites === true ? 'Meine Favoriten' : 'Übersicht über alle Bewerbungen'}</caption>
                 <thead>
                 <tr>
                     <th><span>Nr.</span></th>
@@ -225,6 +228,12 @@ export default function Applications({
                 </thead>
                 <tbody>
                 {applications
+
+                    .filter((application) => {
+                        // Zeige nur Favoriten, wenn showFavorites true ist
+                        return showFavorites ? application.isFavorite === "yes" : true;
+                    })
+
                     .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
                     .sort((a, b) => {
                         const order = [

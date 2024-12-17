@@ -1,6 +1,6 @@
 import './App.css'
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Footer from "./components/Footer/Footer.tsx";
+import Navbar from "./components/Navbar/Navbar.tsx";
 import Header from "./components/Header/Header.tsx";
 import Applications from "./components/Applications/Applications.tsx";
 import ApplicationForm from "./components/CreateForm/ApplicationForm.tsx";
@@ -10,6 +10,7 @@ import {Application} from "./components/Applications/Application.ts";
 export default function App() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
+    const [favoriteRotate, setFavoriteRotate] = useState<boolean>(false);
     const [reloadKey, setReloadKey] = useState<number>(0);
     const [formData, setFormData] = useState<{
         applicationId?: string;
@@ -42,7 +43,7 @@ export default function App() {
     const [showForm, setShowForm] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
-
+    const [showFavorites, setShowFavorites] = useState<boolean>(false);
 
     const disableButtons = loading || showForm || selectedApplication !== null;
 
@@ -53,6 +54,10 @@ export default function App() {
             setReloadRotate(false);
         }, 250);
     }
+
+    /*function toggleFavoritePage(){
+        return;
+    }*/
 
     function handleAdd() {
         setAddRotate(true);
@@ -91,7 +96,16 @@ export default function App() {
         setShowForm(true); // Formular anzeigen
     }
 
+function handleToggleFavoritePage(){
+    setFavoriteRotate(true);
 
+    setTimeout(() => {
+        setFavoriteRotate(false);
+    }, 250);
+
+        setShowFavorites(!showFavorites);
+        console.log("SetShowFav: ", showFavorites);
+}
 
     return (
 
@@ -102,6 +116,7 @@ export default function App() {
                 <Route path="/" element={
                     <Applications
                         reloadKey={reloadKey}
+                        showFavorites={showFavorites}
                         setFormData={setFormData}
                         setShowForm={setShowForm}
                         setLoading={setLoading}
@@ -111,11 +126,13 @@ export default function App() {
                     />
                 } />
             </Routes>
-            <Footer
+            <Navbar
                 reloadRotate={reloadRotate}
                 addRotate={addRotate}
+                favoriteRotate={favoriteRotate}
                 onReload={handleReload}
                 onAdd={handleAdd}
+                onFav={handleToggleFavoritePage}
                 disableButtons={disableButtons}
             />
             {showForm && formData && (
@@ -132,7 +149,6 @@ export default function App() {
                         }
                     }}
                     role="presentation"
-                    tabIndex={0} // Ermöglicht das Fangen von Tastatur-Ereignissen
                 >
                     <div
                         className="form-container"

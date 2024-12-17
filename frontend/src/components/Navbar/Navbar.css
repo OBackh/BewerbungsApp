@@ -7,4 +7,12 @@
     color: #fff;
     z-index: 25;
     box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    height: 3.4rem;
+}
+
+.copyright {
+    font-size: small;
+    padding: 0;
+    margin-top: 1.5rem;
+    text-align: center;
 }
