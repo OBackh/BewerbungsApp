@@ -2,12 +2,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -35%);
     color: #fff;
     background-color: #7B99FD;
     border: 2px solid #fff;
     box-shadow: 0 0 10px #1a1a1a;
-    width: 55vw;
+    width: 45vw;
     height: 55vh;
     padding: 1rem;
     z-index: 500;
@@ -20,6 +20,11 @@
     overflow-y: auto;
     justify-content: flex-start;
     gap: 5px;
+    border: 2px solid #212260;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    margin-top: 10px;
 }
 
 .details-buttons {

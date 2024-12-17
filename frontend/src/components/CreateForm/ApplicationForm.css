@@ -1,8 +1,8 @@
 .create-form-layer {
     position: relative;
     top: 0;
-    width: 65vw;
-    height: 60vh;
+    width: 55vw;
+    height: 65vh;
     background-color: #7B99FD;
     z-index: 30;
     border: 2px solid #fff;
@@ -14,8 +14,8 @@
 .fieldset {
     width: 61vw;
     height: auto;
-    _padding: 0;
-    _margin: 0;
+    padding: 15px;
+    margin-top: 10px;
     border: none;
 }
 
@@ -76,13 +76,15 @@
     background-color: #fff;
 }
 .form-buttons {
-    position: relative;
+    position: sticky;
     display: flex;
     justify-content: space-around;
-    right: 0;
-    bottom: 1px;
-    width: 100%;
+    left: 0;
+    width: 83%;
     margin-top: 1.5rem;
+    background-color: #8ea6ff;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 form fieldset label {
@@ -148,10 +150,6 @@ form fieldset label {
     font-size: 1.1rem;
     text-align: left;
     color: #343A40;
-}
-
-.date {
-    text-align: right;
 }
 
 .td-with-break {

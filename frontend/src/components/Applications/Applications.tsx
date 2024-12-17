@@ -224,7 +224,7 @@ export default function Applications({
                     <th><span>Status</span></th>
                     <th><span>Firmenname</span></th>
                     <th><span>Stellenbezeichnung</span></th>
-                    <th><span>Beworben am</span></th>
+                    <th><span className="date">Beworben am</span></th>
                     <th><span>Favorit</span></th>
                 </tr>
                 </thead>
