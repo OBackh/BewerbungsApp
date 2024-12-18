@@ -3,6 +3,7 @@ package de.neuefische.backend.integrationTest;
 
 import de.neuefische.backend.model.ApplicationModel;
 import de.neuefische.backend.repository.ApplicationRepo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,7 +38,7 @@ public class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(
                         """
-                                [
+                                 [
                                  {
                                     "id": "123abc",
                                     "companyName": "TechCorp",
@@ -69,8 +70,14 @@ public class IntegrationTest {
                 ));
     }
 
+    @BeforeEach
+    void setUp() {
+        applicationRepo.deleteAll();  // Löscht alle bestehenden Anwendungen
+    }
+
 @Test
 void addApplication_shouldReturnCreatedApplication()throws Exception{
+
     mvc.perform(MockMvcRequestBuilders.post("/api/application")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(
