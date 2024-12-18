@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Application } from "./Application.ts";
+import { Application } from "../Models/Application.ts";
 import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";

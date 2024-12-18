@@ -5,7 +5,7 @@ import Header from "./components/Header/Header.tsx";
 import Applications from "./components/Applications/Applications.tsx";
 import ApplicationForm from "./components/CreateForm/ApplicationForm.tsx";
 import { useState, useEffect } from "react";
-import {Application} from "./components/Applications/Application.ts";
+import {Application} from "./components/Models/Application.ts";
 
 export default function App() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
