@@ -1,5 +1,5 @@
 import './applicationsDetails.css'
-import {Application} from "../Applications/Application.ts";
+import {Application} from "../Models/Application.ts";
 import translateStatusToGerman from "../StatusTranslator/statusTranslatorToGerman.ts";
 
 interface ApplicationDetailsProps {

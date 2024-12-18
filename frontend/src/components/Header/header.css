@@ -7,10 +7,26 @@
     width: 100%;
     z-index: 25;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    _height: 7.5rem;
     height: calc(100vw / 10);
+    border-bottom: 1px solid #fff;
+    border-radius: 0 0 35% 0;
 }
 
 h1 {
     font-size: calc(100vw / 23.5);
+    color: #202271;
+    text-shadow: 1px 1px 0 #fff,
+                -1px 1px 0 #fff,
+                -1px -1px 0 #fff,
+                1px -1px 0 #fff,
+                0 0 7px #fff;
+}
+
+.word-beginning {
+    color: #f4ca61;
+    text-shadow: 1px 1px 0 #202271,
+    -2px 2px 0 #202271,
+    -2px -2px 0 #202271,
+    2px -2px 0 #202271,
+    0 0 7px #202271;
 }

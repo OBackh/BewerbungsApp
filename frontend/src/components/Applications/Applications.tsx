@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Application } from "./Application.ts";
+import { Application } from "../Models/Application.ts";
 import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
@@ -13,6 +13,8 @@ function wait(ms: number) {
 
 type ApplicationsProps = {
     readonly reloadKey: number;
+    readonly showFavorites?: boolean;
+    readonly showArchive?: boolean;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
         initialData: {
@@ -51,6 +53,8 @@ type ApplicationsProps = {
 
 export default function Applications({
                                         reloadKey,
+                                        showFavorites,
+                                        showArchive,
                                         setFormData,
                                         setShowForm,
                                         setLoading,
@@ -179,8 +183,20 @@ export default function Applications({
             ARCHIVED: "Archiviert"
         };
 
+
+
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
+
+    let captionText;
+        if (showFavorites) {
+            captionText = 'Meine Favoriten';
+        } else if (showArchive) {
+            captionText = 'Archiv';
+        } else {
+            captionText = 'Übersicht über alle Bewerbungen';
+        }
+
 
    return (
         <div className="content">
@@ -213,18 +229,37 @@ export default function Applications({
             )}
 
             <table className="table-application-list">
+                <caption className="caption">
+                    {captionText}
+                </caption>
                 <thead>
                 <tr>
                     <th><span>Nr.</span></th>
                     <th><span>Status</span></th>
                     <th><span>Firmenname</span></th>
                     <th><span>Stellenbezeichnung</span></th>
-                    <th><span>Beworben am</span></th>
-                    <th><span>Favorit</span></th>
+                    <th><span className="date">Beworben am</span></th>
+                    <th><span className="favorite-headline">Favorit</span></th>
                 </tr>
                 </thead>
                 <tbody>
                 {applications
+
+                    .filter((application) => {
+                        // Zeige nur Favoriten, wenn showFavorites true ist
+                        if (showFavorites) {
+                            return application.isFavorite === "yes";
+                        }
+
+                        // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist
+                        if (showArchive) {
+                            return application.status === "ARCHIVED";
+                        }
+
+                        // Standardfall: Alle Bewerbungen anzeigen
+                        return true;
+                    })
+
                     .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
                     .sort((a, b) => {
                         const order = [
@@ -255,18 +290,22 @@ export default function Applications({
 
                         >
 
-                                <td>
-                                    <button className="button-list" onClick={() => handleToggleDetails(application)}>{index + 1}</button>
-                                </td>
+                            <td>
+                                <button className="button-list"
+                                        onClick={() => handleToggleDetails(application)}>{index + 1}</button>
+                            </td>
 
-                            <td >
-                                <button onClick={() => handleToggleDetails(application)} className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
+                            <td>
+                                <button onClick={() => handleToggleDetails(application)}
+                                        className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
                             </td>
                             <td>
-                                <button className="button-list td-with-break" onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
+                                <button className="button-list td-with-break"
+                                        onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
                             </td>
                             <td>
-                                <button className="button-list td-with-break" onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
+                                <button className="button-list td-with-break"
+                                        onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
                             </td>
                             <td>
                                 <button className="button-list date" onClick={() => handleToggleDetails(application)}>
@@ -278,11 +317,11 @@ export default function Applications({
                                 </button>
                             </td>
                             <td>
-                            <button className="button-favorite"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleToggleFavorite(application.id);
-                                    }}
+                                <button className="button-favorite"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleToggleFavorite(application.id);
+                                        }}
                                         onKeyDown={(e) => {
                                             e.preventDefault(); // Verhindert die Standardaktion, falls nötig
                                         }}

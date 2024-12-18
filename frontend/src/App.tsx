@@ -1,15 +1,17 @@
 import './App.css'
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Footer from "./components/Footer/Footer.tsx";
+import Navbar from "./components/Navbar/Navbar.tsx";
 import Header from "./components/Header/Header.tsx";
 import Applications from "./components/Applications/Applications.tsx";
 import ApplicationForm from "./components/CreateForm/ApplicationForm.tsx";
-import { useState } from "react";
-import {Application} from "./components/Applications/Application.ts";
+import { useState, useEffect } from "react";
+import {Application} from "./components/Models/Application.ts";
 
 export default function App() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
+    const [archiveRotate, setArchiveRotate] = useState<boolean>(false);
+    const [favoriteRotate, setFavoriteRotate] = useState<boolean>(false);
     const [reloadKey, setReloadKey] = useState<number>(0);
     const [formData, setFormData] = useState<{
         applicationId?: string;
@@ -39,10 +41,12 @@ export default function App() {
             isFavorite: string
         };
     } | null>(null);
+
+    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
     const [showForm, setShowForm] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
-
+    const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const [showArchive, setShowArchive] = useState<boolean>(false);
 
     const disableButtons = loading || showForm || selectedApplication !== null;
 
@@ -53,6 +57,38 @@ export default function App() {
             setReloadRotate(false);
         }, 250);
     }
+
+
+function handleToggleFavoritePage(){
+    setFavoriteRotate(true);
+
+    setTimeout(() => {
+        setFavoriteRotate(false);
+    }, 250);
+
+        setShowFavorites(!showFavorites);
+        setShowArchive(false);
+        console.log("ShowFav: ", showFavorites);
+}
+
+    function handleToggleArchivePage(){
+        setArchiveRotate(true);
+
+        setTimeout(() => {
+            setArchiveRotate(false);
+        }, 250);
+
+        setShowArchive(!showArchive);
+        setShowFavorites(false);
+        console.log("ShowArchive: ", showArchive);
+    }
+
+    useEffect(() => {
+        console.log("Neuer Klick: ")
+        console.log("ShowFav: ", showFavorites);
+        console.log("ShowArchive: ", showArchive);
+
+    }, [showFavorites, showArchive]);
 
     function handleAdd() {
         setAddRotate(true);
@@ -92,7 +128,6 @@ export default function App() {
     }
 
 
-
     return (
 
         <Router>
@@ -102,6 +137,8 @@ export default function App() {
                 <Route path="/" element={
                     <Applications
                         reloadKey={reloadKey}
+                        showArchive={showArchive}
+                        showFavorites={showFavorites}
                         setFormData={setFormData}
                         setShowForm={setShowForm}
                         setLoading={setLoading}
@@ -111,12 +148,19 @@ export default function App() {
                     />
                 } />
             </Routes>
-            <Footer
+            <Navbar
                 reloadRotate={reloadRotate}
                 addRotate={addRotate}
+                archiveRotate={archiveRotate}
+                favoriteRotate={favoriteRotate}
                 onReload={handleReload}
+                onFav={handleToggleFavoritePage}
+                onArch={handleToggleArchivePage}
                 onAdd={handleAdd}
                 disableButtons={disableButtons}
+                showArchive={showArchive}
+                showFavorites={showFavorites}
+                showForm={showForm}
             />
             {showForm && formData && (
                 <div
@@ -132,7 +176,6 @@ export default function App() {
                         }
                     }}
                     role="presentation"
-                    tabIndex={0} // Ermöglicht das Fangen von Tastatur-Ereignissen
                 >
                     <div
                         className="form-container"
