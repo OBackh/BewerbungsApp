@@ -267,7 +267,7 @@
 .table-application-list tr {
     border-left: 1px solid #fff;
     border-right: 1px solid #fff;
-    border-top: 1px solid #4147bf;
+    border-top: 1px solid #373c98;
 }
 
 td {
@@ -287,6 +287,7 @@ thead {
     font-weight: bold;
     background-color: rgba(91, 121, 213, 1);
     color: #fff;
+    border-top: 1px solid #fff;
 }
 
 body {
