@@ -96,16 +96,12 @@
     transition: box-shadow 0.9s ease-in-out;
 }
 
-.favorite-button.shadow {
+.favorite-button.shadow, .archive-button.shadow, .add-button.shadow{
     box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
 }
 
 .archive-button{
     right: 25%
-}
-
-.archive-button.shadow {
-    box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
 }
 
 .add-button {

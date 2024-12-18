@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar/Navbar.tsx";
 import Header from "./components/Header/Header.tsx";
 import Applications from "./components/Applications/Applications.tsx";
 import ApplicationForm from "./components/CreateForm/ApplicationForm.tsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {Application} from "./components/Applications/Application.ts";
 
 export default function App() {
@@ -67,6 +67,7 @@ function handleToggleFavoritePage(){
     }, 250);
 
         setShowFavorites(!showFavorites);
+        setShowArchive(false);
         console.log("ShowFav: ", showFavorites);
 }
 
@@ -78,8 +79,16 @@ function handleToggleFavoritePage(){
         }, 250);
 
         setShowArchive(!showArchive);
+        setShowFavorites(false);
         console.log("ShowArchive: ", showArchive);
     }
+
+    useEffect(() => {
+        console.log("Neuer Klick: ")
+        console.log("ShowFav: ", showFavorites);
+        console.log("ShowArchive: ", showArchive);
+
+    }, [showFavorites, showArchive]);
 
     function handleAdd() {
         setAddRotate(true);
@@ -149,6 +158,9 @@ function handleToggleFavoritePage(){
                 onArch={handleToggleArchivePage}
                 onAdd={handleAdd}
                 disableButtons={disableButtons}
+                showArchive={showArchive}
+                showFavorites={showFavorites}
+                showForm={showForm}
             />
             {showForm && formData && (
                 <div

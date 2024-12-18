@@ -18,61 +18,17 @@ type FooterProps = {
     onArch: React.MouseEventHandler<HTMLButtonElement>;
     disableButtons: boolean;
     archiveRotate: boolean;
+    showArchive: boolean;
+    showFavorites: boolean;
+    showForm: boolean;
 };
 
-const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, archiveRotate, onReload, onAdd, onFav, onArch, disableButtons }) => {
+const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, archiveRotate, onReload, onAdd, onFav, onArch, disableButtons, showArchive, showFavorites, showForm }) => {
     const [isAddPressed, setIsAddPressed] = useState<boolean>(false);
-    const [isArchivePressed, setIsArchivePressed] = useState<boolean>(false);
-    const [isFavoritePressed, setIsFavoritePressed] = useState<boolean>(false);
-    const [showOverview, setShowOverview] = useState<boolean>(true);
 
     function handleClickAddButtonColor() {
         setIsAddPressed(true);
     }
-
-    // Logik für den Favoriten-Button
-    function handleClickFavorite() {
-        if (isArchivePressed) {
-            setIsArchivePressed(false);
-            setIsFavoritePressed(true);
-        }
-        else if (isFavoritePressed) {
-            // Wenn Favoriten bereits aktiv sind, gehe zurück zur Übersicht
-            setIsFavoritePressed(false);
-        }
-        else {
-            // Wenn weder Archiv noch Favoriten aktiv sind, zeige die Favoriten
-            setIsFavoritePressed(true);
-            setIsArchivePressed(false);
-        }
-    }
-
-    // Logik für den Archiv-Button
-    function handleClickArchive() {
-        if (isArchivePressed) {
-            // Wenn Archiv bereits aktiv ist, zeige die Übersicht
-            setShowOverview(true);
-            setIsArchivePressed(false);
-        } else {
-            // Ansonsten zeige das Archiv und setze die anderen zurück
-            setShowOverview(false);
-            setIsArchivePressed(true);
-            setIsFavoritePressed(false);
-        }
-    }
-
-    /*function handleClickFavorite() {
-        setShowOverview(false)
-        if (isArchivePressed){setIsArchivePressed(false); setIsFavoritePressed(true)}
-        else if (!isArchivePressed){setIsFavoritePressed(true)}
-    }*/
-
-/*
-    function handleClickArchive() {
-        if (isFavoritePressed){setIsFavoritePressed(false)}
-        setIsArchivePressed((prev) => !prev);
-    }
-*/
 
         return (
         <>
@@ -88,13 +44,9 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                         className={reloadRotate ? 'rotate' : ''}
                     />
                 </button>
-                <button className={`favorite-button ${isFavoritePressed ? 'shadow' : ''}`}
-                        aria-pressed={isFavoritePressed}
-                        onClick={(event) => {
-                            onFav(event);
-                            handleClickFavorite();
-                            }
-                        }
+                <button className={`favorite-button ${showFavorites ? 'shadow' : ''}`}
+                        aria-pressed={showFavorites}
+                        onClick={onFav}
                         disabled={disableButtons}>
                     <img
                         src={heartIcon}
@@ -105,13 +57,9 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                     />
                 </button>
 
-                <button className={`archive-button ${isArchivePressed ? 'shadow' : ''}`}
-                        aria-pressed={isArchivePressed}
-                        onClick={(event) => {
-                        onArch(event);
-                        handleClickArchive();
-                        }
-                        }
+                <button className={`archive-button ${showArchive ? 'shadow' : ''}`}
+                        aria-pressed={showArchive}
+                        onClick={onArch}
                         disabled={disableButtons}>
                     <img
                         src={archiveIcon}
@@ -122,7 +70,7 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                     />
                 </button>
 
-                <button className="add-button"
+                <button className={`add-button ${showForm ? 'shadow' : ''}`}
                         aria-pressed={isAddPressed}
                         onClick={() => {
                             onAdd();
