@@ -58,9 +58,28 @@ export default function App() {
         }, 250);
     }
 
-    /*function toggleFavoritePage(){
-        return;
-    }*/
+
+function handleToggleFavoritePage(){
+    setFavoriteRotate(true);
+
+    setTimeout(() => {
+        setFavoriteRotate(false);
+    }, 250);
+
+        setShowFavorites(!showFavorites);
+        console.log("ShowFav: ", showFavorites);
+}
+
+    function handleToggleArchivePage(){
+        setArchiveRotate(true);
+
+        setTimeout(() => {
+            setArchiveRotate(false);
+        }, 250);
+
+        setShowArchive(!showArchive);
+        console.log("ShowArchive: ", showArchive);
+    }
 
     function handleAdd() {
         setAddRotate(true);
@@ -99,27 +118,6 @@ export default function App() {
         setShowForm(true); // Formular anzeigen
     }
 
-function handleToggleFavoritePage(){
-    setFavoriteRotate(true);
-
-    setTimeout(() => {
-        setFavoriteRotate(false);
-    }, 250);
-
-        setShowFavorites(!showFavorites);
-        console.log("SetShowFav: ", showFavorites);
-}
-
-    function handleToggleArchivePage(){
-        setArchiveRotate(true);
-
-        setTimeout(() => {
-            setArchiveRotate(false);
-        }, 250);
-
-        setShowArchive(!showArchive);
-        console.log("SetShowArchive: ", showArchive);
-    }
 
     return (
 
@@ -130,6 +128,7 @@ function handleToggleFavoritePage(){
                 <Route path="/" element={
                     <Applications
                         reloadKey={reloadKey}
+                        showArchive={showArchive}
                         showFavorites={showFavorites}
                         setFormData={setFormData}
                         setShowForm={setShowForm}
@@ -146,9 +145,9 @@ function handleToggleFavoritePage(){
                 archiveRotate={archiveRotate}
                 favoriteRotate={favoriteRotate}
                 onReload={handleReload}
-                onAdd={handleAdd}
                 onFav={handleToggleFavoritePage}
                 onArch={handleToggleArchivePage}
+                onAdd={handleAdd}
                 disableButtons={disableButtons}
             />
             {showForm && formData && (

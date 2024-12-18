@@ -147,6 +147,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
         <div className="create-form-layer">
             <form onSubmit={handleSubmit}>
                 <fieldset className="fieldset">
+                    <div className="addFormUpperFieldset">
                     <legend className="details-title">
                         {applicationId ? "Bewerbung bearbeiten" : "Neue Bewerbung anlegen"}
                     </legend>
@@ -187,6 +188,37 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 <option value="WITHDRAWN">ZURÜCKGEZOGEN</option>
                                 <option value="ARCHIVED">ARCHIVIERT</option>
                             </select>
+                        </div>
+
+                        <div className="detail-entry">
+                            <label className="detail-entry-label" htmlFor="input-isFavorite">Ist als Favorit
+                                vorgemerkt?&nbsp;</label>
+
+                            <div className="radio-buttons">
+                                <label>
+                                    <input
+                                        className="detail-entry-value"
+                                        name="isFavorite"
+                                        type="radio"
+                                        value="yes"
+                                        checked={formData.isFavorite === 'yes'}
+                                        onChange={handleInputChange}
+                                    />
+                                    Ja
+                                </label>
+
+                                <label>
+                                    <input
+                                        className="detail-entry-value"
+                                        name="isFavorite"
+                                        type="radio"
+                                        value="no"
+                                        checked={formData.isFavorite === 'no'}
+                                        onChange={handleInputChange}
+                                    />
+                                    Nein
+                                </label>
+                            </div>
                         </div>
 
                         <div className="detail-entry">
@@ -410,13 +442,13 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
 
                         <div className="detail-entry">
                             <label className="detail-entry-label"
-                                   htmlFor="input-applicationMethod">Bewerbungsweg:&nbsp;</label>
+                                   htmlFor="input-applicationMethod">Bewerbungsart:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
                                 name="applicationMethod"
                                 id="input-applicationMethod"
                                 type="text"
-                                placeholder="Bewerbungsweg"
+                                placeholder="Web-Portal, Mail, ..."
                                 value={formData.applicationMethod}
                                 onChange={handleInputChange}
                             />
@@ -430,7 +462,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 name="applicationPortalUrl"
                                 id="input-applicationPortalUrl"
                                 type="url"
-                                placeholder="Bewerbungsportal-URL"
+                                placeholder="URL"
                                 value={formData.applicationPortalUrl}
                                 onChange={handleInputChange}
                             />
@@ -448,7 +480,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         </div>
 
                         <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-uploadedDocuments">Hochgeladene
+                            <label className="detail-entry-label" htmlFor="input-uploadedDocuments">Zugehörige
                                 Dokumente:&nbsp;</label>
                             <input
                                 className="detail-entry-value"
@@ -459,37 +491,8 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 onChange={handleInputChange}
                             />
                         </div>
-                        <div className="detail-entry">
-                            <label className="detail-entry-label" htmlFor="input-isFavorite">Favorit:&nbsp;</label>
-
-                            <div className="radio-buttons">
-                                <label>
-                                    <input
-                                        className="detail-entry-value"
-                                        name="isFavorite"
-                                        type="radio"
-                                        value="yes"
-                                        checked={formData.isFavorite === 'yes'}
-                                        onChange={handleInputChange}
-                                    />
-                                    Ja
-                                </label>
-
-                                <label>
-                                    <input
-                                        className="detail-entry-value"
-                                        name="isFavorite"
-                                        type="radio"
-                                        value="no"
-                                        checked={formData.isFavorite === 'no'}
-                                        onChange={handleInputChange}
-                                    />
-                                    Nein
-                                </label>
-                            </div>
-                        </div>
                     </div>
-
+                </div>
                     <div className="form-buttons">
 
                         {applicationId && (
@@ -507,6 +510,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                         </button>
                     </div>
                 </fieldset>
+
             </form>
 
             {showConfirm && (
@@ -517,7 +521,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                 />
             )}
 
-            {error && <ErrorMessage message={error} />}
+            {error && <ErrorMessage message={error}/>}
         </div>
     );
 }

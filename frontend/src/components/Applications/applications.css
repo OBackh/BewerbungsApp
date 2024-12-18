@@ -93,10 +93,19 @@
 
 .favorite-button {
     right: 50%;
+    transition: box-shadow 0.9s ease-in-out;
 }
 
-.archiv-button{
+.favorite-button.shadow {
+    box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
+}
+
+.archive-button{
     right: 25%
+}
+
+.archive-button.shadow {
+    box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
 }
 
 .add-button {
@@ -115,11 +124,11 @@
     right: calc(20% - 3px);
 }
 
-.archiv-button:hover {
+.archive-button:hover {
     right: calc(25% - 3px);
 }
 
-.reload-button, .add-button, .favorite-button, .archiv-button {
+.reload-button, .add-button, .favorite-button, .archive-button {
     position: fixed;
     z-index: 27;
     border: none;
@@ -137,11 +146,15 @@
     transition: transform 0.2s ease-in-out;
 }
 
-.reload-button:hover, .add-button:hover, .favorite-button:hover, .archiv-button:hover {
+.reload-button:hover, .add-button:hover, .favorite-button:hover, .archive-button:hover {
     width: 41px;
     height: 41px;
     bottom: 35px;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.add-button:active {
+    background-color: red;
 }
 
 .reload-button img.rotate, .favorite-button img.rotate, .archive-button img.rotate {
@@ -149,7 +162,17 @@
 }
 
 .add-button img.rotate {
-    animation: rotate 1.2s ease-in-out;
+    animation: rotate 0.25s ease-in-out;
+}
+
+.archive-button:active {
+    background-color: #00cc00;
+    transform: scale(90%);
+}
+
+.reload-button:active {
+    background-color: #00ffff;
+    transform: scale(90%);
 }
 
 @keyframes rotate {
@@ -162,7 +185,9 @@
 }
 
 .favorite-button:active {
+    background-color: #ffff00;
     transform: scale(1.2);
+    box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
 }
 
 .button-favorite {
@@ -223,7 +248,6 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 20;
-    _border: 20px solid red;
 }
 
 .ordered-list {
@@ -295,4 +319,8 @@ table, tbody {
 
 .date {
     text-align: right;
+}
+
+.favorite-headline {
+    text-align: center;
 }

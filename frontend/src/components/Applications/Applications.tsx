@@ -183,8 +183,20 @@ export default function Applications({
             ARCHIVED: "Archiviert"
         };
 
+
+
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
+
+    let captionText;
+        if (showFavorites) {
+            captionText = 'Meine Favoriten';
+        } else if (showArchive) {
+            captionText = 'Archiv';
+        } else {
+            captionText = 'Übersicht über alle Bewerbungen';
+        }
+
 
    return (
         <div className="content">
@@ -217,7 +229,9 @@ export default function Applications({
             )}
 
             <table className="table-application-list">
-                <caption className="caption">{showFavorites === true ? 'Meine Favoriten' : 'Übersicht über alle Bewerbungen'}</caption>
+                <caption className="caption">
+                    {captionText}
+                </caption>
                 <thead>
                 <tr>
                     <th><span>Nr.</span></th>
@@ -225,7 +239,7 @@ export default function Applications({
                     <th><span>Firmenname</span></th>
                     <th><span>Stellenbezeichnung</span></th>
                     <th><span className="date">Beworben am</span></th>
-                    <th><span>Favorit</span></th>
+                    <th><span className="favorite-headline">Favorit</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -233,7 +247,17 @@ export default function Applications({
 
                     .filter((application) => {
                         // Zeige nur Favoriten, wenn showFavorites true ist
-                        return showFavorites ? application.isFavorite === "yes" : true;
+                        if (showFavorites) {
+                            return application.isFavorite === "yes";
+                        }
+
+                        // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist
+                        if (showArchive) {
+                            return application.status === "ARCHIVED";
+                        }
+
+                        // Standardfall: Alle Bewerbungen anzeigen
+                        return true;
                     })
 
                     .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
@@ -266,18 +290,22 @@ export default function Applications({
 
                         >
 
-                                <td>
-                                    <button className="button-list" onClick={() => handleToggleDetails(application)}>{index + 1}</button>
-                                </td>
+                            <td>
+                                <button className="button-list"
+                                        onClick={() => handleToggleDetails(application)}>{index + 1}</button>
+                            </td>
 
-                            <td >
-                                <button onClick={() => handleToggleDetails(application)} className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
+                            <td>
+                                <button onClick={() => handleToggleDetails(application)}
+                                        className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
                             </td>
                             <td>
-                                <button className="button-list td-with-break" onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
+                                <button className="button-list td-with-break"
+                                        onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
                             </td>
                             <td>
-                                <button className="button-list td-with-break" onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
+                                <button className="button-list td-with-break"
+                                        onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
                             </td>
                             <td>
                                 <button className="button-list date" onClick={() => handleToggleDetails(application)}>
@@ -289,11 +317,11 @@ export default function Applications({
                                 </button>
                             </td>
                             <td>
-                            <button className="button-favorite"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleToggleFavorite(application.id);
-                                    }}
+                                <button className="button-favorite"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleToggleFavorite(application.id);
+                                        }}
                                         onKeyDown={(e) => {
                                             e.preventDefault(); // Verhindert die Standardaktion, falls nötig
                                         }}

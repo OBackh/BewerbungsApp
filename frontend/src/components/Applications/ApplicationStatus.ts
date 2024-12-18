@@ -1,14 +1,14 @@
 
 export type ApplicationStatus =
-    | "Planned"
-    | "Created"
-    | "Sent"
-    | "Confirmed"
-    | "Under Review"
-    | "Invitation"
-    | "Accepted"
-    | "Rejected"
-    | "Withdrawn"
-    | "Archived";
+    | "PLANNED"
+    | "CREATED"
+    | "SENT"
+    | "CONFIRMED"
+    | "UNDER_REVIEW"
+    | "INVITATION"
+    | "ACCEPTED"
+    | "REJECTED"
+    | "WITHDRAWN"
+    | "ARCHIVED";
 
 
