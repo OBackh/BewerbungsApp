@@ -248,7 +248,7 @@ export default function Applications({
                     .filter((application) => {
                         // Zeige nur Favoriten, wenn showFavorites true ist
                         if (showFavorites) {
-                            return application.isFavorite === "yes";
+                            return (application.isFavorite === "yes" && application.status !== "ARCHIVED") ;
                         }
 
                         // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist

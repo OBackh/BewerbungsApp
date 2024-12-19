@@ -4,9 +4,11 @@ import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
 import heartIcon from '../../assets/heart.svg';
 import archiveIcon from '../../assets/archive.svg';
+import Imprint from "../Imprint/Imprint.tsx";
 
 import './Navbar.css';
 import '../Applications/applications.css';
+import {Link} from "react-router-dom";
 
 type FooterProps = {
     reloadRotate: boolean;
@@ -87,7 +89,7 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                 </button>
             </div>
             <div className="navbar">
-                <p className="copyright">&copy; 2024&nbsp;&nbsp;Ole Backhaus</p>
+                <p className="copyright"><span>&copy; 2024&nbsp;&nbsp;Ole Backhaus</span></p>
             </div>
 
         </>
