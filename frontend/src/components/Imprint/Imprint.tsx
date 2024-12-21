@@ -1,9 +1,21 @@
-export default function Imprint(){
+import './imprint.css'
+
+type ImprintProps = {
+    toggle: ()=>void;
+};
+
+export default function Imprint({ toggle }: ImprintProps){
     return (
-            <div className="imprint">
+            <div className="overlay">
+            <div className="imprint" >
+                <p className="closingCross"
+                   onClick={toggle}
+                   role="presentation"
+                   aria-hidden="true">&#215;</p>
                 <h1>Impressum</h1>
                 <hr/>
                 <p>Ole Backhaus</p>
+            </div>
             </div>
     )
 }
