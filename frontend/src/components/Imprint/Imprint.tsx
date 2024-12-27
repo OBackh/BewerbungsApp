@@ -1,7 +1,7 @@
 import './imprint.css'
 
 type ImprintProps = {
-    toggle: ()=>void;
+    readonly toggle: ()=>void;
 };
 
 export default function Imprint({ toggle }: ImprintProps){
