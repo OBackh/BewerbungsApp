@@ -10,9 +10,16 @@
     height: calc(100vw / 10);
     border-bottom: 1px solid #fff;
     border-radius: 0 0 35% 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 1rem;
+    padding-top: 0;
+    margin-top: 0;
 }
 
 h1 {
+    position: relative;
     font-size: calc(100vw / 23.5);
     color: #202271;
     text-shadow: 1px 1px 0 #fff,
@@ -20,6 +27,9 @@ h1 {
                 -1px -1px 0 #fff,
                 1px -1px 0 #fff,
                 0 0 7px #fff;
+    display: flex;
+    align-items: center;
+    top: -20px;
 }
 
 .word-beginning {
