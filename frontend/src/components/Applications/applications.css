@@ -293,7 +293,7 @@ thead {
 body {
     padding-bottom: 80px;
     height: calc(100vh - 7.5em);
-    background-image: url('../../../public/blackboard-2618793_1920.jpg');
+    background-image: url('../../assets/blackboard-2618793_1920.jpg');
     background-size: 100% auto ;
     background-position: center calc(calc(100vw / 35)) ;
     background-attachment: fixed;
@@ -302,7 +302,7 @@ body {
 }
 
 .loading-spinner {
-    z-index: 26;
+    z-index: 60;
 }
 
 table, tbody {
