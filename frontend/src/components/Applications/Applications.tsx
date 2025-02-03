@@ -71,7 +71,7 @@ export default function Applications({
             setLoading(true);
 
             await Promise.all([
-                wait(1200),
+                wait(700),
                 axios.get<Application[]>("api/application")
                     .then((response) => {
                         if (isMounted) setApplications(response.data);
