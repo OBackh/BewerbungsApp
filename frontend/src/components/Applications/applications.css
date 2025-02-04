@@ -7,10 +7,10 @@
 }
 
 .apply-card:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #cccccc;
 }
 .apply-card:nth-child(even):hover {
-    background-color: #c6c6c6;
+    background-color: #b8b8b8;
 }
 
 .apply-card:nth-child(odd) {
