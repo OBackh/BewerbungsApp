@@ -4,6 +4,7 @@ import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
 import heartIcon from '../../assets/heart.svg';
 import archiveIcon from '../../assets/archive.svg';
+import Imprint from "../Imprint/Imprint.tsx";
 
 import './Navbar.css';
 import '../Applications/applications.css';
@@ -25,9 +26,15 @@ type FooterProps = {
 
 const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, archiveRotate, onReload, onAdd, onFav, onArch, disableButtons, showArchive, showFavorites, showForm }) => {
     const [isAddPressed, setIsAddPressed] = useState<boolean>(false);
+    const [showImprint, setShowImprint] = useState<boolean>(false);
 
     function handleClickAddButtonColor() {
         setIsAddPressed(true);
+    }
+
+    function handleToggleImprint (){
+        setShowImprint(!showImprint);
+        console.log("ShowImprint: " + showImprint);
     }
 
         return (
@@ -87,9 +94,9 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                 </button>
             </div>
             <div className="navbar">
-                <p className="copyright">&copy; 2024&nbsp;&nbsp;Ole Backhaus</p>
+                <p className="copyright"><span>&copy; 2024&nbsp;&nbsp;Ole Backhaus</span><span className="imprintLink" onClick={handleToggleImprint}>Imprint</span></p>
             </div>
-
+            {showImprint ? <Imprint toggle={handleToggleImprint}/> : null }
         </>
     );
 };
