@@ -7,13 +7,12 @@
 - Statusverfolgung (offen, eingeladen, abgesagt etc.)
 - Möglichkeit zum Speichern von Notizen
 - CRUD-Funktionalitäten
-- Backend: Java
-- Frontend: React
 
 ## 💻 Technologien
-- Java / Spring / React
-- JavaScript, HTML, CSS
-- Externe DB-Anbindung (Mongo-DB)
+
+- Backend: Java / Spring
+- Frontend: React, TypeScript, HTML, CSS
+- Externe DB-Anbindung: Mongo-DB
 
 ## 🚀 Ziel
 Referenzprojekt zur Demonstration grundlegender Backend- und Frontend-Skills mit Java, React und Zustandshandling. Entwickelt im Rahmen meines Java-Development-Bootcamps bei neueFische.
