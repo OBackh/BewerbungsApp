@@ -5,6 +5,16 @@ import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { Cell, Pie, PieChart } from 'recharts';
+
+const data = [
+    { name: 'Group A', value: 400 },
+    { name: 'Group B', value: 300 },
+    { name: 'Group C', value: 300 },
+    { name: 'Group D', value: 200 },
+];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
 
 // Hilfsfunktion, um eine Verzögerung zu erzeugen
 function wait(ms: number) {
@@ -204,10 +214,8 @@ export default function Applications({
                         {selectedApplication && !loading && (
                             <div
                                 className="overlay-spinner"
-                                onClick={() => setSelectedApplication(null)}
-                                role="Status"
-                                aria-label="Loading"
-                                aria-live="assertive"
+                                role="status"
+                                aria-label="Loading data..."
                             >
                                 <div
                                     className="application-details-container"
@@ -342,6 +350,22 @@ export default function Applications({
                     <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
                     <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
                 </div>
+            <PieChart width={200} height={200}>
+                <Pie
+                    data={data}
+                    cx={80}
+                    cy={80}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                >
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Pie>
+            </PieChart>
 
 
         </div>
