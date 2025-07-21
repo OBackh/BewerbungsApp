@@ -7,13 +7,7 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { Cell, Pie, PieChart } from 'recharts';
 
-const data = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
-];
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
 
 
 // Hilfsfunktion, um eine Verzögerung zu erzeugen
@@ -73,6 +67,16 @@ export default function Applications({
                                         selectedApplication
                                      }: ApplicationsProps) {
     const [applications, setApplications] = useState<Application[]>([]);
+
+    console.log("Alle Statuswerte:", applications.map(app => app.status));
+
+    const data = [
+        { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
+        { name: 'Bestätigte', value: applications.filter(app => app.status === "CONFIRMED").length },
+        { name: 'Absagen', value: applications.filter(app => app.status === "REJECTED").length },
+        { name: 'Zusagen', value: applications.filter(app => app.status === "INVITATION").length }
+    ];
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     useEffect(() => {
         let isMounted = true;
@@ -350,16 +354,17 @@ export default function Applications({
                     <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
                     <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
                 </div>
-            <PieChart width={200} height={200}>
+            <PieChart width={210} height={210}>
                 <Pie
                     data={data}
-                    cx={80}
-                    cy={80}
-                    innerRadius={60}
-                    outerRadius={80}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={70}
                     fill="#8884d8"
                     paddingAngle={5}
                     dataKey="value"
+                    label="true"
                 >
                     {data.map((entry, index) => (
                         <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
