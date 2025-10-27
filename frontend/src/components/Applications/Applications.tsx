@@ -6,7 +6,7 @@ import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { Cell, Pie, PieChart } from 'recharts';
-
+import api from "../../api/api.ts";
 
 
 
@@ -86,7 +86,7 @@ export default function Applications({
 
             await Promise.all([
                 wait(700),
-                axios.get<Application[]>("api/application")
+                api.get<Application[]>("api/application")
                     .then((response) => {
                         if (isMounted) setApplications(response.data);
                     })
