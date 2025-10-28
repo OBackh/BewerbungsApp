@@ -364,7 +364,7 @@ export default function Applications({
                     fill="#8884d8"
                     paddingAngle={5}
                     dataKey="value"
-                    label="true"
+                    label
                 >
                     {data.map((entry, index) => (
                         <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
