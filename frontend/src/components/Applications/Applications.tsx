@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Application } from "../Models/Application.ts";
 import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
@@ -86,7 +85,7 @@ export default function Applications({
 
             await Promise.all([
                 wait(700),
-                api.get<Application[]>("api/application")
+                api.get<Application[]>("/api/application")
                     .then((response) => {
                         if (isMounted) setApplications(response.data);
                     })
@@ -138,15 +137,13 @@ export default function Applications({
         // Toggle db entry
         const applicationToUpdate = applications.find((a) => a.id === applicationId);
         if (applicationToUpdate) {
-            axios.put(`api/application/${applicationId}`, {
+            api.put(`/api/application/${applicationId}`, {
                 ...applicationToUpdate,
                 isFavorite: applicationToUpdate.isFavorite === "yes" ? "no" : "yes",
             });
         } else {
             console.error("No application found with the given ID");
         }
-
-
     }
 
         function handleEdit(application: Application) {
