@@ -1,20 +1,40 @@
-name: Build frontend
+name: Analyze Frontend PR
+
 on:
-  push:
-    branches:
-      - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
-  sonarcloud:
-    name: SonarQube Cloud
+  sonarcloud-pr:
+    name: SonarCloud PR Analysis
     runs-on: ubuntu-latest
     steps:
+      # 1. Repository auschecken
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Cloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+          fetch-depth: 0
+
+      # 2. Node.js installieren
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 3. Dependencies installieren
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      # 4. Frontend bauen
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      # 5. SonarCloud-Scan für PR
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          projectBaseDir: './frontend'  # Root des Projekts
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
