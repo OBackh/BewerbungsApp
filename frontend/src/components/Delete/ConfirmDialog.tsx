@@ -10,7 +10,16 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ message, onConfirm, onCan
     return (
         <div className="confirm-dialog">
             {/* Overlay */}
-            <div className="dialog-overlay" onClick={onCancel}></div>
+            <div
+                className="dialog-overlay"
+                role="none"
+                tabIndex={-1}
+                onClick={onCancel}
+                onKeyDown={(e) => {
+                    if (e.key === 'Escape') onCancel();
+                }}
+            >
+            </div>
             {/* Dialog-Inhalt */}
             <div className="dialog-content">
                 <p>{message}</p>

@@ -71,7 +71,7 @@ export default function Applications({
             setLoading(true);
 
             await Promise.all([
-                wait(1200),
+                wait(700),
                 axios.get<Application[]>("api/application")
                     .then((response) => {
                         if (isMounted) setApplications(response.data);
@@ -200,31 +200,147 @@ export default function Applications({
 
    return (
         <div className="content">
-            {/* Zeigt das Overlay nur an, wenn loading false ist */}
-            {selectedApplication && !loading && (
-                <div
-                    className="overlay-spinner"
-                    onClick={() => setSelectedApplication(null)}
-                    role="presentation"
-                    aria-label="Close details"
-                    onKeyDown={(e) => {
-                        if (e.key === "Escape") {
-                            setSelectedApplication(null);
-                        }
-                    }}
-                >
-                    <div
-                        className="application-details-container"
-                        onClick={(e) => e.stopPropagation()}
-                        role="presentation"
-                        aria-hidden="true"
-                    >
-                        <ApplicationDetails
-                            toggleDetails={() => setSelectedApplication(null)}
-                            selectedApplication={selectedApplication}
-                            onEdit={handleEdit}
-                        />
-                    </div>
+                        {/* Zeigt das Overlay nur an, wenn loading false ist */}
+                        {selectedApplication && !loading && (
+                            <div
+                                className="overlay-spinner"
+                                onClick={() => setSelectedApplication(null)}
+                                role="Status"
+                                aria-label="Loading"
+                                aria-live="assertive"
+                            >
+                                <div
+                                    className="application-details-container"
+                                    onClick={(e) => e.stopPropagation()}
+                                    role="presentation"
+                                    aria-hidden="true"
+                                >
+                                    <ApplicationDetails
+                                        toggleDetails={() => setSelectedApplication(null)}
+                                        selectedApplication={selectedApplication}
+                                        onEdit={handleEdit}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        <table className="table-application-list">
+                            <caption className="caption">
+                                {captionText}
+                            </caption>
+                            <thead>
+                            <tr>
+                                <th><span>Nr.</span></th>
+                                <th><span>Status</span></th>
+                                <th><span>Firmenname</span></th>
+                                <th><span>Stellenbezeichnung</span></th>
+                                <th><span className="date">Beworben am</span></th>
+                                <th><span className="favorite-headline">Favorit</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {applications
+
+                                .filter((application) => {
+                                    // Zeige nur Favoriten, wenn showFavorites true ist
+                                    if (showFavorites) {
+                                        return application.isFavorite === "yes";
+                                    }
+
+                                    // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist
+                                    if (showArchive) {
+                                        return application.status === "ARCHIVED";
+                                    }
+
+                                    // Standardfall: Alle Bewerbungen anzeigen
+                                    return true;
+                                })
+
+                                .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
+                                .sort((a, b) => {
+                                    const order = [
+                                        "PLANNED",
+                                        "CREATED",
+                                        "SENT",
+                                        "CONFIRMED",
+                                        "UNDER_REVIEW",
+                                        "INVITATION",
+                                        "ACCEPTED",
+                                        "REJECTED",
+                                        "WITHDRAWN",
+                                        "ARCHIVED"
+                                    ]; // Definierte Reihenfolge für Status
+                                    const statusComparison = order.indexOf(a.status) - order.indexOf(b.status);
+
+                                    if (statusComparison !== 0) {
+                                        return statusComparison; // Sortiere zuerst nach Status
+                                    }
+
+                                    // Wenn der Status gleich ist, alphabetisch nach Firmenname sortieren
+                                    return a.companyName.localeCompare(b.companyName);
+                                })
+                                .map((application, index) => (
+                                    <tr
+                                        className={`apply-card ${application.status}`}
+                                        key={application.id}
+
+                                    >
+
+                                        <td>
+                                            <button className="button-list"
+                                                    onClick={() => handleToggleDetails(application)}>{index + 1}</button>
+                                        </td>
+
+                                        <td>
+                                            <button onClick={() => handleToggleDetails(application)}
+                                                    className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
+                                        </td>
+                                        <td>
+                                            <button className="button-list td-with-break"
+                                                    onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
+                                        </td>
+                                        <td>
+                                            <button className="button-list td-with-break"
+                                                    onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
+                                        </td>
+                                        <td>
+                                            <button className="button-list date" onClick={() => handleToggleDetails(application)}>
+                                                {new Date(application.applicationDate).toLocaleDateString("de-DE", {
+                                                    day: "2-digit",
+                                                    month: "2-digit",
+                                                    year: "numeric",
+                                                })}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button className="button-favorite"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleToggleFavorite(application.id);
+                                                    }}
+                                                    onKeyDown={(e) => {
+                                                        e.preventDefault(); // Verhindert die Standardaktion, falls nötig
+                                                    }}
+
+                                            >
+                                                {application.isFavorite === "yes" ? (
+                                                    <MdFavorite className="heart"/>
+                                                ) : (
+                                                    <MdFavoriteBorder className="heart"/>
+                                                )}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
+                <div className="stat">
+                    <p>Summe aller Bewerbungen: {applications.length}</p>
+                    <p>Geplante Bewerbungen: {applications.filter(app => app.status === "PLANNED").length}</p>
+                    <p>Bestätigte Bewerbungen: {applications.filter(app => app.status === "CONFIRMED").length}</p>
+                    <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
+                    <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
                 </div>
             )}
 
@@ -260,84 +376,7 @@ export default function Applications({
                         return true;
                     })
 
-                    .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
-                    .sort((a, b) => {
-                        const order = [
-                            "PLANNED",
-                            "CREATED",
-                            "SENT",
-                            "CONFIRMED",
-                            "UNDER_REVIEW",
-                            "INVITATION",
-                            "ACCEPTED",
-                            "REJECTED",
-                            "WITHDRAWN",
-                            "ARCHIVED"
-                        ]; // Definierte Reihenfolge für Status
-                        const statusComparison = order.indexOf(a.status) - order.indexOf(b.status);
 
-                        if (statusComparison !== 0) {
-                            return statusComparison; // Sortiere zuerst nach Status
-                        }
-
-                        // Wenn der Status gleich ist, alphabetisch nach Firmenname sortieren
-                        return a.companyName.localeCompare(b.companyName);
-                    })
-                    .map((application, index) => (
-                        <tr
-                            className={`apply-card ${application.status}`}
-                            key={application.id}
-
-                        >
-
-                            <td>
-                                <button className="button-list"
-                                        onClick={() => handleToggleDetails(application)}>{index + 1}</button>
-                            </td>
-
-                            <td>
-                                <button onClick={() => handleToggleDetails(application)}
-                                        className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
-                            </td>
-                            <td>
-                                <button className="button-list td-with-break"
-                                        onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
-                            </td>
-                            <td>
-                                <button className="button-list td-with-break"
-                                        onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
-                            </td>
-                            <td>
-                                <button className="button-list date" onClick={() => handleToggleDetails(application)}>
-                                    {new Date(application.applicationDate).toLocaleDateString("de-DE", {
-                                        day: "2-digit",
-                                        month: "2-digit",
-                                        year: "numeric",
-                                    })}
-                                </button>
-                            </td>
-                            <td>
-                                <button className="button-favorite"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleToggleFavorite(application.id);
-                                        }}
-                                        onKeyDown={(e) => {
-                                            e.preventDefault(); // Verhindert die Standardaktion, falls nötig
-                                        }}
-
-                                >
-                                    {application.isFavorite === "yes" ? (
-                                        <MdFavorite className="heart"/>
-                                    ) : (
-                                        <MdFavoriteBorder className="heart"/>
-                                    )}
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
         </div>
    );
 }
