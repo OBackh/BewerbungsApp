@@ -1,38 +1,51 @@
-name: SonarQube Cloud backend
+name: Analyze Backend
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
-  build:
-    name: Build and analyze
+  analyze-backend:
+    name: Build & Analyze Backend with SonarCloud
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Check out the repository
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0  # required for full branch analysis
+
+      # 2. Set up the Java environment
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
-      - name: Cache SonarQube Cloud packages
+          java-version: '17'
+          distribution: 'zulu'  # alternative: temurin
+
+      # 3. Cache SonarCloud and Maven dependencies
+      - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Maven packages
+
+      - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+          restore-keys: |
+            ${{ runner.os }}-m2
+
+      # 4. Build and analyze the backend with SonarCloud
+      - name: Build and Analyze with SonarCloud
         working-directory: ./backend
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=obackh_BewerbungsApp-backend
+        run: mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+              -Dsonar.projectKey=obackh_BewerbungsApp-backend \
+              -Dsonar.organization=obackh
