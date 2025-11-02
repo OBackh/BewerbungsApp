@@ -2,7 +2,7 @@ import './App.css'
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar.tsx";
 import Header from "./components/Header/Header.tsx";
-import Applications from "./components/Applications/Applications.tsx";
+import Applications from "./components/ApplicationsBoard/Applications/Applications.tsx";
 import ApplicationForm from "./components/CreateForm/ApplicationForm.tsx";
 import { useState, useEffect } from "react";
 import {Application} from "./components/Models/Application.ts";

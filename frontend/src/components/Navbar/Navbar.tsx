@@ -6,7 +6,7 @@ import heartIcon from '../../assets/heart.svg';
 import archiveIcon from '../../assets/archive.svg';
 
 import './Navbar.css';
-import '../Applications/applications.css';
+import '../ApplicationsBoard/Applications/applications.css';
 
 type FooterProps = {
     reloadRotate: boolean;

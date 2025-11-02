@@ -1,4 +1,4 @@
-import '../../components/Applications/applications.css'
+import '../ApplicationsBoard/Applications/applications.css'
 
 export default function LoadingSpinner() {
     return (

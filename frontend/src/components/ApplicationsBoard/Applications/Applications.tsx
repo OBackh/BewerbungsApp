@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Application } from "../Models/Application.ts";
+import { Application } from "../../Models/Application.ts";
 import './applications.css';
-import ApplicationDetails from "../Details/ApplicationDetails.tsx";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
+import ApplicationDetails from "../../Details/ApplicationDetails.tsx";
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { Cell, Pie, PieChart } from 'recharts';
-import api from "../../api/api.ts";
+import api from "../../../api/api.ts";
 
 
 
@@ -69,15 +68,7 @@ export default function Applications({
 
     console.log("Alle Statuswerte:", applications.map(app => app.status));
 
-    const data = [
-        { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
-        { name: 'Bestätigte', value: applications.filter(app => app.status === "CONFIRMED").length },
-        { name: 'Absagen', value: applications.filter(app => app.status === "REJECTED").length },
-        { name: 'Zusagen', value: applications.filter(app => app.status === "INVITATION").length }
-    ];
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-    useEffect(() => {
+        useEffect(() => {
         let isMounted = true;
 
         async function fetchApplications() {
@@ -193,9 +184,6 @@ export default function Applications({
             WITHDRAWN: "Zurückgezogen",
             ARCHIVED: "Archiviert"
         };
-
-
-
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
 
@@ -205,7 +193,7 @@ export default function Applications({
         } else if (showArchive) {
             captionText = 'Archiv';
         } else {
-            captionText = 'Übersicht über alle Bewerbungen';
+            captionText = 'Aktuelle Bewerbungen';
         }
 
 
@@ -261,8 +249,8 @@ export default function Applications({
                                         return application.status === "ARCHIVED";
                                     }
 
-                                    // Standardfall: Alle Bewerbungen anzeigen
-                                    return true;
+                                    // Standardfall: Alle Bewerbungen außer archivierte anzeigen
+                                    return application.status !== "ARCHIVED";
                                 })
 
                                 .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
@@ -343,33 +331,6 @@ export default function Applications({
                                 ))}
                             </tbody>
                         </table>
-
-                <div className="stat">
-                    <p>Summe aller Bewerbungen: {applications.length}</p>
-                    <p>Geplante Bewerbungen: {applications.filter(app => app.status === "PLANNED").length}</p>
-                    <p>Bestätigte Bewerbungen: {applications.filter(app => app.status === "CONFIRMED").length}</p>
-                    <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
-                    <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
-                </div>
-            <PieChart width={210} height={210}>
-                <Pie
-                    data={data}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={70}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    label
-                >
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-            </PieChart>
-
-
         </div>
    );
 }
