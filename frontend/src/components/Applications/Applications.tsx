@@ -64,7 +64,9 @@ export default function Applications({
                                      }: ApplicationsProps) {
     const [applications, setApplications] = useState<Application[]>([]);
 
-    useEffect(() => {
+    console.log("Alle Statuswerte:", applications.map(app => app.status));
+
+        useEffect(() => {
         let isMounted = true;
 
         async function fetchApplications() {
@@ -131,8 +133,6 @@ export default function Applications({
         } else {
             console.error("No application found with the given ID");
         }
-
-
     }
 
         function handleEdit(application: Application) {
@@ -182,9 +182,6 @@ export default function Applications({
             WITHDRAWN: "Zurückgezogen",
             ARCHIVED: "Archiviert"
         };
-
-
-
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
 
@@ -194,7 +191,7 @@ export default function Applications({
         } else if (showArchive) {
             captionText = 'Archiv';
         } else {
-            captionText = 'Übersicht über alle Bewerbungen';
+            captionText = 'Aktuelle Bewerbungen';
         }
 
 
@@ -204,10 +201,8 @@ export default function Applications({
                         {selectedApplication && !loading && (
                             <div
                                 className="overlay-spinner"
-                                onClick={() => setSelectedApplication(null)}
-                                role="Status"
-                                aria-label="Loading"
-                                aria-live="assertive"
+                                role="status"
+                                aria-label="Loading data..."
                             >
                                 <div
                                     className="application-details-container"
@@ -241,19 +236,19 @@ export default function Applications({
                             <tbody>
                             {applications
 
-                                .filter((application) => {
-                                    // Zeige nur Favoriten, wenn showFavorites true ist
-                                    if (showFavorites) {
-                                        return application.isFavorite === "yes";
-                                    }
+                    .filter((application) => {
+                        // Zeige nur Favoriten, wenn showFavorites true ist
+                        if (showFavorites) {
+                            return (application.isFavorite === "yes" && application.status !== "ARCHIVED") ;
+                        }
 
                                     // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist
                                     if (showArchive) {
                                         return application.status === "ARCHIVED";
                                     }
 
-                                    // Standardfall: Alle Bewerbungen anzeigen
-                                    return true;
+                                    // Standardfall: Alle Bewerbungen außer archivierte anzeigen
+                                    return application.status !== "ARCHIVED";
                                 })
 
                                 .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
@@ -334,16 +329,6 @@ export default function Applications({
                                 ))}
                             </tbody>
                         </table>
-
-                <div className="stat">
-                    <p>Summe aller Bewerbungen: {applications.length}</p>
-                    <p>Geplante Bewerbungen: {applications.filter(app => app.status === "PLANNED").length}</p>
-                    <p>Bestätigte Bewerbungen: {applications.filter(app => app.status === "CONFIRMED").length}</p>
-                    <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
-                    <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
-                </div>
-
-
         </div>
    );
 }
