@@ -145,8 +145,6 @@ export default function Applications({
         } else {
             console.error("No application found with the given ID");
         }
-
-
     }
 
         function handleEdit(application: Application) {
@@ -196,9 +194,6 @@ export default function Applications({
             WITHDRAWN: "Zurückgezogen",
             ARCHIVED: "Archiviert"
         };
-
-
-
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
 
@@ -208,7 +203,7 @@ export default function Applications({
         } else if (showArchive) {
             captionText = 'Archiv';
         } else {
-            captionText = 'Übersicht über alle Bewerbungen';
+            captionText = 'Aktuelle Bewerbungen';
         }
 
 
@@ -253,19 +248,19 @@ export default function Applications({
                             <tbody>
                             {applications
 
-                                .filter((application) => {
-                                    // Zeige nur Favoriten, wenn showFavorites true ist
-                                    if (showFavorites) {
-                                        return application.isFavorite === "yes";
-                                    }
+                    .filter((application) => {
+                        // Zeige nur Favoriten, wenn showFavorites true ist
+                        if (showFavorites) {
+                            return (application.isFavorite === "yes" && application.status !== "ARCHIVED") ;
+                        }
 
                                     // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist
                                     if (showArchive) {
                                         return application.status === "ARCHIVED";
                                     }
 
-                                    // Standardfall: Alle Bewerbungen anzeigen
-                                    return true;
+                                    // Standardfall: Alle Bewerbungen außer archivierte anzeigen
+                                    return application.status !== "ARCHIVED";
                                 })
 
                                 .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
