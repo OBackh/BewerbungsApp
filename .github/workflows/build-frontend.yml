@@ -21,6 +21,7 @@ jobs:
             -Dsonar.projectKey=obackh_BewerbungsApp-frontend
             -Dsonar.organization=obackh
             -Dsonar.sources=frontend/src
+            -Dsonar.projectBaseDir=./frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
