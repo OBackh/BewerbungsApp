@@ -21,6 +21,7 @@
 }
 
 .dialog-content {
+    color: #000;
     position: relative;
     background: white;
     padding: 20px;
