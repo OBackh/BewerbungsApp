@@ -211,15 +211,13 @@ export default function Applications({
         <div className="content">
                         {/* Zeigt das Overlay nur an, wenn loading false ist */}
                         {selectedApplication && !loading && (
-                            <div
+                            <progress
                                 className="overlay-spinner"
-                                role="status"
                                 aria-label="Loading data..."
                             >
                                 <div
                                     className="application-details-container"
                                     onClick={(e) => e.stopPropagation()}
-                                    role="presentation"
                                     aria-hidden="true"
                                 >
                                     <ApplicationDetails
@@ -228,13 +226,13 @@ export default function Applications({
                                         onEdit={handleEdit}
                                     />
                                 </div>
-                            </div>
+                            </progress>
                         )}
 
-                        <table className="table-application-list">
-                            <caption className="caption">
-                                {captionText}
-                            </caption>
+            <table className="table-application-list">
+                <caption className="caption">
+                    {captionText}
+                </caption>
                             <thead>
                             <tr>
                                 <th><span>Nr.</span></th>
@@ -359,7 +357,7 @@ export default function Applications({
                     fill="#8884d8"
                     paddingAngle={5}
                     dataKey="value"
-                    label="true"
+                    label={true}
                 >
                     {data.map((entry, index) => (
                         <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
