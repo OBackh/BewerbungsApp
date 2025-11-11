@@ -5,6 +5,10 @@ import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { Cell, Pie, PieChart } from 'recharts';
+
+
+
 
 // Hilfsfunktion, um eine Verzögerung zu erzeugen
 function wait(ms: number) {
@@ -63,6 +67,16 @@ export default function Applications({
                                         selectedApplication
                                      }: ApplicationsProps) {
     const [applications, setApplications] = useState<Application[]>([]);
+
+    console.log("Alle Statuswerte:", applications.map(app => app.status));
+
+    const data = [
+        { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
+        { name: 'Bestätigte', value: applications.filter(app => app.status === "CONFIRMED").length },
+        { name: 'Absagen', value: applications.filter(app => app.status === "REJECTED").length },
+        { name: 'Zusagen', value: applications.filter(app => app.status === "INVITATION").length }
+    ];
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     useEffect(() => {
         let isMounted = true;
@@ -131,8 +145,6 @@ export default function Applications({
         } else {
             console.error("No application found with the given ID");
         }
-
-
     }
 
         function handleEdit(application: Application) {
@@ -182,9 +194,6 @@ export default function Applications({
             WITHDRAWN: "Zurückgezogen",
             ARCHIVED: "Archiviert"
         };
-
-
-
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
 
@@ -194,7 +203,7 @@ export default function Applications({
         } else if (showArchive) {
             captionText = 'Archiv';
         } else {
-            captionText = 'Übersicht über alle Bewerbungen';
+            captionText = 'Aktuelle Bewerbungen';
         }
 
 
@@ -204,10 +213,8 @@ export default function Applications({
                         {selectedApplication && !loading && (
                             <div
                                 className="overlay-spinner"
-                                onClick={() => setSelectedApplication(null)}
-                                role="Status"
-                                aria-label="Loading"
-                                aria-live="assertive"
+                                role="status"
+                                aria-label="Loading data..."
                             >
                                 <div
                                     className="application-details-container"
@@ -241,19 +248,19 @@ export default function Applications({
                             <tbody>
                             {applications
 
-                                .filter((application) => {
-                                    // Zeige nur Favoriten, wenn showFavorites true ist
-                                    if (showFavorites) {
-                                        return application.isFavorite === "yes";
-                                    }
+                    .filter((application) => {
+                        // Zeige nur Favoriten, wenn showFavorites true ist
+                        if (showFavorites) {
+                            return (application.isFavorite === "yes" && application.status !== "ARCHIVED") ;
+                        }
 
                                     // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist
                                     if (showArchive) {
                                         return application.status === "ARCHIVED";
                                     }
 
-                                    // Standardfall: Alle Bewerbungen anzeigen
-                                    return true;
+                                    // Standardfall: Alle Bewerbungen außer archivierte anzeigen
+                                    return application.status !== "ARCHIVED";
                                 })
 
                                 .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
@@ -342,6 +349,23 @@ export default function Applications({
                     <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
                     <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
                 </div>
+            <PieChart width={210} height={210}>
+                <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={70}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                    label="true"
+                >
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Pie>
+            </PieChart>
 
 
         </div>
