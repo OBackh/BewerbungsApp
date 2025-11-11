@@ -10,7 +10,12 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ message, onConfirm, onCan
     return (
         <div className="confirm-dialog">
             {/* Overlay */}
-            <div className="dialog-overlay" onClick={onCancel}></div>
+            <button
+                type="button"
+                className="dialog-overlay"
+                onClick={onCancel}
+                aria-label="Dialog schließen"
+            ></button>
             {/* Dialog-Inhalt */}
             <div className="dialog-content">
                 <p>{message}</p>
