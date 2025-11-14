@@ -1,5 +1,4 @@
 *.iml
 .idea
 .env
-### MacOS ###
 .DS_Store
