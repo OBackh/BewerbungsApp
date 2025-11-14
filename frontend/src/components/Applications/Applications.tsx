@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Application } from "../Models/Application.ts";
 import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { Cell, Pie, PieChart } from 'recharts';
+import api from "../../api/api.ts";
+
+
 
 // Hilfsfunktion, um eine Verzögerung zu erzeugen
 function wait(ms: number) {
@@ -15,12 +18,6 @@ type ApplicationsProps = {
     readonly reloadKey: number;
     readonly showFavorites?: boolean;
     readonly showArchive?: boolean;
-    readonly showStats?: boolean;
-    readonly setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
-    readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    readonly loading: boolean
-    readonly setSelectedApplication: React.Dispatch<React.SetStateAction<Application | null>>;
-    readonly selectedApplication: Application | null;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
         initialData: {
@@ -49,6 +46,11 @@ type ApplicationsProps = {
             isFavorite: string
         };
     } | null>>;
+    readonly setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+    readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    readonly loading: boolean
+    readonly setSelectedApplication: React.Dispatch<React.SetStateAction<Application | null>>;
+    readonly selectedApplication: Application | null;
 
 };
 
@@ -56,7 +58,6 @@ export default function Applications({
                                         reloadKey,
                                         showFavorites,
                                         showArchive,
-                                        showStats,
                                         setFormData,
                                         setShowForm,
                                         setLoading,
@@ -68,14 +69,23 @@ export default function Applications({
 
     console.log("Alle Statuswerte:", applications.map(app => app.status));
 
+    const data = [
+        { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
+        { name: 'Bestätigte', value: applications.filter(app => app.status === "CONFIRMED").length },
+        { name: 'Absagen', value: applications.filter(app => app.status === "REJECTED").length },
+        { name: 'Zusagen', value: applications.filter(app => app.status === "INVITATION").length }
+    ];
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
     useEffect(() => {
         let isMounted = true;
 
         async function fetchApplications() {
             setLoading(true);
+
             await Promise.all([
                 wait(700),
-                axios.get<Application[]>("api/application")
+                api.get<Application[]>("/api/application")
                     .then((response) => {
                         if (isMounted) setApplications(response.data);
                     })
@@ -83,6 +93,7 @@ export default function Applications({
                         if (isMounted) console.error("Error fetching applications:", error);
                     }),
             ]);
+
             if (isMounted) setLoading(false);
         }
 
@@ -126,7 +137,7 @@ export default function Applications({
         // Toggle db entry
         const applicationToUpdate = applications.find((a) => a.id === applicationId);
         if (applicationToUpdate) {
-            axios.put(`api/application/${applicationId}`, {
+            api.put(`/api/application/${applicationId}`, {
                 ...applicationToUpdate,
                 isFavorite: applicationToUpdate.isFavorite === "yes" ? "no" : "yes",
             });
@@ -168,8 +179,6 @@ export default function Applications({
         setSelectedApplication(null);
     }
 
-
-
     // Funktion zur Übersetzung der Statuswerte
     function translateStatus(status: string): string {
         const statusMap: { [key: string]: string } = {
@@ -184,18 +193,19 @@ export default function Applications({
             WITHDRAWN: "Zurückgezogen",
             ARCHIVED: "Archiviert"
         };
+
+
+
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
-    // Headlines
+
     let captionText;
         if (showFavorites) {
             captionText = 'Meine Favoriten';
         } else if (showArchive) {
             captionText = 'Archiv';
-        } else if (showStats) {
-            captionText = 'Statistik';}
-        else {
-            captionText = 'Aktuelle Bewerbungen';
+        } else {
+            captionText = 'Übersicht über alle Bewerbungen';
         }
 
 
@@ -203,13 +213,15 @@ export default function Applications({
         <div className="content">
                         {/* Zeigt das Overlay nur an, wenn loading false ist */}
                         {selectedApplication && !loading && (
-                            <progress
+                            <div
                                 className="overlay-spinner"
+                                role="status"
                                 aria-label="Loading data..."
                             >
                                 <div
                                     className="application-details-container"
                                     onClick={(e) => e.stopPropagation()}
+                                    role="presentation"
                                     aria-hidden="true"
                                 >
                                     <ApplicationDetails
@@ -218,13 +230,13 @@ export default function Applications({
                                         onEdit={handleEdit}
                                     />
                                 </div>
-                            </progress>
+                            </div>
                         )}
 
-            <table className="table-application-list">
-                <caption className="caption">
-                    {captionText}
-                </caption>
+                        <table className="table-application-list">
+                            <caption className="caption">
+                                {captionText}
+                            </caption>
                             <thead>
                             <tr>
                                 <th><span>Nr.</span></th>
@@ -238,19 +250,19 @@ export default function Applications({
                             <tbody>
                             {applications
 
-                    .filter((application) => {
-                        // Zeige nur Favoriten, wenn showFavorites true ist
-                        if (showFavorites) {
-                            return (application.isFavorite === "yes" && application.status !== "ARCHIVED") ;
-                        }
+                                .filter((application) => {
+                                    // Zeige nur Favoriten, wenn showFavorites true ist
+                                    if (showFavorites) {
+                                        return application.isFavorite === "yes";
+                                    }
 
                                     // Zeige nur Archivierte Bewerbungen, wenn showArchive true ist
                                     if (showArchive) {
                                         return application.status === "ARCHIVED";
                                     }
 
-                                    // Standardfall: Alle Bewerbungen außer archivierte anzeigen
-                                    return application.status !== "ARCHIVED";
+                                    // Standardfall: Alle Bewerbungen anzeigen
+                                    return true;
                                 })
 
                                 .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
@@ -332,7 +344,30 @@ export default function Applications({
                             </tbody>
                         </table>
 
-
+                <div className="stat">
+                    <p>Summe aller Bewerbungen: {applications.length}</p>
+                    <p>Geplante Bewerbungen: {applications.filter(app => app.status === "PLANNED").length}</p>
+                    <p>Bestätigte Bewerbungen: {applications.filter(app => app.status === "CONFIRMED").length}</p>
+                    <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
+                    <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
+                </div>
+            <PieChart width={210} height={210}>
+                <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={70}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                    label
+                >
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Pie>
+            </PieChart>
 
 
         </div>

@@ -11,7 +11,7 @@ ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
 # Debug-Ausgabe zur Kontrolle
-RUN echo "Building Frontend with VITE_API_URL=$VITE_API_URL"
+RUN echo "👉 Building Frontend with VITE_API_URL=$VITE_API_URL"
 # Jetzt weiß Vite beim Build, welche URL es verwenden soll
 RUN npm run build
 

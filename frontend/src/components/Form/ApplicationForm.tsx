@@ -1,9 +1,9 @@
 import './ApplicationForm.css';
 import '../Delete/delete.css';
-import axios from "axios";
 import {useEffect, useState} from "react";
 import ConfirmDialog from "../Delete/ConfirmDialog.tsx";
 import ErrorMessage from "../Delete/ErrorMessage.tsx";
+import api from "../../api/api.ts";
 
 interface ApplicationData {
     companyName: string;
@@ -67,8 +67,8 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
         event.preventDefault();
 
         const request = applicationId
-            ? axios.put(`api/application/${applicationId}`, formData)
-            : axios.post("api/application", formData)
+            ? api.put(`api/application/${applicationId}`, formData)
+            : api.post("api/application", formData)
 
         request
             .then(() => {
@@ -92,7 +92,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
 
     const handleConfirmDelete = () => {
         setShowConfirm(false);
-        axios.delete(`/api/application/${applicationId}`)
+        api.delete(`/api/application/${applicationId}`)
             .then(() => {
                 handleReload();
                 closeForm();
