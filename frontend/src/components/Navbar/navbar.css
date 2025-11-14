@@ -25,4 +25,7 @@
 
 .imprintLink {
     cursor: pointer;
+    color: #ffffffff;
+    background: #00000000;
+    border: 0 solid;
 }

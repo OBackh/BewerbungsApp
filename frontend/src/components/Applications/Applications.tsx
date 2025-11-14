@@ -5,10 +5,6 @@ import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { Cell, Pie, PieChart } from 'recharts';
-
-
-
 
 // Hilfsfunktion, um eine Verzögerung zu erzeugen
 function wait(ms: number) {
@@ -19,6 +15,12 @@ type ApplicationsProps = {
     readonly reloadKey: number;
     readonly showFavorites?: boolean;
     readonly showArchive?: boolean;
+    readonly showStats?: boolean;
+    readonly setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+    readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    readonly loading: boolean
+    readonly setSelectedApplication: React.Dispatch<React.SetStateAction<Application | null>>;
+    readonly selectedApplication: Application | null;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
         initialData: {
@@ -47,11 +49,6 @@ type ApplicationsProps = {
             isFavorite: string
         };
     } | null>>;
-    readonly setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
-    readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    readonly loading: boolean
-    readonly setSelectedApplication: React.Dispatch<React.SetStateAction<Application | null>>;
-    readonly selectedApplication: Application | null;
 
 };
 
@@ -59,6 +56,7 @@ export default function Applications({
                                         reloadKey,
                                         showFavorites,
                                         showArchive,
+                                        showStats,
                                         setFormData,
                                         setShowForm,
                                         setLoading,
@@ -70,20 +68,11 @@ export default function Applications({
 
     console.log("Alle Statuswerte:", applications.map(app => app.status));
 
-    const data = [
-        { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
-        { name: 'Bestätigte', value: applications.filter(app => app.status === "CONFIRMED").length },
-        { name: 'Absagen', value: applications.filter(app => app.status === "REJECTED").length },
-        { name: 'Zusagen', value: applications.filter(app => app.status === "INVITATION").length }
-    ];
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
     useEffect(() => {
         let isMounted = true;
 
         async function fetchApplications() {
             setLoading(true);
-
             await Promise.all([
                 wait(700),
                 axios.get<Application[]>("api/application")
@@ -94,7 +83,6 @@ export default function Applications({
                         if (isMounted) console.error("Error fetching applications:", error);
                     }),
             ]);
-
             if (isMounted) setLoading(false);
         }
 
@@ -180,6 +168,8 @@ export default function Applications({
         setSelectedApplication(null);
     }
 
+
+
     // Funktion zur Übersetzung der Statuswerte
     function translateStatus(status: string): string {
         const statusMap: { [key: string]: string } = {
@@ -196,13 +186,15 @@ export default function Applications({
         };
         return statusMap[status] || status; // Gibt den Status zurück, falls keine Übersetzung gefunden wurde
     }
-
+    // Headlines
     let captionText;
         if (showFavorites) {
             captionText = 'Meine Favoriten';
         } else if (showArchive) {
             captionText = 'Archiv';
-        } else {
+        } else if (showStats) {
+            captionText = 'Statistik';}
+        else {
             captionText = 'Aktuelle Bewerbungen';
         }
 
@@ -340,30 +332,7 @@ export default function Applications({
                             </tbody>
                         </table>
 
-                <div className="stat">
-                    <p>Summe aller Bewerbungen: {applications.length}</p>
-                    <p>Geplante Bewerbungen: {applications.filter(app => app.status === "PLANNED").length}</p>
-                    <p>Bestätigte Bewerbungen: {applications.filter(app => app.status === "CONFIRMED").length}</p>
-                    <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
-                    <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
-                </div>
-            <PieChart width={210} height={210}>
-                <Pie
-                    data={data}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={70}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    label={true}
-                >
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-            </PieChart>
+
 
 
         </div>

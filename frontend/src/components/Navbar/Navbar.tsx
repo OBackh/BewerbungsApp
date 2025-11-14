@@ -4,27 +4,38 @@ import reloadIcon from '../../assets/reload.svg';
 import addIcon from '../../assets/add.svg';
 import heartIcon from '../../assets/heart.svg';
 import archiveIcon from '../../assets/archive.svg';
+import statsIcon from '../../assets/piechart.svg';
 import Imprint from "../Imprint/Imprint.tsx";
 
-import './Navbar.css';
+import './navbar.css';
 import '../Applications/applications.css';
 
 type FooterProps = {
-    reloadRotate: boolean;
-    onFav: React.MouseEventHandler<HTMLButtonElement>;
-    addRotate: boolean;
-    favoriteRotate: boolean;
-    onReload: () => void;
-    onAdd: () => void;
-    onArch: React.MouseEventHandler<HTMLButtonElement>;
-    disableButtons: boolean;
-    archiveRotate: boolean;
+    // Visibility / display control
     showArchive: boolean;
     showFavorites: boolean;
+    showStats: boolean;
     showForm: boolean;
+
+    // Button rotation / animation state
+    archiveRotate: boolean;
+    favoriteRotate: boolean;
+    statsRotate: boolean;
+    addRotate: boolean;
+    reloadRotate: boolean;
+
+    // Actions / event handlers
+    onArch: React.MouseEventHandler<HTMLButtonElement>;
+    onFav: React.MouseEventHandler<HTMLButtonElement>;
+    onStat: React.MouseEventHandler<HTMLButtonElement>;
+    onAdd: () => void;
+    onReload: () => void;
+
+    // General control / state
+    disableButtons: boolean;
 };
 
-const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, archiveRotate, onReload, onAdd, onFav, onArch, disableButtons, showArchive, showFavorites, showForm }) => {
+const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, archiveRotate, statsRotate, onReload, onAdd, onFav, onStat, onArch, disableButtons, showArchive, showFavorites, showStats, showForm }) => {
     const [isAddPressed, setIsAddPressed] = useState<boolean>(false);
     const [showImprint, setShowImprint] = useState<boolean>(false);
 
@@ -57,10 +68,23 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                         disabled={disableButtons}>
                     <img
                         src={heartIcon}
-                        alt="Reload"
+                        alt="Favorites"
                         width="24"
                         height="24"
                         className={favoriteRotate ? 'rotate' : ''}
+                    />
+                </button>
+
+                <button className={`stats-button ${showStats ? 'shadow' : ''}`}
+                        aria-pressed={showStats}
+                        onClick={onStat}
+                        disabled={disableButtons}>
+                    <img
+                        src={statsIcon}
+                        alt="Reload"
+                        width="24"
+                        height="24"
+                        className={statsRotate ? 'rotate' : ''}
                     />
                 </button>
 
@@ -94,7 +118,7 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                 </button>
             </div>
             <div className="navbar">
-                <p className="copyright"><span>&copy; 2024&nbsp;&nbsp;Ole Backhaus</span><span className="imprintLink" onClick={handleToggleImprint}>Imprint</span></p>
+                <p className="copyright"><span>&copy; 2024&nbsp;&nbsp;Ole Backhaus</span><button className="imprintLink" onClick={handleToggleImprint}>Imprint</button></p>
             </div>
             {showImprint ? <Imprint toggle={handleToggleImprint}/> : null }
         </>
