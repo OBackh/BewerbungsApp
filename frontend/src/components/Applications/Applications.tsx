@@ -18,6 +18,7 @@ type ApplicationsProps = {
     readonly reloadKey: number;
     readonly showFavorites?: boolean;
     readonly showArchive?: boolean;
+    readonly showStats?: boolean;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
         initialData: {
@@ -60,6 +61,7 @@ export default function Applications({
                                         showArchive,
                                         setFormData,
                                         setShowForm,
+                                        showStats,
                                         setLoading,
                                         loading,
                                         setSelectedApplication,
@@ -68,6 +70,11 @@ export default function Applications({
     const [applications, setApplications] = useState<Application[]>([]);
 
     console.log("Alle Statuswerte:", applications.map(app => app.status));
+
+    // Only temp for testing:
+    console.log(showStats);
+    //--------
+
 
     const data = [
         { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
