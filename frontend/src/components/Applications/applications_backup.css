@@ -93,23 +93,23 @@
 
 .favorite-button {
     right: 50%;
-    _transition: box-shadow 0.9s ease-in-out;
-}
-
-.archive-button {
-    right: 33%
-}
-
-.stats-button {
-    right:45%;
-}
-
-.add-button {
-    right: 20%;
+    transition: box-shadow 0.9s ease-in-out;
 }
 
 .favorite-button.shadow, .archive-button.shadow, .add-button.shadow, .stats-button.shadow{
     box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
+}
+
+.archive-button {
+    right: 25%
+}
+
+.stats-button {
+
+}
+
+.add-button {
+    right: 20%;
 }
 
 .reload-button:hover {
@@ -125,11 +125,7 @@
 }
 
 .archive-button:hover {
-    right: calc(33% - 3px);
-}
-
-.stats-button:hover {
-    right: calc(45% - 3px);
+    right: calc(25% - 3px);
 }
 
 .reload-button, .add-button, .favorite-button, .archive-button, .stats-button {
@@ -161,7 +157,11 @@
     background-color: red;
 }
 
-.add-button img.rotate, .reload-button img.rotate, .favorite-button img.rotate, .archive-button img.rotate, .stats-button img.rotate {
+.reload-button img.rotate, .favorite-button img.rotate, .archive-button img.rotate {
+    animation: rotate 0.25s ease-in-out;
+}
+
+.add-button img.rotate {
     animation: rotate 0.25s ease-in-out;
 }
 
@@ -185,12 +185,6 @@
 }
 
 .favorite-button:active {
-    background-color: #ffff00;
-    transform: scale(1.2);
-    box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
-}
-
-.stats-button:active {
     background-color: #ffff00;
     transform: scale(1.2);
     box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */

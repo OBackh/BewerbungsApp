@@ -11,8 +11,17 @@ export default function App() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
     const [archiveRotate, setArchiveRotate] = useState<boolean>(false);
+    const [statsRotate, setStatsRotate] = useState<boolean>(false);
     const [favoriteRotate, setFavoriteRotate] = useState<boolean>(false);
     const [reloadKey, setReloadKey] = useState<number>(0);
+    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [showFavorites, setShowFavorites] = useState<boolean>(false);
+    const [showArchive, setShowArchive] = useState<boolean>(false);
+    const [showStats, setShowStats] = useState<boolean>(false);
+    const disableButtons = loading || showForm || selectedApplication !== null;
+
     const [formData, setFormData] = useState<{
         applicationId?: string;
         initialData: {
@@ -42,14 +51,6 @@ export default function App() {
         };
     } | null>(null);
 
-    const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
-    const [showForm, setShowForm] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [showFavorites, setShowFavorites] = useState<boolean>(false);
-    const [showArchive, setShowArchive] = useState<boolean>(false);
-
-    const disableButtons = loading || showForm || selectedApplication !== null;
-
     function handleReload() {
         setReloadRotate(true);
         setReloadKey(prevKey => prevKey + 1);
@@ -68,27 +69,43 @@ function handleToggleFavoritePage(){
 
         setShowFavorites(!showFavorites);
         setShowArchive(false);
+        setShowStats(false)
         console.log("ShowFav: ", showFavorites);
 }
 
-    function handleToggleArchivePage(){
-        setArchiveRotate(true);
+function handleToggleArchivePage(){
+    setArchiveRotate(true);
 
-        setTimeout(() => {
-            setArchiveRotate(false);
-        }, 250);
+    setTimeout(() => {
+        setArchiveRotate(false);
+    }, 250);
 
-        setShowArchive(!showArchive);
-        setShowFavorites(false);
-        console.log("ShowArchive: ", showArchive);
-    }
+    setShowArchive(!showArchive);
+    setShowFavorites(false);
+    setShowStats(false)
+    console.log("ShowArchive: ", showArchive);
+}
 
-    useEffect(() => {
-        console.log("Neuer Klick: ")
-        console.log("ShowFav: ", showFavorites);
-        console.log("ShowArchive: ", showArchive);
+function handleToggleStatsPage(){
+    setStatsRotate(true);
 
-    }, [showFavorites, showArchive]);
+    setTimeout(() => {
+        setStatsRotate(false);
+    }, 250);
+
+    setShowStats(!showStats);
+    setShowFavorites(false);
+    setShowArchive(false);
+    console.log("ShowStats: ", showStats);
+}
+
+useEffect(() => {
+    console.log("Neuer Klick: ")
+    console.log("ShowFav: ", showFavorites);
+    console.log("ShowArchive: ", showArchive);
+    console.log("ShowStats: ", showStats);
+
+}, [showFavorites, showArchive, showStats]);
 
     function handleAdd() {
         setAddRotate(true);
@@ -139,6 +156,7 @@ function handleToggleFavoritePage(){
                         reloadKey={reloadKey}
                         showArchive={showArchive}
                         showFavorites={showFavorites}
+                        showStats={showStats}
                         setFormData={setFormData}
                         setShowForm={setShowForm}
                         setLoading={setLoading}
@@ -152,19 +170,24 @@ function handleToggleFavoritePage(){
                 reloadRotate={reloadRotate}
                 addRotate={addRotate}
                 archiveRotate={archiveRotate}
+                statsRotate={statsRotate}
                 favoriteRotate={favoriteRotate}
                 onReload={handleReload}
                 onFav={handleToggleFavoritePage}
                 onArch={handleToggleArchivePage}
+                onStat={handleToggleStatsPage}
                 onAdd={handleAdd}
                 disableButtons={disableButtons}
                 showArchive={showArchive}
                 showFavorites={showFavorites}
                 showForm={showForm}
+                showStats={showStats}
             />
+
             {showForm && formData && (
                 <div
-                    className="overlay-form"
+                className="overlay-form"
+                    role="presentation"
                     onClick={() => {
                         setShowForm(false);
                         setFormData(null);
@@ -175,12 +198,16 @@ function handleToggleFavoritePage(){
                             setFormData(null);
                         }
                     }}
-                    role="presentation"
                 >
                     <div
                         className="form-container"
-                        onClick={(e) => e.stopPropagation()} // Verhindert das Weiterleiten des Klicks zum Overlay
                         role="presentation"
+                        onClick={(e) => e.stopPropagation()} // Verhindert das Weiterleiten des Klicks zum Overlay
+                        onKeyDown={(e) => {
+                            if (e.key === "Escape") {
+                                e.stopPropagation();
+                            }
+                        }}
                     >
                         <ApplicationForm
                             closeForm={() => {
