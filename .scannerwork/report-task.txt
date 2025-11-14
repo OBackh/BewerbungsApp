@@ -1,0 +1,7 @@
+organization=obackh
+projectKey=obackh_BewerbungsApp-frontend
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.69380
+dashboardUrl=https://sonarcloud.io/dashboard?id=obackh_BewerbungsApp-frontend
+ceTaskId=AZpFFmPSaMxu-8it4Ax6
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZpFFmPSaMxu-8it4Ax6
