@@ -6,15 +6,17 @@ import heartIcon from '../../assets/heart.svg';
 import archiveIcon from '../../assets/archive.svg';
 import statsIcon from '../../assets/piechart.svg';
 import Imprint from "../Imprint/Imprint.tsx";
-
+import { Application } from "../Models/Application.ts";
 import './navbar.css';
 import '../Applications/applications.css';
+import ApplicationStats from "../Stats/Stats.tsx";
 
 type FooterProps = {
     // Visibility / display control
     showArchive: boolean;
     showFavorites: boolean;
     showStats: boolean;
+    setShowStats: React.Dispatch<React.SetStateAction<boolean>>;
     showForm: boolean;
 
     // Button rotation / animation state
@@ -33,9 +35,10 @@ type FooterProps = {
 
     // General control / state
     disableButtons: boolean;
+    applications: Application[];
 };
 
-const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate, archiveRotate, statsRotate, onReload, onAdd, onFav, onStat, onArch, disableButtons, showArchive, showFavorites, showStats, showForm }) => {
+const Navbar: React.FC<FooterProps> = ({ applications, reloadRotate, addRotate, favoriteRotate, archiveRotate, statsRotate, onReload, onAdd, onFav, onStat, onArch, disableButtons, showArchive, showFavorites, showStats, setShowStats, showForm }) => {
     const [isAddPressed, setIsAddPressed] = useState<boolean>(false);
     const [showImprint, setShowImprint] = useState<boolean>(false);
 
@@ -46,6 +49,11 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
     function handleToggleImprint (){
         setShowImprint(!showImprint);
         console.log("ShowImprint: " + showImprint);
+    }
+
+    function handleToggleStats (){
+        setShowStats(!showStats);
+        console.log("ShowStats: " + showStats);
     }
 
         return (
@@ -121,6 +129,7 @@ const Navbar: React.FC<FooterProps> = ({ reloadRotate, addRotate, favoriteRotate
                 <p className="copyright"><span>&copy; 2024&nbsp;&nbsp;Ole Backhaus</span><button className="imprintLink" onClick={handleToggleImprint}>Imprint</button></p>
             </div>
             {showImprint ? <Imprint toggle={handleToggleImprint}/> : null }
+            {showStats ? <ApplicationStats applications={applications} toggle={handleToggleStats}/> : null }
         </>
     );
 };
