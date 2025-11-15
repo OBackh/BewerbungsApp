@@ -200,7 +200,7 @@ export default function Applications({
         } else if (showArchive) {
             captionText = 'Archiv';
         } else {
-            captionText = 'Übersicht über alle Bewerbungen';
+            captionText = 'Aktuelle Bewerbungen';
         }
 
 
@@ -257,7 +257,7 @@ export default function Applications({
                                     }
 
                                     // Standardfall: Alle Bewerbungen anzeigen
-                                    return true;
+                                    return application.status !== "ARCHIVED";
                                 })
 
                                 .slice() // Kopie des Arrays erstellen, um keine Mutationen zu verursachen
