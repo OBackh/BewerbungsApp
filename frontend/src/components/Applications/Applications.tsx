@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Application } from "../Models/Application.ts";
 import './applications.css';
 import ApplicationDetails from "../Details/ApplicationDetails.tsx";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.tsx";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { Cell, Pie, PieChart } from 'recharts';
 import api from "../../api/api.ts";
 
 
@@ -51,6 +50,8 @@ type ApplicationsProps = {
     readonly loading: boolean
     readonly setSelectedApplication: React.Dispatch<React.SetStateAction<Application | null>>;
     readonly selectedApplication: Application | null;
+    readonly applications: Application[];
+    readonly setApplications: React.Dispatch<React.SetStateAction<Application[]>>;
 
 };
 
@@ -63,19 +64,13 @@ export default function Applications({
                                         setLoading,
                                         loading,
                                         setSelectedApplication,
+                                        applications,
+                                        setApplications,
                                         selectedApplication
                                      }: ApplicationsProps) {
-    const [applications, setApplications] = useState<Application[]>([]);
 
     console.log("Alle Statuswerte:", applications.map(app => app.status));
 
-    const data = [
-        { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
-        { name: 'Bestätigte', value: applications.filter(app => app.status === "CONFIRMED").length },
-        { name: 'Absagen', value: applications.filter(app => app.status === "REJECTED").length },
-        { name: 'Zusagen', value: applications.filter(app => app.status === "INVITATION").length }
-    ];
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     useEffect(() => {
         let isMounted = true;
@@ -102,7 +97,7 @@ export default function Applications({
         return () => {
             isMounted = false; // Cleanup beim Unmount
         };
-    }, [reloadKey, setLoading]);
+    }, [reloadKey, setLoading, setApplications]);
 
     // Debugging-Effekt: Überwacht den Zustand von "selectedApplication"
     useEffect(() => {
@@ -343,32 +338,6 @@ export default function Applications({
                                 ))}
                             </tbody>
                         </table>
-
-                <div className="stat">
-                    <p>Summe aller Bewerbungen: {applications.length}</p>
-                    <p>Geplante Bewerbungen: {applications.filter(app => app.status === "PLANNED").length}</p>
-                    <p>Bestätigte Bewerbungen: {applications.filter(app => app.status === "CONFIRMED").length}</p>
-                    <p>Absagen: {applications.filter(app => app.status === "REJECTED").length}</p>
-                    <p>Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
-                </div>
-            <PieChart width={210} height={210}>
-                <Pie
-                    data={data}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={70}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    label
-                >
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-            </PieChart>
-
 
         </div>
    );

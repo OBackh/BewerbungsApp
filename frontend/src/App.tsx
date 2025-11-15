@@ -7,6 +7,7 @@ import ApplicationForm from "./components/Form/ApplicationForm.tsx";
 import { useState, useEffect } from "react";
 import {Application} from "./components/Models/Application.ts";
 
+
 export default function App() {
     const [reloadRotate, setReloadRotate] = useState<boolean>(false);
     const [addRotate, setAddRotate] = useState<boolean>(false);
@@ -21,6 +22,7 @@ export default function App() {
     const [showArchive, setShowArchive] = useState<boolean>(false);
     const [showStats, setShowStats] = useState<boolean>(false);
     const disableButtons = loading || showForm || selectedApplication !== null;
+    const [applications,setApplications] = useState<Application[]>([]);
 
     const [formData, setFormData] = useState<{
         applicationId?: string;
@@ -69,7 +71,7 @@ function handleToggleFavoritePage(){
 
         setShowFavorites(!showFavorites);
         setShowArchive(false);
-        setShowStats(false)
+        //setShowStats(false)
         console.log("ShowFav: ", showFavorites);
 }
 
@@ -82,7 +84,7 @@ function handleToggleArchivePage(){
 
     setShowArchive(!showArchive);
     setShowFavorites(false);
-    setShowStats(false)
+    //setShowStats(false)
     console.log("ShowArchive: ", showArchive);
 }
 
@@ -94,8 +96,6 @@ function handleToggleStatsPage(){
     }, 250);
 
     setShowStats(!showStats);
-    setShowFavorites(false);
-    setShowArchive(false);
     console.log("ShowStats: ", showStats);
 }
 
@@ -156,13 +156,14 @@ useEffect(() => {
                         reloadKey={reloadKey}
                         showArchive={showArchive}
                         showFavorites={showFavorites}
-                        showStats={showStats}
                         setFormData={setFormData}
                         setShowForm={setShowForm}
                         setLoading={setLoading}
                         loading={loading}
                         setSelectedApplication={setSelectedApplication}
                         selectedApplication={selectedApplication}
+                        applications={applications}
+                        setApplications={setApplications}
                     />
                 } />
             </Routes>
@@ -182,6 +183,8 @@ useEffect(() => {
                 showFavorites={showFavorites}
                 showForm={showForm}
                 showStats={showStats}
+                setShowStats={setShowStats}
+                applications={applications}
             />
 
             {showForm && formData && (
