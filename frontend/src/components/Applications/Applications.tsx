@@ -17,6 +17,7 @@ type ApplicationsProps = {
     readonly reloadKey: number;
     readonly showFavorites?: boolean;
     readonly showArchive?: boolean;
+    readonly showStats?: boolean;
     readonly setFormData: React.Dispatch<React.SetStateAction<{
         applicationId?: string;
         initialData: {
@@ -61,6 +62,7 @@ export default function Applications({
                                         showArchive,
                                         setFormData,
                                         setShowForm,
+                                        showStats,
                                         setLoading,
                                         loading,
                                         setSelectedApplication,
