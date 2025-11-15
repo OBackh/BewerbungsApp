@@ -69,6 +69,7 @@ export default function Applications({
                                         selectedApplication
                                      }: ApplicationsProps) {
 
+
     console.log("Alle Statuswerte:", applications.map(app => app.status));
 
 
