@@ -257,7 +257,7 @@ export default function Applications({
                                         return application.status === "ARCHIVED";
                                     }
 
-                                    // Standardfall: Alle Bewerbungen anzeigen
+                                    // Standardfall: Alle Bewerbungen anzeigen, die nicht archiviert sind
                                     return application.status !== "ARCHIVED";
                                 })
 
@@ -310,11 +310,11 @@ export default function Applications({
                                         </td>
                                         <td>
                                             <button className="button-list date" onClick={() => handleToggleDetails(application)}>
-                                                {new Date(application.applicationDate).toLocaleDateString("de-DE", {
-                                                    day: "2-digit",
-                                                    month: "2-digit",
-                                                    year: "numeric",
-                                                })}
+                                                {application.status === "PLANNED" ? "In Arbeit" : new Date(application.applicationDate).toLocaleDateString("de-DE", {
+                                                        day: "2-digit",
+                                                        month: "2-digit",
+                                                        year: "numeric",
+                                                    })}
                                             </button>
                                         </td>
                                         <td>
