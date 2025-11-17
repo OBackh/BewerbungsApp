@@ -217,7 +217,7 @@
 .table-application-list {
     position: relative;
     border-collapse: collapse;
-    width: 70vw;
+    width: 60rem;
     overflow: hidden;
     margin: 0 auto;
     border: 1px solid #eee;

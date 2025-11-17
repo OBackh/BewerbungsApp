@@ -14,7 +14,17 @@ export default function Imprint({ toggle }: ImprintProps){
                    aria-hidden="true">&#215;</p>
                 <h1>Impressum</h1>
                 <hr/>
-                <p>Ole Backhaus</p>
+                <h2>Ole Backhaus</h2>
+
+                <p>Kontaktieren Sie mich gerne über LinkedIn:&nbsp;&nbsp;<a
+                    href="https://www.linkedin.com/in/ole-backhaus"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="imprint-link"
+                >
+                    [LINK]
+                </a></p>
+                    <p>Dies ist mein Capstone-Projekt, das während der Teilnahme am neuefische Bootcamp "Java Fullstack Development" im Dezember 2024 entstanden ist.</p>
             </div>
             </div>
     )
