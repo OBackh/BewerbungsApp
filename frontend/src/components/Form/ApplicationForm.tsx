@@ -203,10 +203,8 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                         value="yes"
                                         checked={formData.isFavorite === 'yes'}
                                         onChange={handleInputChange}
-                                    />
-                                    Ja
+                                    />Ja
                                 </label>
-
                                 <label>
                                     <input
                                         className="detail-entry-value"
@@ -215,8 +213,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                         value="no"
                                         checked={formData.isFavorite === 'no'}
                                         onChange={handleInputChange}
-                                    />
-                                    Nein
+                                    />Nein
                                 </label>
                             </div>
                         </div>
@@ -504,7 +501,7 @@ export default function ApplicationForm({ closeForm, handleReload, applicationId
                                 Löschen
                             </button>
                         )}
-                        <button className="form-button" type="button" onClick={closeForm}>Abbrechen</button>
+                        <button className="button-abort" type="button" onClick={closeForm}>Abbrechen</button>
                         <button className="button-save" type="submit">
                             {applicationId ? "Übernehmen" : "Speichern"}
                         </button>
