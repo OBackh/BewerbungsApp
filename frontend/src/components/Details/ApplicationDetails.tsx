@@ -66,15 +66,18 @@ console.log("Details selAppl: ", selectedApplication);
             <div className="details-buttons">
 
                 <button type="button"
+                        className="button-edit"
                         onClick={() => {
                             toggleDetails();
                             onEdit(selectedApplication);
                         }}>Eintrag bearbeiten
                 </button>
 
-                <button type="button" onClick={() => {
-                    toggleDetails();
-                }}>Schliessen
+                <button type="button"
+                        className="button-close"
+                        onClick={() => {
+                        toggleDetails();
+                        }}>Schliessen
                 </button>
             </div>
         </div>

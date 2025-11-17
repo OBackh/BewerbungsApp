@@ -70,3 +70,15 @@
     padding-bottom: 0.5rem;
     padding-top: 0.5rem;
 }
+
+.button-close {
+    color: #000;
+    background-color: #f9f9f9;
+    border-color: #646cff;
+}
+
+.button-edit {
+    color: #000;
+    background-color: #f9f9f9;
+    border-color: #646cff;
+}
