@@ -11,4 +11,8 @@ public class RootController {
         return "Backend läuft!";
     }
 
+    @GetMapping("/health")
+    public String health() {
+        return "OK";
+    }
 }
