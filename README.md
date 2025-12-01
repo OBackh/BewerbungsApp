@@ -10,7 +10,7 @@ Bemo ist eine Web-App, die Bewerber:innen hilft, den Überblick über ihre Bewer
 
 ⚙️ Technologien
 	•	Java / Spring Boot (Backend)
-	•	JavaScript / React / Next.js (Frontend)
+	•	JavaScript / React (Frontend)
 	•	MongoDB (Datenbank)
 	•	REST APIs
 
@@ -31,7 +31,7 @@ Bemo is a web application that helps job applicants keep track of their applicat
 
 ⚙️ Technologies
 	•	Java / Spring Boot (Backend)
-	•	JavaScript / React / Next.js (Frontend)
+	•	JavaScript / React (Frontend)
 	•	MongoDB (Database)
 	•	REST APIs
 
