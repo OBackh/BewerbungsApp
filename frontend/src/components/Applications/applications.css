@@ -92,16 +92,17 @@
 }
 
 .favorite-button {
-    right: 50%;
+    left: 35%;
     _transition: box-shadow 0.9s ease-in-out;
 }
 
-.archive-button {
-    right: 33%
+.stats-button {
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.stats-button {
-    right:45%;
+.archive-button {
+    right: 35%
 }
 
 .add-button {
@@ -117,19 +118,18 @@
 }
 
 .favorite-button:hover {
-    right: calc(50% - 3px);
+    left: calc(35% - 3px);
+}
+.stats-button:hover {
+    right: calc(48% - 3px);
+}
+
+.archive-button:hover {
+    right: calc(35% - 3px);
 }
 
 .add-button:hover {
     right: calc(20% - 3px);
-}
-
-.archive-button:hover {
-    right: calc(33% - 3px);
-}
-
-.stats-button:hover {
-    right: calc(45% - 3px);
 }
 
 .reload-button, .add-button, .favorite-button, .archive-button, .stats-button {
@@ -217,7 +217,7 @@
 .table-application-list {
     position: relative;
     border-collapse: collapse;
-    width: 60rem;
+    width: 100%;
     overflow: hidden;
     margin: 0 auto;
     border: 1px solid #eee;
@@ -337,4 +337,23 @@ table, tbody {
 
 .favorite-headline {
     text-align: center;
+}
+
+@media (max-width: 768px) {
+    .col-no,
+    .col-title,
+    .col-favorite {
+        display: none;
+    }
+
+    .table-application-list {
+        _position: absolute;
+        left: 0;
+        width: 100%;
+        top: 0;
+    }
+
+    .body {
+        background-image: none !important;
+    }
 }
