@@ -235,12 +235,12 @@ export default function Applications({
                             </caption>
                             <thead>
                             <tr>
-                                <th><span>Nr.</span></th>
-                                <th><span>Status</span></th>
-                                <th><span>Firmenname</span></th>
-                                <th><span>Stellenbezeichnung</span></th>
-                                <th><span className="date">Beworben am</span></th>
-                                <th><span className="favorite-headline">Favorit</span></th>
+                                <th className="col-no"><span>Nr.</span></th>
+                                <th className="col-status"><span>Status</span></th>
+                                <th className="col-company"><span>Firmenname</span></th>
+                                <th className="col-title"><span>Stellenbezeichnung</span></th>
+                                <th className="col-apply-date"><span className="date">Beworben am</span></th>
+                                <th className="col-favorite"><span className="favorite-headline">Favorit</span></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -291,24 +291,24 @@ export default function Applications({
 
                                     >
 
-                                        <td>
+                                        <td className="col-no">
                                             <button className="button-list"
                                                     onClick={() => handleToggleDetails(application)}>{index + 1}</button>
                                         </td>
 
-                                        <td>
+                                        <td className="col-status">
                                             <button onClick={() => handleToggleDetails(application)}
                                                     className={`status-typo ${application.status} button-list`}>{translateStatus(application.status)}</button>
                                         </td>
-                                        <td>
+                                        <td className="col-company">
                                             <button className="button-list td-with-break"
                                                     onClick={() => handleToggleDetails(application)}>{application.companyName}</button>
                                         </td>
-                                        <td>
+                                        <td className="col-title">
                                             <button className="button-list td-with-break"
                                                     onClick={() => handleToggleDetails(application)}>{(application.jobTitle === 'other' && application.jobTitleFree) ? application.jobTitleFree : application.jobTitle}</button>
                                         </td>
-                                        <td>
+                                        <td className="col-apply-date">
                                             <button className="button-list date" onClick={() => handleToggleDetails(application)}>
                                                 {application.status === "PLANNED" ? "In Arbeit" : new Date(application.applicationDate).toLocaleDateString("de-DE", {
                                                         day: "2-digit",
@@ -317,7 +317,7 @@ export default function Applications({
                                                     })}
                                             </button>
                                         </td>
-                                        <td>
+                                        <td className="col-favorite">
                                             <button className="button-favorite"
                                                     onClick={(e) => {
                                                         e.stopPropagation();

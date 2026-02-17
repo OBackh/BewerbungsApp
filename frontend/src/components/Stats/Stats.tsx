@@ -13,9 +13,11 @@ export default function ApplicationStats( {applications, toggle }: ApplicationSt
         { name: 'Geplante', value: applications.filter(app => app.status === "PLANNED").length },
         { name: 'Bestätigte', value: applications.filter(app => app.status === "CONFIRMED").length },
         { name: 'Absagen', value: applications.filter(app => app.status === "REJECTED").length },
-        { name: 'Zusagen', value: applications.filter(app => app.status === "INVITATION").length }
+        { name: 'Zusagen', value: applications.filter(app => app.status === "ACCEPTED").length }
     ];
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+    console.log(data);
 
     return (
 
@@ -28,7 +30,7 @@ export default function ApplicationStats( {applications, toggle }: ApplicationSt
                         <h1>Bewerbungsstatistik</h1>
                         <div className="stat">
                             <p>Anzahl aller Bewerbungen: {applications.length}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Geplante: {applications.filter(app => app.status === "PLANNED").length}</p>
-                            <p>Bestätigte: {applications.filter(app => app.status === "CONFIRMED").length}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Absagen: {applications.filter(app => app.status === "REJECTED").length}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Zusagen: {applications.filter(app => app.status === "INVITATION").length}</p>
+                            <p>Bestätigte: {applications.filter(app => app.status === "CONFIRMED").length}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Absagen: {applications.filter(app => app.status === "REJECTED").length}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Zusagen: {applications.filter(app => app.status === "ACCEPTED").length}</p>
                         </div>
                         <PieChart className="pieChartBox" width={210} height={210}>
                             <Pie
