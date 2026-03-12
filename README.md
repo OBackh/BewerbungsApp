@@ -1,5 +1,7 @@
 Bemo
 
+https://bemo.ole-backhaus.de/
+
 Bemo ist eine Web-App, die Bewerber:innen hilft, den Überblick über ihre Bewerbungen zu behalten. Nutzer:innen können Bewerbungen hinzufügen, bearbeiten, löschen und den Status ihrer Bewerbungen verfolgen.
 
 🏢 Features
@@ -43,6 +45,6 @@ A practice project to reinforce fullstack skills in Java and JavaScript/React, a
 
 Demo:
 
-https://bewerbungs-app.vercel.app/
+https://bemo.ole-backhaus.de/
 
 ===============================================
