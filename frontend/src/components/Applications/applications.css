@@ -98,7 +98,7 @@
 
 .stats-button {
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(1);
 }
 
 .archive-button {
@@ -121,7 +121,9 @@
     left: calc(35% - 3px);
 }
 .stats-button:hover {
-    right: calc(48% - 3px);
+    _right: calc(48% - 3px);
+    transform: translateX(-50%) scale(1.1);
+
 }
 
 .archive-button:hover {
@@ -192,7 +194,7 @@
 
 .stats-button:active {
     background-color: #ffff00;
-    transform: scale(1.2);
+    transform: translateX(-50%) scale(1.2);
     box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7); /* Weißer Schlagschatten */
 }
 
